@@ -17,26 +17,25 @@
                       Grid.Row="1"
                       VerticalOptions="FillAndExpand">
         <CollectionView.ItemTemplate>
-          <DataTemplate>
-            <Border StrokeShape="RoundRectangle 10" BackgroundColor="LightGray" Padding="10" Margin="5">
-              <Label Text="{Binding Text}" FontSize="16" />
+          <DataTemplate x:DataType="{x:Type models:Message}">
+            <Border StrokeShape="RoundRectangle 10" BackgroundColor="Gray" Padding="10" Margin="5">
+              <Label Text="{Binding Text}" FontSize="16" TextColor="White" />
             </Border>
           </DataTemplate>
         </CollectionView.ItemTemplate>
       </CollectionView>
 
       <Grid Grid.Row="2" Padding="5" ColumnDefinitions="*, Auto">
-        <!-- Text="{Binding NewMessage, Mode=TwoWay}" -->
-        <Entry x:Name="MessageEntry"
+        <Entry Text="{Binding MessageInput, Mode=TwoWay}"
                Placeholder="Type a message..."
                FontSize="16"
                HorizontalOptions="FillAndExpand" />
 
-        <!-- Command="{Binding SendMessageCommand}" -->
         <Button Text="Send"
+                Command="{Binding SendMessageCommand}"
                 FontSize="16"
-                Padding="10,5" 
-                Grid.Column="1"/>
+                Padding="10,5"
+                Grid.Column="1" />
       </Grid>
 
     </Grid>

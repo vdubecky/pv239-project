@@ -8,5 +8,14 @@ namespace ChatAppBackend
         public DbSet<UserEntity> Users { get; set; }
 
         public ChatAppDbContext(DbContextOptions options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<UserEntity>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+        }
     }
 }

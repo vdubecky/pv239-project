@@ -1,9 +1,41 @@
 ﻿using ChatAppBackend.Dtos;
+using ChatAppBackend.Entities;
+using ChatAppBackend.Mappers;
+using ChatAppBackend.Services;
 
 namespace ChatAppBackend.Facades
 {
-    public class UserFacade
+    public class UserFacade(UserService userService)
     {
-       
+        public async Task<bool> RegisterUser(UserRegisterDto userDto)
+        {
+            return await userService.RegisterUser(userDto.UserRegisterDtoToUserEntity());
+        }
+
+        public async Task<bool> LoginUser(UserLoginDto loginDto)
+        {
+            return await userService.LoginUser(loginDto);
+        }
+
+        /// <summary>
+        /// Updates users profile.
+        /// </summary>
+        /// <param name="id">Id of the user to update.</param>
+        /// <param name="userDto">The user dto with updated information.</param>
+        /// <returns>True if the update was successful, false otherwise.</returns>
+        public async Task<bool> UpdateUserProfile(int id, UserUpdateDto userDto)
+        {
+            return await userService.UpdateUserProfile(id, userDto);
+        }
+
+        /// <summary>
+        /// Returns all users.
+        /// </summary>
+        /// <returns>All users.</returns>
+        public IEnumerable<UserDto> GetAllUsers()
+        {
+            IEnumerable<UserEntity> users = userService.GetAllUsers();
+            return users.UserEntitiesToUserDtos();
+        }
     }
 }

@@ -17,14 +17,19 @@ namespace ChatAppBackend.Services
         }
 
         /// <summary>
-        /// TODO - Implement the login functionality.
         /// </summary>
         /// <param name="loginDto"></param>
         /// <returns> True if the user was logged successfully, false otherwise.</returns>
         public async Task<bool> LoginUser(UserLoginDto loginDto)
         {
-            //TODO - Implement the login functionality.
-            return false;
+            UserEntity user = dbContext.Users.FirstOrDefault(u => u.Email == loginDto.Email);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            return user.Password == loginDto.Password;
         }
 
         /// <summary>

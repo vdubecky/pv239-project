@@ -29,6 +29,22 @@ namespace ChatAppBackend.Facades
         }
 
         /// <summary>
+        /// Changes a user password.
+        /// </summary>
+        /// <param name="id">User id</param>
+        /// <param name="changeUserPasswordDto"></param>
+        /// <returns></returns>
+        public async Task<bool> ChangeUserPassword(int id, ChangeUserPasswordDto changeUserPasswordDto)
+        {
+            if(changeUserPasswordDto.NewPassword != changeUserPasswordDto.NewPasswordConfirm)
+            {
+                return false;
+            }
+
+            return await userService.ChangeUserPassword(id, changeUserPasswordDto.OldPassword, changeUserPasswordDto.NewPassword);
+        }
+
+        /// <summary>
         /// Returns all users.
         /// </summary>
         /// <returns>All users.</returns>

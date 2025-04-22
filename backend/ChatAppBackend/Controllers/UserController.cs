@@ -26,6 +26,12 @@ namespace ChatAppBackend.Controllers
             return await userFacade.UpdateUserProfile(id, userDto);
         }
 
+        [HttpPut("changePassword/{id}")]
+        public async Task<bool> ChangeUserPassword(int id, ChangeUserPasswordDto changeUserPasswordDto)
+        {
+            return await userFacade.ChangeUserPassword(id, changeUserPasswordDto);
+        }
+
         [HttpGet]
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {

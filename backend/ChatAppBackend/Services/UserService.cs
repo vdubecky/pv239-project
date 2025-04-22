@@ -61,6 +61,34 @@ namespace ChatAppBackend.Services
         }
 
         /// <summary>
+        /// Changes a user password.
+        /// </summary>
+        /// <param name="id"> User id</param>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns> True if the password was changed successfully, false otherwise.</returns>
+        public async Task<bool> ChangeUserPassword(int id, string oldPassword, string newPassword)
+        {
+            UserEntity toUpdate = dbContext.Users.FirstOrDefault(u => u.Id == id);
+
+            if (toUpdate == null)
+            {
+                return false;
+            }
+
+            PasswordVerificationResult verificationResult = passwordHasher.VerifyHashedPassword(toUpdate, toUpdate.Password, oldPassword);
+            if(verificationResult != PasswordVerificationResult.Success)
+            {
+                return false;
+            }
+
+            toUpdate.Password = passwordHasher.HashPassword(toUpdate, newPassword);
+            dbContext.Users.Update(toUpdate);
+
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
+        /// <summary>
         /// </summary>
         /// <returns> All users in the database.</returns>
         public IEnumerable<UserEntity> GetAllUsers()

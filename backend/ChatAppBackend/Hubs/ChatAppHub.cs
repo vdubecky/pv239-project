@@ -6,10 +6,7 @@ namespace ChatAppBackend.Hubs
     {
         public async Task SendMessage(string conversationId, string message)
         {
-            // Najdeme konverzaci podle ID
-            // a odešleme zprávu všem uživatelům v této konverzaci
-
-            
+            Clients.Client(conversationId).SendAsync("ReceiveMessage", message);
         }
     }
 }

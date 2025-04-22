@@ -1,9 +1,10 @@
 ﻿using ChatAppBackend.Dtos;
 using ChatAppBackend.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace ChatAppBackend.Services
 {
-    public class UserService(ChatAppDbContext dbContext)
+    public class UserService(ChatAppDbContext dbContext, IPasswordHasher<UserEntity> passwordHasher)
     {
         /// <summary>
         /// Registers a new user.
@@ -12,6 +13,8 @@ namespace ChatAppBackend.Services
         /// <returns> True if the user was registered successfully, false otherwise.</returns>
         public async Task<bool> RegisterUser(UserEntity user)
         {
+            user.Password = passwordHasher.HashPassword(user, user.Password);
+
             dbContext.Users.Add(user);
             return await dbContext.SaveChangesAsync() > 0;
         }
@@ -29,7 +32,8 @@ namespace ChatAppBackend.Services
                 return false;
             }
 
-            return user.Password == loginDto.Password;
+            PasswordVerificationResult verificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
+            return verificationResult == PasswordVerificationResult.Success;
         }
 
         /// <summary>

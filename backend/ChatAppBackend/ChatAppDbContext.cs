@@ -16,6 +16,9 @@ namespace ChatAppBackend
             modelBuilder.Entity<UserEntity>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+            modelBuilder.Entity<UserEntity>()
+                .Property(p => p.ProfilePicture)
+                .IsRequired(false);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ChatAppBackend.Dtos;
 using ChatAppBackend.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChatAppBackend.Services
 {
@@ -69,9 +70,9 @@ namespace ChatAppBackend.Services
         /// <returns> True if the password was changed successfully, false otherwise.</returns>
         public async Task<bool> ChangeUserPassword(int id, string oldPassword, string newPassword)
         {
-            UserEntity toUpdate = dbContext.Users.FirstOrDefault(u => u.Id == id);
+            UserEntity? toUpdate = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-            if (toUpdate == null)
+            if (toUpdate is null)
             {
                 return false;
             }
@@ -94,6 +95,11 @@ namespace ChatAppBackend.Services
         public IEnumerable<UserEntity> GetAllUsers()
         {
             return dbContext.Users;
+        }
+        
+        public async Task<UserEntity?> GetUser(int id)
+        {
+            return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

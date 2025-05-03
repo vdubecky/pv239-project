@@ -8,7 +8,7 @@ namespace ChatAppBackend.Controllers
     [Route("api/v1/users")]
     public class UserController(UserFacade userFacade)
     {
-        [HttpPost("create")]
+        [HttpPost]
         public async Task<bool> CreateAccount(UserRegisterDto userDto)
         {
             return await userFacade.RegisterUser(userDto);
@@ -20,13 +20,13 @@ namespace ChatAppBackend.Controllers
             return await userFacade.LoginUser(loginDto);
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPut("{id}")]
         public async Task<bool> UpdateUserProfile(int id, UserUpdateDto userDto)
         {
             return await userFacade.UpdateUserProfile(id, userDto);
         }
 
-        [HttpPut("changePassword/{id}")]
+        [HttpPut("{id}/changePassword")]
         public async Task<bool> ChangeUserPassword(int id, ChangeUserPasswordDto changeUserPasswordDto)
         {
             return await userFacade.ChangeUserPassword(id, changeUserPasswordDto);
@@ -36,6 +36,12 @@ namespace ChatAppBackend.Controllers
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             return userFacade.GetAllUsers();
+        }
+        
+        [HttpGet("{id}")]
+        public async Task<UserDto?> GetUser(int id)
+        {
+            return await userFacade.GetUser(id);
         }
     }
 }

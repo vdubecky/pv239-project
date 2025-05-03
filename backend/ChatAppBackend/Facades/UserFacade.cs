@@ -53,5 +53,12 @@ namespace ChatAppBackend.Facades
             IEnumerable<UserEntity> users = userService.GetAllUsers();
             return users.UserEntitiesToUserDtos();
         }
+        
+        public async Task<UserDto?> GetUser(int id)
+        {
+            UserEntity? user = await userService.GetUser(id);
+            Console.WriteLine(user?.Password);
+            return user?.UserEntityToUserDto();
+        }
     }
 }

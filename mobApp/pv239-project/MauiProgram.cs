@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
+using pv239_project.Popups;
 using pv239_project.Services;
 using pv239_project.Services.Interfaces;
+using pv239_project.ViewModels;
 
 namespace pv239_project;
 
@@ -11,13 +14,14 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        builder.Services.AddSingleton<IRoutingService, RoutingService>();
+        RegisterServices(builder.Services);
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
@@ -35,5 +39,21 @@ public static class MauiProgram
         {
             Routing.RegisterRoute(routeModel.Route, routeModel.ViewType);
         }
+    }
+
+    private static IServiceCollection RegisterServices(IServiceCollection services)
+    {
+        // Services
+        services.AddSingleton<IRoutingService, RoutingService>();
+        services.AddTransient<IUserService, UserService>();
+        
+        // View models
+        services.AddTransient<UserListViewModel>();
+        services.AddTransient<UserSettingsViewModel>();
+        
+        // Add popups
+        services.AddTransientPopup<ChangePasswordPopup, ChangePasswordPopupViewModel>();
+
+        return services;
     }
 }

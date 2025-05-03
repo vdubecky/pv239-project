@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:pv239_project.Models"
+             xmlns:vm="clr-namespace:pv239_project.ViewModels"
+             x:Name="Root"
+             x:DataType="vm:UserListViewModel"
+             x:Class="pv239_project.Pages.UserListPage">
+  <ContentPage.Content>
+    <VerticalStackLayout Padding="20" Spacing="10">
+      <Label Text="Users"
+             FontSize="24"
+             HorizontalOptions="Center" />
+
+      <CollectionView ItemsSource="{Binding Items}">
+        <CollectionView.ItemTemplate>
+          <DataTemplate x:DataType="{x:Type models:UserDto}">
+            <Border StrokeShape="RoundRectangle 10"
+                    Padding="12, 8"
+                    Margin="0, 0, 0, 10">
+              <HorizontalStackLayout>
+                <Border HeightRequest="40"
+                        WidthRequest="40"
+                        StrokeShape="RoundRectangle 20"
+                        Margin="0, 0, 8, 0"
+                        BackgroundColor="#EADDFF">
+                  <Label FontSize="16"
+                         LineHeight="24"
+                         Text="{Binding Path=Initials}"
+                         HorizontalTextAlignment="Center"
+                         VerticalTextAlignment="Center" />
+                </Border>
+
+
+                <Label Text="{Binding Path=Fullname}"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Start" />
+              </HorizontalStackLayout>
+            </Border>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </VerticalStackLayout>
+  </ContentPage.Content>
+</ContentPage>

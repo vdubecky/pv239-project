@@ -1,0 +1,61 @@
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Maui.Core;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using pv239_project.Mappers;
+using pv239_project.Models;
+using pv239_project.Services.Interfaces;
+
+namespace pv239_project.ViewModels;
+
+[QueryProperty(nameof(Id), nameof(Id))]
+public partial class UserSettingsViewModel : ObservableObject
+{
+    private readonly IPopupService _popupService;
+    private readonly IUserService _userService;
+    public int Id { get; init; } = 1;
+
+    [ObservableProperty] public partial UserDto? User { get; set; }
+
+    public UserSettingsViewModel(IUserService userService, IPopupService popupService)
+    {
+        _userService = userService;
+        _popupService = popupService;
+    }
+
+    public async Task LoadDataAsync()
+    {
+        User = await _userService.GetUser(Id);
+    }
+
+    [RelayCommand]
+    private async Task UpdateUserSettings()
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(User?.Firstname) ||
+                string.IsNullOrWhiteSpace(User?.Surname) ||
+                string.IsNullOrWhiteSpace(User?.Email))
+            {
+                return;
+            }
+
+            var updateUserDto = User!.ToUpdateUserDto();
+            await _userService.UpdateUser(Id, updateUserDto);
+
+            var toast = Toast.Make("Successfully updated profile settings.");
+            await toast.Show();
+        }
+        catch (Exception e)
+        {
+            var toast = Toast.Make(e.Message);
+            await toast.Show();
+        }
+    }
+
+    [RelayCommand]
+    private async Task OpenChangePasswordPopup()
+    {
+        await _popupService.ShowPopupAsync<ChangePasswordPopupViewModel>();
+    }
+}

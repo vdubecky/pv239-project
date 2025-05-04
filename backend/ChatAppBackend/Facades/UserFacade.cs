@@ -12,7 +12,7 @@ namespace ChatAppBackend.Facades
             return await userService.RegisterUser(userDto.UserRegisterDtoToUserEntity());
         }
 
-        public async Task<bool> LoginUser(UserLoginDto loginDto)
+        public async Task<int?> LoginUser(UserLoginDto loginDto)
         {
             return await userService.LoginUser(loginDto);
         }
@@ -51,6 +51,12 @@ namespace ChatAppBackend.Facades
         public IEnumerable<UserDto> GetAllUsers()
         {
             IEnumerable<UserEntity> users = userService.GetAllUsers();
+            return users.UserEntitiesToUserDtos();
+        }
+        
+        public IEnumerable<UserDto> GetAllContacts(int id)
+        {
+            IEnumerable<UserEntity> users = userService.GetAllContacts(id);
             return users.UserEntitiesToUserDtos();
         }
         

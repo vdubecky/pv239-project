@@ -24,17 +24,17 @@ namespace ChatAppBackend.Services
         /// </summary>
         /// <param name="loginDto"></param>
         /// <returns> True if the user was logged successfully, false otherwise.</returns>
-        public async Task<bool> LoginUser(UserLoginDto loginDto)
+        public async Task<int?> LoginUser(UserLoginDto loginDto)
         {
-            UserEntity user = dbContext.Users.FirstOrDefault(u => u.Email == loginDto.Email);
+            UserEntity? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
-            if (user == null)
+            if (user is null)
             {
-                return false;
+                return null;
             }
 
             PasswordVerificationResult verificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
-            return verificationResult == PasswordVerificationResult.Success;
+            return verificationResult == PasswordVerificationResult.Success ? user.Id : null;
         }
 
         /// <summary>
@@ -95,6 +95,12 @@ namespace ChatAppBackend.Services
         public IEnumerable<UserEntity> GetAllUsers()
         {
             return dbContext.Users;
+        }
+        
+        public IEnumerable<UserEntity> GetAllContacts(int id)
+        {
+            // TODO: Return all contacts + optional conversation id with user
+            return dbContext.Users.Where(u => u.Id != id);
         }
         
         public async Task<UserEntity?> GetUser(int id)

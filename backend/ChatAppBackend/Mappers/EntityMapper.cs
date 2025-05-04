@@ -13,7 +13,7 @@ namespace ChatAppBackend.Mappers
                 Firstname = userEntity.Firstname,
                 Surname = userEntity.Surname,
                 Email = userEntity.Email,
-                ProfilePicture = userEntity.ProfilePicture
+                ProfilePicture = "data:image/jpeg;charset=utf-8;base64," + userEntity.ProfilePicture
             };
         }
 

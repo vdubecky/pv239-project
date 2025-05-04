@@ -78,7 +78,7 @@ namespace ChatAppBackend.Services
             }
 
             PasswordVerificationResult verificationResult = passwordHasher.VerifyHashedPassword(toUpdate, toUpdate.Password, oldPassword);
-            if(verificationResult != PasswordVerificationResult.Success)
+            if (verificationResult != PasswordVerificationResult.Success)
             {
                 return false;
             }
@@ -89,6 +89,27 @@ namespace ChatAppBackend.Services
             return await dbContext.SaveChangesAsync() > 0;
         }
 
+        public async Task<bool> UploadUserPicture(int id, Stream image)
+        {
+            UserEntity? toUpdate = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (toUpdate is null)
+            {
+                return false;
+            }
+
+            byte[] bytes;
+            using var memoryStream = new MemoryStream();
+            await image.CopyToAsync(memoryStream);
+            bytes = memoryStream.ToArray();
+            string base64 = Convert.ToBase64String(bytes);
+
+            toUpdate.ProfilePicture = base64;
+
+            dbContext.Users.Update(toUpdate);
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
         /// <summary>
         /// </summary>
         /// <returns> All users in the database.</returns>
@@ -96,13 +117,13 @@ namespace ChatAppBackend.Services
         {
             return dbContext.Users;
         }
-        
+
         public IEnumerable<UserEntity> GetAllContacts(int id)
         {
             // TODO: Return all contacts + optional conversation id with user
             return dbContext.Users.Where(u => u.Id != id);
         }
-        
+
         public async Task<UserEntity?> GetUser(int id)
         {
             return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);

@@ -2,8 +2,8 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using pv239_project.Client;
 using pv239_project.Mappers;
-using pv239_project.Models;
 using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
@@ -12,20 +12,20 @@ namespace pv239_project.ViewModels;
 public partial class UserSettingsViewModel : ObservableObject
 {
     private readonly IPopupService _popupService;
-    private readonly IUserService _userService;
+    private readonly IUserClient _userClient;
     public int Id { get; init; } = 1;
 
     [ObservableProperty] public partial UserDto? User { get; set; }
 
-    public UserSettingsViewModel(IUserService userService, IPopupService popupService)
+    public UserSettingsViewModel(IPopupService popupService, IUserClient userClient)
     {
-        _userService = userService;
         _popupService = popupService;
+        _userClient = userClient;
     }
 
     public async Task LoadDataAsync()
     {
-        User = await _userService.GetUser(Id);
+        User = await _userClient.User_GetUserAsync(Id);
     }
 
     [RelayCommand]
@@ -41,7 +41,7 @@ public partial class UserSettingsViewModel : ObservableObject
             }
 
             var updateUserDto = User!.ToUpdateUserDto();
-            await _userService.UpdateUser(Id, updateUserDto);
+            await _userClient.User_UpdateUserProfileAsync(Id, updateUserDto);
 
             var toast = Toast.Make("Successfully updated profile settings.");
             await toast.Show();

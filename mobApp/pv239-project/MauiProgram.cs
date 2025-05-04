@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
+using pv239_project.Client;
 using pv239_project.Popups;
 using pv239_project.Services;
 using pv239_project.Services.Interfaces;
@@ -45,7 +46,6 @@ public static class MauiProgram
     {
         // Services
         services.AddSingleton<IRoutingService, RoutingService>();
-        services.AddTransient<IUserService, UserService>();
         
         // View models
         services.AddTransient<UserListViewModel>();
@@ -53,6 +53,11 @@ public static class MauiProgram
         
         // Add popups
         services.AddTransientPopup<ChangePasswordPopup, ChangePasswordPopupViewModel>();
+
+        services.AddHttpClient<IUserClient, UserClient>(client =>
+        {
+            client.BaseAddress = new Uri("http://192.168.0.154:5115/");
+        });
 
         return services;
     }

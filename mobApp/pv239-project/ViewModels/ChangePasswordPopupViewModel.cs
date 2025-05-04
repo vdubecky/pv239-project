@@ -2,20 +2,19 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using pv239_project.Models;
-using pv239_project.Services.Interfaces;
+using pv239_project.Client;
 
 namespace pv239_project.ViewModels;
 
 public partial class ChangePasswordPopupViewModel : ObservableObject
 {
-    private readonly IUserService _userService;
+    private readonly IUserClient _userClient;
     private readonly IPopupService _popupService;
 
-    public ChangePasswordPopupViewModel(IPopupService popupService, IUserService userService)
+    public ChangePasswordPopupViewModel(IPopupService popupService, IUserClient userClient)
     {
         _popupService = popupService;
-        _userService = userService;
+        _userClient = userClient;
     }
     
     [ObservableProperty]
@@ -51,13 +50,13 @@ public partial class ChangePasswordPopupViewModel : ObservableObject
 
         try
         {
-            ChangePasswordDto changePasswordDto = new()
+            ChangeUserPasswordDto changePasswordDto = new()
             {
                 OldPassword = OldPassword,
                 NewPassword = NewPassword,
                 NewPasswordConfirm = ConfirmPassword,
             };
-            await _userService.ChangePassword(1, changePasswordDto);
+            await _userClient.User_ChangeUserPasswordAsync(1, changePasswordDto);
             await Toast.Make("Successfully updated password.").Show();
         }
         catch (Exception e)

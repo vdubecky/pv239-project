@@ -15,7 +15,7 @@
 
       <CollectionView ItemsSource="{Binding Items}">
         <CollectionView.ItemTemplate>
-          <DataTemplate x:DataType="{x:Type models:UserDto}">
+          <DataTemplate x:DataType="{x:Type models:User}">
             <Border StrokeShape="RoundRectangle 10"
                     Padding="12, 8"
                     Margin="0, 0, 0, 10">
@@ -28,6 +28,7 @@
                   <Label FontSize="16"
                          LineHeight="24"
                          Text="{Binding Path=Initials}"
+                         TextColor="Black"
                          HorizontalTextAlignment="Center"
                          VerticalTextAlignment="Center" />
                 </Border>

@@ -1,4 +1,7 @@
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
+using pv239_project.Client;
+using pv239_project.Mappers;
 using pv239_project.Models;
 using pv239_project.Services.Interfaces;
 
@@ -6,18 +9,18 @@ namespace pv239_project.ViewModels;
 
 public partial class UserListViewModel : ObservableObject
 {
-    private readonly IUserService _userService;
-    
-    [ObservableProperty]
-    public partial ICollection<UserDto>? Items { get; set; }
-    
-    public UserListViewModel(IUserService userService)
+    private readonly IUserClient _userClient;
+
+    [ObservableProperty] public partial ICollection<User>? Items { get; set; }
+
+    public UserListViewModel(IUserClient userClient)
     {
-        _userService = userService;
+        _userClient = userClient;
     }
-    
+
     public async Task LoadDataAsync()
     {
-        Items = await _userService.GetAllUsers();
+        var items = await _userClient.User_GetAllUsersAsync();
+        Items = items.Select(s => s.UserDtoToUser()).ToObservableCollection();
     }
 }

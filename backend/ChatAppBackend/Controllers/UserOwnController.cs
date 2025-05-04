@@ -31,6 +31,6 @@ public class UserOwnController(UserFacade userFacade) : ControllerBase
     public async Task<bool> UploadUserPicture([FromForm] UploadUserPictureDto uploadDto)
     {
         var id = User.GetUserIdFromClaims();
-        return await userFacade.UploadUserPicture(id!.Value, uploadDto.File.OpenReadStream());
+        return await userFacade.UploadUserPicture(id!.Value, uploadDto.File.OpenReadStream(), uploadDto.FileName);
     }
 }

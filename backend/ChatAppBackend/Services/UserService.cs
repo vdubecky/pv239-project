@@ -1,5 +1,6 @@
 ﻿using ChatAppBackend.Dtos;
 using ChatAppBackend.Entities;
+using ChatAppBackend.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -89,7 +90,7 @@ namespace ChatAppBackend.Services
             return await dbContext.SaveChangesAsync() > 0;
         }
 
-        public async Task<bool> UploadUserPicture(int id, Stream image)
+        public async Task<bool> UploadUserPicture(int id, Stream imageData, string fileName)
         {
             UserEntity? toUpdate = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 
@@ -98,13 +99,12 @@ namespace ChatAppBackend.Services
                 return false;
             }
 
-            byte[] bytes;
             using var memoryStream = new MemoryStream();
-            await image.CopyToAsync(memoryStream);
-            bytes = memoryStream.ToArray();
-            string base64 = Convert.ToBase64String(bytes);
+            await imageData.CopyToAsync(memoryStream);
+            byte[] bytes = memoryStream.ToArray();
+            await bytes.SaveByteArrayToFile($"profile-pictures/{fileName}");
 
-            toUpdate.ProfilePicture = base64;
+            toUpdate.ProfilePicture = $"profile-pictures/{fileName}";
 
             dbContext.Users.Update(toUpdate);
             return await dbContext.SaveChangesAsync() > 0;

@@ -58,4 +58,10 @@ public partial class UserSettingsViewModel : ObservableObject
     {
         await _popupService.ShowPopupAsync<ChangePasswordPopupViewModel>();
     }
+    
+    [RelayCommand]
+    private async Task OpenUploadProfilePicturePopup()
+    {
+        await _popupService.ShowPopupAsync<UploadProfilePicturePopupViewModel>();
+    }
 }

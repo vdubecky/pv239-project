@@ -46,6 +46,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("RegisteredUser", policy => policy.RequireClaim(ClaimTypes.NameIdentifier));
 
+// TODO: Move to a better place
+Directory.CreateDirectory("profile-pictures");
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

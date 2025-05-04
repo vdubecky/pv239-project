@@ -21,6 +21,6 @@ namespace ChatAppBackend.Entities
         public string Password { get; set; }
 
         [MaxLength(512)]
-        public string ProfilePicture { get; set; }
+        public string? ProfilePicture { get; set; }
     }
 }

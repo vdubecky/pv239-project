@@ -35,6 +35,12 @@
                 Padding="10,5"
                 Margin="0, 20, 0, 0"
         />
+        <Button Text="Upload new profile picture"
+                Command="{Binding OpenUploadProfilePicturePopupCommand}"
+                FontSize="16"
+                Padding="10,5"
+                Margin="0, 20, 0, 0"
+        />
       </VerticalStackLayout>
       <Button Text="Submit"
               Command="{Binding UpdateUserSettingsCommand}"

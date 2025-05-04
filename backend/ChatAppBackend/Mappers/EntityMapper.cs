@@ -1,5 +1,6 @@
 ﻿using ChatAppBackend.Dtos;
 using ChatAppBackend.Entities;
+using ChatAppBackend.Extensions;
 
 namespace ChatAppBackend.Mappers
 {
@@ -13,7 +14,7 @@ namespace ChatAppBackend.Mappers
                 Firstname = userEntity.Firstname,
                 Surname = userEntity.Surname,
                 Email = userEntity.Email,
-                ProfilePicture = "data:image/jpeg;charset=utf-8;base64," + userEntity.ProfilePicture
+                ProfilePicture = GetProfilePictureBase64(userEntity.ProfilePicture),
             };
         }
 
@@ -27,6 +28,19 @@ namespace ChatAppBackend.Mappers
             }
 
             return userDtos;
+        }
+
+        private static string? GetProfilePictureBase64(string? profilePicturePath)
+        {
+            if (profilePicturePath is null)
+            {
+                return null;
+            }
+
+            var contentType = Path.GetExtension(profilePicturePath).MapExtensionToContentType();
+            byte[] imageData = profilePicturePath.ReadByteArrayFromFile();
+            var base64String = Convert.ToBase64String(imageData);
+            return $"data:{contentType};charset=utf-8;base64,{base64String}";
         }
     }
 }

@@ -53,6 +53,7 @@ public static class MauiProgram
         
         // Add popups
         services.AddTransientPopup<ChangePasswordPopup, ChangePasswordPopupViewModel>();
+        services.AddTransientPopup<UploadProfilePicturePopup, UploadProfilePicturePopupViewModel>();
 
         services.AddHttpClient<IUserClient, UserClient>(client =>
         {

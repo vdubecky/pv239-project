@@ -44,9 +44,9 @@ namespace ChatAppBackend.Facades
             return await userService.ChangeUserPassword(id, changeUserPasswordDto.OldPassword, changeUserPasswordDto.NewPassword);
         }
 
-        public async Task<bool> UploadUserPicture(int id, Stream image)
+        public async Task<bool> UploadUserPicture(int id, Stream imageData, string fileName)
         {
-            return await userService.UploadUserPicture(id, image);
+            return await userService.UploadUserPicture(id, imageData, fileName);
         }
 
         /// <summary>

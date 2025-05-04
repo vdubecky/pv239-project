@@ -36,7 +36,7 @@ namespace ChatAppBackend.Controllers
         [HttpPut("{id}/picture")]
         public async Task<bool> UploadUserPicture(int id, [FromForm] UploadUserPictureDto uploadDto)
         {
-            return await userFacade.UploadUserPicture(id, uploadDto.File.OpenReadStream());
+            return await userFacade.UploadUserPicture(id, uploadDto.File.OpenReadStream(), uploadDto.FileName);
         }
 
         [HttpGet]

@@ -35,6 +35,7 @@
                 Command="{Binding SendMessageCommand}"
                 FontSize="16"
                 Padding="10,5"
+                Margin="8"
                 Grid.Column="1" />
       </Grid>
 

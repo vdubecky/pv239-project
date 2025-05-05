@@ -1,6 +1,8 @@
 ﻿using ChatAppBackend.Dtos;
 using ChatAppBackend.Entities;
+using ChatAppBackend.Extensions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChatAppBackend.Services
 {
@@ -23,17 +25,17 @@ namespace ChatAppBackend.Services
         /// </summary>
         /// <param name="loginDto"></param>
         /// <returns> True if the user was logged successfully, false otherwise.</returns>
-        public async Task<bool> LoginUser(UserLoginDto loginDto)
+        public async Task<int?> LoginUser(UserLoginDto loginDto)
         {
-            UserEntity user = dbContext.Users.FirstOrDefault(u => u.Email == loginDto.Email);
+            UserEntity? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
-            if (user == null)
+            if (user is null)
             {
-                return false;
+                return null;
             }
 
             PasswordVerificationResult verificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
-            return verificationResult == PasswordVerificationResult.Success;
+            return verificationResult == PasswordVerificationResult.Success ? user.Id : null;
         }
 
         /// <summary>
@@ -69,15 +71,15 @@ namespace ChatAppBackend.Services
         /// <returns> True if the password was changed successfully, false otherwise.</returns>
         public async Task<bool> ChangeUserPassword(int id, string oldPassword, string newPassword)
         {
-            UserEntity toUpdate = dbContext.Users.FirstOrDefault(u => u.Id == id);
+            UserEntity? toUpdate = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
 
-            if (toUpdate == null)
+            if (toUpdate is null)
             {
                 return false;
             }
 
             PasswordVerificationResult verificationResult = passwordHasher.VerifyHashedPassword(toUpdate, toUpdate.Password, oldPassword);
-            if(verificationResult != PasswordVerificationResult.Success)
+            if (verificationResult != PasswordVerificationResult.Success)
             {
                 return false;
             }
@@ -88,12 +90,43 @@ namespace ChatAppBackend.Services
             return await dbContext.SaveChangesAsync() > 0;
         }
 
+        public async Task<bool> UploadUserPicture(int id, Stream imageData, string fileName)
+        {
+            UserEntity? toUpdate = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (toUpdate is null)
+            {
+                return false;
+            }
+
+            using var memoryStream = new MemoryStream();
+            await imageData.CopyToAsync(memoryStream);
+            byte[] bytes = memoryStream.ToArray();
+            await bytes.SaveByteArrayToFile($"profile-pictures/{fileName}");
+
+            toUpdate.ProfilePicture = $"profile-pictures/{fileName}";
+
+            dbContext.Users.Update(toUpdate);
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
         /// <summary>
         /// </summary>
         /// <returns> All users in the database.</returns>
         public IEnumerable<UserEntity> GetAllUsers()
         {
             return dbContext.Users;
+        }
+
+        public IEnumerable<UserEntity> GetAllContacts(int id)
+        {
+            // TODO: Return all contacts + optional conversation id with user
+            return dbContext.Users.Where(u => u.Id != id);
+        }
+
+        public async Task<UserEntity?> GetUser(int id)
+        {
+            return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
     }
 }

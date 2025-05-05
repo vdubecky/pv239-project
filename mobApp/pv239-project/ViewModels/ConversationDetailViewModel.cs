@@ -6,15 +6,15 @@ using pv239_project.Models;
 namespace pv239_project.ViewModels;
 
 [QueryProperty(nameof(Id), nameof(Id))]
-public partial class ConversationDetailViewModel  : ObservableObject
+public partial class ConversationDetailViewModel : ObservableObject
 {
     public Guid Id { get; init; } = Guid.Empty;
-    
+
     [ObservableProperty]
     public partial ConversationDetail? Conversation { get; set; }
-    
+
     [ObservableProperty]
-    private string _messageInput = string.Empty;
+    public partial string MessageInput { get; set; } = string.Empty;
 
     public ConversationDetailViewModel()
     {
@@ -44,7 +44,6 @@ public partial class ConversationDetailViewModel  : ObservableObject
             ConversationId = Guid.NewGuid(),
         };
 
-        // ✅ Add message to list
         Conversation?.Messages.Add(newMessage);
         MessageInput = string.Empty;
         return Task.FromResult(Task.CompletedTask);

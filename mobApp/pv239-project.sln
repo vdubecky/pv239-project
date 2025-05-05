@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pv239-project", "pv239-project\pv239-project.csproj", "{30A4DBCE-523C-44FD-823E-072BFC2DFC03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pv239_project.Client", "pv239_project.Client\pv239_project.Client.csproj", "{C4D9A4CC-C83E-4BF3-830F-0A103E06A432}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{30A4DBCE-523C-44FD-823E-072BFC2DFC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30A4DBCE-523C-44FD-823E-072BFC2DFC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30A4DBCE-523C-44FD-823E-072BFC2DFC03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4D9A4CC-C83E-4BF3-830F-0A103E06A432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4D9A4CC-C83E-4BF3-830F-0A103E06A432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4D9A4CC-C83E-4BF3-830F-0A103E06A432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4D9A4CC-C83E-4BF3-830F-0A103E06A432}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -12,7 +12,7 @@ namespace ChatAppBackend.Facades
             return await userService.RegisterUser(userDto.UserRegisterDtoToUserEntity());
         }
 
-        public async Task<bool> LoginUser(UserLoginDto loginDto)
+        public async Task<int?> LoginUser(UserLoginDto loginDto)
         {
             return await userService.LoginUser(loginDto);
         }
@@ -44,6 +44,11 @@ namespace ChatAppBackend.Facades
             return await userService.ChangeUserPassword(id, changeUserPasswordDto.OldPassword, changeUserPasswordDto.NewPassword);
         }
 
+        public async Task<bool> UploadUserPicture(int id, Stream imageData, string fileName)
+        {
+            return await userService.UploadUserPicture(id, imageData, fileName);
+        }
+
         /// <summary>
         /// Returns all users.
         /// </summary>
@@ -52,6 +57,18 @@ namespace ChatAppBackend.Facades
         {
             IEnumerable<UserEntity> users = userService.GetAllUsers();
             return users.UserEntitiesToUserDtos();
+        }
+        
+        public IEnumerable<UserDto> GetAllContacts(int id)
+        {
+            IEnumerable<UserEntity> users = userService.GetAllContacts(id);
+            return users.UserEntitiesToUserDtos();
+        }
+        
+        public async Task<UserDto?> GetUser(int id)
+        {
+            UserEntity? user = await userService.GetUser(id);
+            return user?.UserEntityToUserDto();
         }
     }
 }

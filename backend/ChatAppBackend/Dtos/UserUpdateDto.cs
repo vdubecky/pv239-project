@@ -14,6 +14,6 @@ namespace ChatAppBackend.Dtos
         public string Email { get; set; }
 
         [MaxLength(512)]
-        public string ProfilePicture { get; set; }
+        public string? ProfilePicture { get; set; }
     }
 }

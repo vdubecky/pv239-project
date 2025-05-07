@@ -1,14 +1,20 @@
-﻿namespace pv239_project;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using pv239_project.ViewModels;
+
+namespace pv239_project;
 
 public partial class App : Application
 {
-    public App()
+    public AuthViewModel AuthViewModel { get; }
+    
+    public App(AuthViewModel viewModel)
     {
         InitializeComponent();
+        AuthViewModel = viewModel;
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        return new Window(new AppShell());
+        return new Window(new AppShell(AuthViewModel));
     }
 }

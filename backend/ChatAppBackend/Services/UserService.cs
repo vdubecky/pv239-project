@@ -56,7 +56,6 @@ namespace ChatAppBackend.Services
             toUpdate.Firstname = user.Firstname;
             toUpdate.Surname = user.Surname;
             toUpdate.Email = user.Email;
-            toUpdate.ProfilePicture = user.ProfilePicture;
 
             dbContext.Users.Update(toUpdate);
             return await dbContext.SaveChangesAsync() > 0;

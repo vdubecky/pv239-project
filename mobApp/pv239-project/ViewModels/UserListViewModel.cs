@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using pv239_project.Client;
 using pv239_project.Mappers;
 using pv239_project.Models;
-using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
 

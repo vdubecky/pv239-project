@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using pv239_project.Client;
 using pv239_project.Popups;
@@ -50,15 +51,24 @@ public static class MauiProgram
         // View models
         services.AddTransient<UserListViewModel>();
         services.AddTransient<UserSettingsViewModel>();
+        services.AddTransient<LoginPageViewModel>();
+        services.AddTransient<AuthViewModel>();
         
         // Add popups
         services.AddTransientPopup<ChangePasswordPopup, ChangePasswordPopupViewModel>();
         services.AddTransientPopup<UploadProfilePicturePopup, UploadProfilePicturePopupViewModel>();
 
+        // Client
         services.AddHttpClient<IUserClient, UserClient>(client =>
         {
             client.BaseAddress = new Uri("http://192.168.0.154:5115/");
         });
+        services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(client =>
+        {
+            client.BaseAddress = new Uri("http://192.168.0.154:5115/");
+        });
+        
+        services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
         return services;
     }

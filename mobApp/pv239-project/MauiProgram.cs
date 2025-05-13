@@ -52,6 +52,7 @@ public static class MauiProgram
         services.AddTransient<UserListViewModel>();
         services.AddTransient<UserSettingsViewModel>();
         services.AddTransient<LoginPageViewModel>();
+        services.AddTransient<CreateNewUserViewModel>();
         services.AddTransient<AuthViewModel>();
         
         // Add popups
@@ -61,11 +62,11 @@ public static class MauiProgram
         // Client
         services.AddHttpClient<IUserClient, UserClient>(client =>
         {
-            client.BaseAddress = new Uri("http://192.168.0.154:5115/");
+            client.BaseAddress = new Uri("http://192.168.0.107:5115/");
         });
         services.AddHttpClient<IAuthenticationClient, AuthenticationClient>(client =>
         {
-            client.BaseAddress = new Uri("http://192.168.0.154:5115/");
+            client.BaseAddress = new Uri("http://192.168.0.107:5115/");
         });
         
         services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);

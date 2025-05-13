@@ -8,11 +8,22 @@
              x:DataType="vm:LoginPageViewModel"
              x:Class="pv239_project.Pages.LoginPage">
   <ContentPage.Content>
-    <VerticalStackLayout Padding="20" Spacing="10">
-      <Entry Text="{Binding Email}" Placeholder="Email" />
-      <Entry Text="{Binding Password}" Placeholder="Password" IsPassword="True" />
-
-      <Button Text="Login" Command="{Binding SubmitCommand}" />
-    </VerticalStackLayout>
+    <Grid RowDefinitions="*, Auto">
+      <VerticalStackLayout Grid.Row="0" Spacing="40" VerticalOptions="Center">
+        <Label FontSize="56" HorizontalTextAlignment="Center">Welcome</Label>
+        <Label Text="Please login or create a new account"
+               FontSize="24"
+               HorizontalTextAlignment="Center"
+               LineBreakMode="WordWrap"
+               HorizontalOptions="FillAndExpand"
+               VerticalOptions="Start" />
+      </VerticalStackLayout>
+      <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
+        <Entry Text="{Binding Email}" Placeholder="Email" />
+        <Entry Text="{Binding Password}" Placeholder="Password" IsPassword="True" />
+        <Button Text="Login" Command="{Binding SubmitCommand}" />
+        <Button Text="Create new account" Command="{Binding GoToCreateUserCommand}" />
+      </VerticalStackLayout>
+    </Grid>
   </ContentPage.Content>
 </ContentPage>

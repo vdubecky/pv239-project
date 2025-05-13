@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:pv239_project.ViewModels"
+             x:DataType="vm:CreateNewUserViewModel"
+             x:Class="pv239_project.Pages.CreateNewUserPage">
+  <ContentPage.Content>
+    <Grid RowDefinitions="*, Auto, Auto" Padding="20">
+      <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
+        <Entry Text="{Binding Firstname, Mode=TwoWay}"
+               Placeholder="Firstname"
+               FontSize="16"
+               HorizontalOptions="FillAndExpand" />
+        <Entry Text="{Binding Surname, Mode=TwoWay}"
+               Placeholder="Surname"
+               FontSize="16"
+               HorizontalOptions="FillAndExpand" />
+        <Entry Text="{Binding Email, Mode=TwoWay}"
+               Placeholder="Email"
+               FontSize="16"
+               HorizontalOptions="FillAndExpand" />
+        <Entry Text="{Binding Password, Mode=TwoWay}"
+               Placeholder="Password"
+               FontSize="16"
+               HorizontalOptions="FillAndExpand"
+               IsPassword="True" />
+        <Entry Text="{Binding ConfirmPassword, Mode=TwoWay}"
+               Placeholder="Confirm password"
+               FontSize="16"
+               HorizontalOptions="FillAndExpand"
+               IsPassword="True" />
+      </VerticalStackLayout>
+      <Button Text="Sign Up"
+              Command="{Binding CreateNewUserCommand}"
+              FontSize="16"
+              Padding="10,5"
+              Margin="8"
+              Grid.Row="2" />
+    </Grid>
+  </ContentPage.Content>
+</ContentPage>

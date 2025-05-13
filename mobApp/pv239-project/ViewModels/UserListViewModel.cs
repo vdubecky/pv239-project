@@ -19,7 +19,16 @@ public partial class UserListViewModel : ObservableObject
 
     public async Task LoadDataAsync()
     {
-        var items = await _userClient.User_GetAllUsersAsync();
-        Items = items.Select(s => s.UserDtoToUser()).ToObservableCollection();
+        try
+        {
+            var items = await _userClient.User_GetAllUsersAsync();
+            Items = items.Select(s => s.UserDtoToUser()).ToObservableCollection();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            // TODO: Handle
+            // throw;
+        }
     }
 }

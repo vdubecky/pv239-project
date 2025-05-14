@@ -1,6 +1,8 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace pv239_project.Models;
 
-public class User
+public class User : ObservableObject
 {
     public required int Id { get; set; }
     public required string Firstname { get; set; }

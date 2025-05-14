@@ -1,10 +1,10 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace pv239_project.Models;
 
-public class Message
+public class Message : ObservableObject
 {
-    public Guid Id { get; set; }
-    public string Text { get; set; }
-    public DateTime SentTime { get; set; }
-    public Guid UserId { get; set; }
-    public Guid ConversationId { get; set; }
+    public int Id { get; set; }
+    public int SenderId { get; set; }
+    public string Content { get; set; } 
 }

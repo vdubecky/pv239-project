@@ -16,7 +16,7 @@ namespace ChatAppBackend.Controllers
         }
 
         // TODO: Remove and user endpoint in user own controller
-        // [Authorize]
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<bool> UpdateUserProfile(int id, UserUpdateDto userDto)
         {
@@ -24,7 +24,7 @@ namespace ChatAppBackend.Controllers
         }
 
         // TODO: Remove and user endpoint in user own controller
-        // [Authorize]
+        [Authorize]
         [HttpPut("{id}/changePassword")]
         public async Task<bool> ChangeUserPassword(int id, ChangeUserPasswordDto changeUserPasswordDto)
         {
@@ -32,7 +32,7 @@ namespace ChatAppBackend.Controllers
         }
         
         // TODO: Remove and user endpoint in user own controller
-        // [Authorize]
+        [Authorize]
         [HttpPut("{id}/picture")]
         public async Task<bool> UploadUserPicture(int id, [FromForm] UploadUserPictureDto uploadDto)
         {
@@ -40,19 +40,20 @@ namespace ChatAppBackend.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             return userFacade.GetAllUsers();
         }
       
-        // [Authorize]
+        [Authorize]
         [HttpGet("{id}/contatcs")]
         public IEnumerable<UserDto> GetAllContacts(int id)
         {
             return userFacade.GetAllContacts(id);
         }
         
-        // [Authorize("RegisteredUser")]
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<UserDto?> GetUser(int id)
         {

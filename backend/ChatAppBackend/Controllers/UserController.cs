@@ -1,6 +1,5 @@
 ﻿using ChatAppBackend.Dtos;
 using ChatAppBackend.Facades;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatAppBackend.Controllers

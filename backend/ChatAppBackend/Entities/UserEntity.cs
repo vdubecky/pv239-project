@@ -22,5 +22,8 @@ namespace ChatAppBackend.Entities
 
         [MaxLength(512)]
         public string? ProfilePicture { get; set; }
+
+        public ICollection<ConversationMember> Conversations { get; set; }
+        public ICollection<MessageEntity> Messages { get; set; }
     }
 }

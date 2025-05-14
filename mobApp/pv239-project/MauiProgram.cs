@@ -10,6 +10,13 @@ namespace pv239_project;
 
 public static class MauiProgram
 {
+    public static string BASE_URL = "http://10.0.1.11:5115/";
+
+    /// <summary>
+    /// User ID for the current user. This is used to identify the user in the application until authentication is implemented.
+    /// </summary>
+    public static int USER_ID = 1;
+
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
@@ -46,18 +53,25 @@ public static class MauiProgram
     {
         // Services
         services.AddSingleton<IRoutingService, RoutingService>();
+        services.AddSingleton<IHubService, HubService>();
         
         // View models
         services.AddTransient<UserListViewModel>();
         services.AddTransient<UserSettingsViewModel>();
-        
+        services.AddTransient<ConversationDetailViewModel>();
+        services.AddTransient<ConversationListViewModel>();
+
         // Add popups
         services.AddTransientPopup<ChangePasswordPopup, ChangePasswordPopupViewModel>();
         services.AddTransientPopup<UploadProfilePicturePopup, UploadProfilePicturePopupViewModel>();
 
         services.AddHttpClient<IUserClient, UserClient>(client =>
         {
-            client.BaseAddress = new Uri("http://192.168.0.154:5115/");
+            client.BaseAddress = new Uri(BASE_URL);
+        });
+
+        services.AddHttpClient<IConversationClient, ConversationClient>(client => {
+            client.BaseAddress = new Uri(BASE_URL);
         });
 
         return services;

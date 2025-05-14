@@ -3,43 +3,64 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:pv239_project.Models"
+             xmlns:selectors="clr-namespace:pv239_project.Resources.Selectors"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:DataType="vm:ConversationDetailViewModel"
              x:Class="pv239_project.Pages.ConversationDetailPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="OutMessage" x:DataType="models:Message">
+                <Border BackgroundColor="DodgerBlue" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="10" Margin="3" HorizontalOptions="End">
+                    <Label Text="{Binding Content}" FontSize="16" TextColor="White" />
+                </Border>
+            </DataTemplate>
+
+            <DataTemplate x:Key="InMessage" x:DataType="models:Message">
+                <Border BackgroundColor="Black" StrokeThickness="0" StrokeShape="RoundRectangle 12" Padding="10" Margin="3" HorizontalOptions="Start">
+                    <Label Text="{Binding Content}" FontSize="16" TextColor="White" />
+                </Border>
+            </DataTemplate>
+
+            <selectors:MessageSelector x:Key="MessageSelector"
+                          InMessage="{StaticResource InMessage}"
+                          OutMessage="{StaticResource OutMessage}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    
   <ContentPage.Content>
-    <Grid RowDefinitions="Auto, * , Auto">
+        <Grid RowDefinitions="Auto, * , Auto">
+            <Label Text="{Binding Conversation.Name, FallbackValue=''}"
+                    FontSize="24"
+                    HorizontalOptions="Center" />
 
-      <Label Text="{Binding Conversation.Name, FallbackValue=''}"
-             FontSize="24"
-             HorizontalOptions="Center" />
+            <CollectionView ItemsUpdatingScrollMode="KeepLastItemInView"
+                        ItemTemplate="{StaticResource MessageSelector}"
+                        ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
+                        Grid.Row="1"
+                        Margin="10"
+                        VerticalOptions="FillAndExpand"/>
 
-      <CollectionView ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
-                      Grid.Row="1"
-                      VerticalOptions="FillAndExpand">
-        <CollectionView.ItemTemplate>
-          <DataTemplate x:DataType="{x:Type models:Message}">
-            <Border StrokeShape="RoundRectangle 10" BackgroundColor="Gray" Padding="10" Margin="5">
-              <Label Text="{Binding Text}" FontSize="16" TextColor="White" />
-            </Border>
-          </DataTemplate>
-        </CollectionView.ItemTemplate>
-      </CollectionView>
 
-      <Grid Grid.Row="2" Padding="5" ColumnDefinitions="*, Auto">
-        <Entry Text="{Binding MessageInput, Mode=TwoWay}"
-               Placeholder="Type a message..."
-               FontSize="16"
-               HorizontalOptions="FillAndExpand" />
+            <Grid Grid.Row="2" Padding="5" ColumnDefinitions="*, Auto"
+                  BackgroundColor="LightBlue">
+                <Border Background="DodgerBlue" StrokeThickness="0" StrokeShape="RoundRectangle 12" >
+                    <Entry Text="{Binding MessageInput, Mode=TwoWay}"
+                       Placeholder="Type a message..."
+                       TextColor="Black"
+                       PlaceholderColor="Black"
+                       FontSize="16"                                   
+                       HorizontalOptions="FillAndExpand"/>
+                </Border>
 
-        <Button Text="Send"
-                Command="{Binding SendMessageCommand}"
-                FontSize="16"
-                Padding="10,5"
-                Margin="8"
-                Grid.Column="1" />
-      </Grid>
-
-    </Grid>
-
-  </ContentPage.Content>
+                <Button Text="Send"
+                    Command="{Binding SendMessageCommand}"
+                    FontSize="16"
+                    Padding="10,5"
+                    Background="DodgerBlue"
+                    Margin="8"
+                    Grid.Column="1" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

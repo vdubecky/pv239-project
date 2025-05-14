@@ -1,14 +1,19 @@
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using pv239_project.Client;
+using pv239_project.Mappers;
 using pv239_project.Models;
+using pv239_project.Services.Interfaces;
+
 
 namespace pv239_project.ViewModels;
 
-[QueryProperty(nameof(Id), nameof(Id))]
-public partial class ConversationDetailViewModel : ObservableObject
+[QueryProperty(nameof(ConversationId), nameof(ConversationId))]
+[QueryProperty(nameof(ReceiverId), nameof(ReceiverId))]
+public partial class ConversationDetailViewModel(IConversationClient conversationClient, IHubService hubService) : ObservableObject
 {
-    public Guid Id { get; init; } = Guid.Empty;
+    public int ConversationId { get; init; } = -1;
+    public int ReceiverId { get; init; } = -1;
 
     [ObservableProperty]
     public partial ConversationDetail? Conversation { get; set; }
@@ -16,36 +21,79 @@ public partial class ConversationDetailViewModel : ObservableObject
     [ObservableProperty]
     public partial string MessageInput { get; set; } = string.Empty;
 
-    public ConversationDetailViewModel()
+
+    public async Task OnStart()
     {
-        Conversation = new ConversationDetail
+        try
         {
-            Id = Guid.NewGuid(),
-            Name = "User 1",
-            Participants = new ObservableCollection<Guid>(),
-            Messages = [],
-        };
+            ConversationDto conversationDto;
+            if (ConversationId != -1)
+            {
+                conversationDto = await conversationClient.Conversation_GetConversationByIdAsync(ConversationId);
+            }
+            else
+            {
+                conversationDto = await conversationClient.Conversation_GetConversationByMembersAsync(1, ReceiverId);
+            }
+
+            Conversation = conversationDto.ConversationDtoToDetail();
+            hubService.MessageHandlers.Add(Conversation.Id.ToString(), (message) =>
+            {                
+                Conversation.Messages.Add(new Message()
+                {
+                    Content = message.Content,
+                    SenderId = message.SenderId
+                });
+            });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }   
+    }
+
+    public async Task OnDestroy()
+    {
+        hubService.MessageHandlers.Remove(Conversation.Id.ToString());        
     }
 
     [RelayCommand]
-    private Task SendMessage()
+    private async Task SendMessage()
     {
-        if (string.IsNullOrWhiteSpace(MessageInput) || Conversation is null)
+        if(string.IsNullOrEmpty(MessageInput))
         {
-            return Task.FromResult(Task.CompletedTask);
+            return;
         }
 
-        var newMessage = new Message()
+        if (Conversation == null)
         {
-            Id = Guid.NewGuid(),
-            Text = MessageInput,
-            SentTime = DateTime.Now,
-            UserId = Guid.NewGuid(),
-            ConversationId = Guid.NewGuid(),
+            await CreateNewConversation();
+            return;
+        }
+
+        Message message = new()
+        {
+            SenderId = MauiProgram.USER_ID,
+            Content = MessageInput
         };
 
-        Conversation?.Messages.Add(newMessage);
+        await conversationClient.Conversation_SendMessageAsync(Conversation.Id, message.MessageToDto());
+
+        Conversation.Messages.Add(message);
         MessageInput = string.Empty;
-        return Task.FromResult(Task.CompletedTask);
+    }
+
+    private async Task CreateNewConversation()
+    {
+        ConversationCreateDto conversationCreateDto = new()
+        {
+            SenderId = MauiProgram.USER_ID,
+            ReceiverId = ReceiverId,
+            FirstMessage = MessageInput
+        };
+
+        ConversationDto conversationDto = await conversationClient.Conversation_CreateConversationAsync(conversationCreateDto);
+        Conversation = conversationDto.ConversationDtoToDetail();
+        MessageInput = string.Empty;
     }
 }

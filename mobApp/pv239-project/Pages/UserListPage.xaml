@@ -26,7 +26,13 @@
             <Border StrokeShape="RoundRectangle 10"
                     Padding="12, 8"
                     Margin="0, 0, 0, 10">
-              <HorizontalStackLayout>
+                <Border.GestureRecognizers>
+                   <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, 
+                                         Path=BindingContext.OpenConversationCommand}" 
+                                         CommandParameter="{Binding Id}" />
+                </Border.GestureRecognizers>
+                
+                <HorizontalStackLayout>
                 <Border HeightRequest="40"
                         WidthRequest="40"
                         StrokeShape="RoundRectangle 20"

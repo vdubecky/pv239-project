@@ -4,10 +4,18 @@ namespace pv239_project.Pages;
 
 public partial class ConversationListPage : ContentPage
 {
-    public ConversationListPage()
+    protected ConversationListViewModel ViewModel { get; }
+
+    public ConversationListPage(ConversationListViewModel conversationListViewModel)
     {
         InitializeComponent();
-        BindingContext = new ConversationListViewModel();
+        BindingContext = ViewModel = conversationListViewModel;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await ViewModel.LoadConversationsAsync();
     }
 }
 

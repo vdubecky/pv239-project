@@ -1,35 +1,39 @@
-using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Core.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using pv239_project.Client;
 using pv239_project.Models;
 using pv239_project.Services;
+using System.Collections.ObjectModel;
 
 namespace pv239_project.ViewModels;
 
-public partial class ConversationListViewModel : ObservableObject
+public partial class ConversationListViewModel(IConversationClient conversationClient) : ObservableObject
 {
     [ObservableProperty]
     public partial ObservableCollection<ConversationList>? Items { get; set; }
 
-    public ConversationListViewModel()
+
+    public async Task LoadConversationsAsync()
     {
-        Items = new ObservableCollection<ConversationList>
+        IEnumerable<ConversationPreviewDto> dtos = await conversationClient.Conversation_GetConversationsPreviewsByMemberIdAsync(1);
+        Items = dtos.Select(s => new ConversationList
         {
-            new() { Id = Guid.NewGuid(), Title = "Bob", LastMessage = "Hey, how's it going?", LastActivity = DateTime.Now.AddMinutes(-10) },
-            new() { Id = Guid.NewGuid(), Title = "David", LastMessage = "See you tomorrow!", LastActivity = DateTime.Now.AddHours(-1) },
-            new() { Id = Guid.NewGuid(), Title = "Frank", LastMessage = "Thanks for the update.", LastActivity = DateTime.Now.AddMinutes(-30) },
-            new() { Id = Guid.NewGuid(), Title = "Heidi", LastMessage = "I'll send you the details.", LastActivity = DateTime.Now.AddDays(-1) },
-            new() { Id = Guid.NewGuid(), Title = "Judy", LastMessage = "Sounds good!", LastActivity = DateTime.Now.AddMinutes(-5) }
-        };
+            ConversationId = s.ConversationId,
+            Title = s.Name,
+            LastMessage = s.LastMessage
+            
+        }).ToList().ToObservableCollection();
     }
+
     
     [RelayCommand]
-    private async Task GoToDetailAsync(Guid id)
+    private async Task GoToDetailAsync(int id)
     {
         await Shell.Current.GoToAsync(RoutingService.ConversationDetailPage,
-            new Dictionary<string, object>
-            {
-                [nameof(ConversationDetailViewModel.Id)] = id
-            });
+           new Dictionary<string, object>
+           {
+               [nameof(ConversationDetailViewModel.ConversationId)] = id,
+           });
     }
 }

@@ -16,13 +16,14 @@
       <CollectionView ItemsSource="{Binding Items}">
         <CollectionView.ItemTemplate>
           <DataTemplate x:DataType="{x:Type models:ConversationList}">
-            <Border StrokeShape="RoundRectangle 10" Margin="0, 0, 0, 10">
+            <Border StrokeThickness="0" StrokeShape="RoundRectangle 12" Margin="0, 0, 0, 10">
               <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=BindingContext.GoToDetailCommand}"
-                                      CommandParameter="{Binding Id}" />
+                <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, 
+                    Path=BindingContext.GoToDetailCommand}"
+                                      CommandParameter="{Binding ConversationId}" />
               </Border.GestureRecognizers>
 
-              <Grid Padding="5" BackgroundColor="Gray">
+              <Grid Padding="5" BackgroundColor="BlueViolet">
                 <Grid.RowDefinitions>
                   <RowDefinition Height="Auto" />
                   <RowDefinition Height="Auto" />
@@ -34,13 +35,14 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Text="{Binding Title}"
-                       FontSize="18"
+                       FontSize="16"
                        FontAttributes="Bold"
                        Grid.Row="0"
                        Grid.Column="0"
                        VerticalOptions="Start"
                        HorizontalOptions="Start" />
 
+                  
                 <Label Text="{Binding LastMessage}"
                        FontSize="14"
                        TextColor="DarkGray"

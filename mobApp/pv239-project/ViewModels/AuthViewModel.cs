@@ -19,7 +19,14 @@ public partial class AuthViewModel : ObservableObject, IRecipient<AuthChangedMes
         }
         
         var jwt = new JsonWebToken(token);
-        IsAuthenticated = true;
+        if (jwt.ValidTo > DateTime.Now)
+        {
+            IsAuthenticated = true;    
+        }
+        else
+        {
+            SecureStorage.Remove("jwt_token");
+        }
     }
 
     public void Receive(AuthChangedMessage message)

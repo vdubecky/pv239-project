@@ -24,7 +24,16 @@ public partial class UserSettingsViewModel : ObservableObject
 
     public async Task LoadDataAsync()
     {
-        User = await _userClient.User_GetUserAsync(Id);
+        try
+        {
+            User = await _userClient.User_GetUserAsync(Id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            // TODO: Handle
+            // throw;
+        }
     }
 
     [RelayCommand]

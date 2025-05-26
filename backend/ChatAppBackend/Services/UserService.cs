@@ -15,7 +15,7 @@ namespace ChatAppBackend.Services
         /// <returns> True if the user was registered successfully, false otherwise.</returns>
         public async Task<bool> RegisterUser(UserEntity user)
         {
-            user.Password = passwordHasher.HashPassword(user, user.Password);
+            user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordHash);
 
             dbContext.Users.Add(user);
             return await dbContext.SaveChangesAsync() > 0;
@@ -35,7 +35,7 @@ namespace ChatAppBackend.Services
             }
 
             PasswordVerificationResult verificationResult =
-                passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
+                passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
             return verificationResult == PasswordVerificationResult.Success ? user.Id : null;
         }
 
@@ -79,13 +79,13 @@ namespace ChatAppBackend.Services
             }
 
             PasswordVerificationResult verificationResult =
-                passwordHasher.VerifyHashedPassword(toUpdate, toUpdate.Password, oldPassword);
+                passwordHasher.VerifyHashedPassword(toUpdate, toUpdate.PasswordHash, oldPassword);
             if (verificationResult != PasswordVerificationResult.Success)
             {
                 return false;
             }
 
-            toUpdate.Password = passwordHasher.HashPassword(toUpdate, newPassword);
+            toUpdate.PasswordHash = passwordHasher.HashPassword(toUpdate, newPassword);
             dbContext.Users.Update(toUpdate);
 
             return await dbContext.SaveChangesAsync() > 0;

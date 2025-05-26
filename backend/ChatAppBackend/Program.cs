@@ -66,4 +66,10 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();
 app.MapHub<ChatAppHub>("/chatAppHub");
 
+using var scope = app.Services.CreateScope();
+{
+    var db = scope.ServiceProvider.GetRequiredService<ChatAppDbContext>();
+    await db.Database.MigrateAsync();
+}
+
 app.Run();

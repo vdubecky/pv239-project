@@ -1,8 +1,9 @@
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using pv239_project.Client;
-using pv239_project.Models;
+using pv239_project.Messages;
 
 namespace pv239_project.ViewModels;
 
@@ -10,11 +11,13 @@ public partial class CreateNewUserViewModel : ObservableObject
 {
     private readonly IUserClient _userClient;
     private readonly IAuthenticationClient _authenticationClient;
+    private readonly IMessenger _messenger;
 
-    public CreateNewUserViewModel(IUserClient userClient, IAuthenticationClient authenticationClient)
+    public CreateNewUserViewModel(IUserClient userClient, IAuthenticationClient authenticationClient, IMessenger messenger)
     {
         _userClient = userClient;
         _authenticationClient = authenticationClient;
+        _messenger = messenger;
     }
 
     [ObservableProperty] public partial string Firstname { get; set; } = string.Empty;
@@ -68,6 +71,8 @@ public partial class CreateNewUserViewModel : ObservableObject
             var token = await _authenticationClient.Authentication_LoginAsync(userLoginDto);
 
             await SecureStorage.SetAsync("jwt_token", token);
+            
+            _messenger.Send(new AuthChangedMessage { IsAuthenticated = true });
         }
         catch (Exception e)
         {

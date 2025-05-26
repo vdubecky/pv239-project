@@ -19,7 +19,7 @@ public partial class AuthViewModel : ObservableObject, IRecipient<AuthChangedMes
         }
         
         var jwt = new JsonWebToken(token);
-        if (jwt.ValidTo < DateTime.Now)
+        if (jwt.ValidTo > DateTime.Now)
         {
             IsAuthenticated = true;    
         }

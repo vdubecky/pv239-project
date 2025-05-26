@@ -34,7 +34,8 @@ namespace ChatAppBackend.Services
                 return null;
             }
 
-            PasswordVerificationResult verificationResult = passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
+            PasswordVerificationResult verificationResult =
+                passwordHasher.VerifyHashedPassword(user, user.Password, loginDto.Password);
             return verificationResult == PasswordVerificationResult.Success ? user.Id : null;
         }
 
@@ -77,7 +78,8 @@ namespace ChatAppBackend.Services
                 return false;
             }
 
-            PasswordVerificationResult verificationResult = passwordHasher.VerifyHashedPassword(toUpdate, toUpdate.Password, oldPassword);
+            PasswordVerificationResult verificationResult =
+                passwordHasher.VerifyHashedPassword(toUpdate, toUpdate.Password, oldPassword);
             if (verificationResult != PasswordVerificationResult.Success)
             {
                 return false;
@@ -98,6 +100,11 @@ namespace ChatAppBackend.Services
                 return false;
             }
 
+            if (toUpdate.ProfilePicture is not null)
+            {
+                File.Delete(toUpdate.ProfilePicture);
+            }
+
             using var memoryStream = new MemoryStream();
             await imageData.CopyToAsync(memoryStream);
             byte[] bytes = memoryStream.ToArray();
@@ -106,6 +113,23 @@ namespace ChatAppBackend.Services
             toUpdate.ProfilePicture = $"profile-pictures/{fileName}";
 
             dbContext.Users.Update(toUpdate);
+            return await dbContext.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> DeleteUser(int id)
+        {
+            UserEntity? toUpdate = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (toUpdate is null)
+            {
+                return false;
+            }
+            
+            if (toUpdate.ProfilePicture is not null)
+            {
+                File.Delete(toUpdate.ProfilePicture);
+            }
+
+            dbContext.Users.Remove(toUpdate);
             return await dbContext.SaveChangesAsync() > 0;
         }
 

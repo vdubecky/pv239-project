@@ -63,6 +63,7 @@
     <ItemGroup>
         <PackageReference Include="CommunityToolkit.Maui" Version="11.1.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.5" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.4" />
         <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.9.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="9.0.40" />
@@ -83,12 +84,15 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Configuration\" />
       <Folder Include="Converters\" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\pv239_project.Client\pv239_project.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Configuration/appsettings.json" />
     </ItemGroup>
 
 </Project>

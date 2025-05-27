@@ -2,6 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:DataType="vm:CreateNewUserViewModel"
              x:Class="pv239_project.Pages.CreateNewUserPage">
@@ -9,29 +10,29 @@
     <Grid RowDefinitions="*, Auto, Auto" Padding="20">
       <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
         <Entry Text="{Binding Firstname, Mode=TwoWay}"
-               Placeholder="Firstname"
+               Placeholder="{x:Static strings:AppTexts.CreateNewUserPage_FirstNamePlaceholder}"
                FontSize="16"
                HorizontalOptions="FillAndExpand" />
         <Entry Text="{Binding Surname, Mode=TwoWay}"
-               Placeholder="Surname"
+               Placeholder="{x:Static strings:AppTexts.CreateNewUserPage_SurnamePlaceholder}"
                FontSize="16"
                HorizontalOptions="FillAndExpand" />
         <Entry Text="{Binding Email, Mode=TwoWay}"
-               Placeholder="Email"
+               Placeholder="{x:Static strings:AppTexts.CreateNewUserPage_EmailPlaceholder}"
                FontSize="16"
                HorizontalOptions="FillAndExpand" />
         <Entry Text="{Binding Password, Mode=TwoWay}"
-               Placeholder="Password"
+               Placeholder="{x:Static strings:AppTexts.CreateNewUserPage_PasswordPlaceholder}"
                FontSize="16"
                HorizontalOptions="FillAndExpand"
                IsPassword="True" />
         <Entry Text="{Binding ConfirmPassword, Mode=TwoWay}"
-               Placeholder="Confirm password"
+               Placeholder="{x:Static strings:AppTexts.CreateNewUserPage_ConfirmPasswordPlaceholder}"
                FontSize="16"
                HorizontalOptions="FillAndExpand"
                IsPassword="True" />
       </VerticalStackLayout>
-      <Button Text="Sign Up"
+      <Button Text="{x:Static strings:AppTexts.CreateNewUserPage_SignUpButtonText}"
               Command="{Binding CreateNewUserCommand}"
               FontSize="16"
               Padding="10,5"

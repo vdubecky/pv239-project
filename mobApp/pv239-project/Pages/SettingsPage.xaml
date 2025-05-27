@@ -3,6 +3,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:models="clr-namespace:pv239_project.Models"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:DataType="vm:UserSettingsViewModel"
@@ -15,7 +16,7 @@
   
   <ContentPage.Content>
     <Grid RowDefinitions="Auto, * , Auto">
-      <Label Text="Settings"
+      <Label Text="{x:Static strings:AppTexts.SettingsPage_PageLabel}"
              FontSize="24"
              HorizontalOptions="Center" Grid.Row="0" />
       <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
@@ -29,20 +30,20 @@
         <Entry Text="{Binding User.Email, FallbackValue='', Mode=TwoWay}"
                FontSize="16"
                HorizontalOptions="FillAndExpand" />
-        <Button Text="Change password"
+        <Button Text="{x:Static strings:AppTexts.SettingsPage_ChangePasswordButtonText}"
                 Command="{Binding OpenChangePasswordPopupCommand}"
                 FontSize="16"
                 Padding="10,5"
                 Margin="0, 20, 0, 0"
         />
-        <Button Text="Upload new profile picture"
+        <Button Text="{x:Static strings:AppTexts.SettingsPage_NewProfilePictureButtonText}"
                 Command="{Binding OpenUploadProfilePicturePopupCommand}"
                 FontSize="16"
                 Padding="10,5"
                 Margin="0, 20, 0, 0"
         />
       </VerticalStackLayout>
-      <Button Text="Submit"
+      <Button Text="{x:Static strings:AppTexts.SettingsPage_SubmitButtonText}"
               Command="{Binding UpdateUserSettingsCommand}"
               FontSize="16"
               Padding="10,5"

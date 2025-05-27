@@ -2,6 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:models="clr-namespace:pv239_project.Models"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -16,7 +17,7 @@
   </ContentPage.Resources>
   <ContentPage.Content>
     <VerticalStackLayout Padding="20" Spacing="10">
-      <Label Text="Users"
+      <Label Text="{x:Static strings:AppTexts.UserListPage_PageLabel}"
              FontSize="24"
              HorizontalOptions="Center" />
 

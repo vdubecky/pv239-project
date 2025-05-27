@@ -2,6 +2,7 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:models="clr-namespace:pv239_project.Models"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:Name="Root"
@@ -10,8 +11,9 @@
   <ContentPage.Content>
     <Grid RowDefinitions="*, Auto">
       <VerticalStackLayout Grid.Row="0" Spacing="40" VerticalOptions="Center">
-        <Label FontSize="56" HorizontalTextAlignment="Center">Welcome</Label>
-        <Label Text="Please login or create a new account"
+        <Label FontSize="56" HorizontalTextAlignment="Center" 
+               Text="{x:Static strings:AppTexts.LoginPage_WelcomeText}" />
+        <Label Text="{x:Static strings:AppTexts.LoginPage_LoginText}"
                FontSize="24"
                HorizontalTextAlignment="Center"
                LineBreakMode="WordWrap"
@@ -19,10 +21,15 @@
                VerticalOptions="Start" />
       </VerticalStackLayout>
       <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
-        <Entry Text="{Binding Email}" Placeholder="Email" />
-        <Entry Text="{Binding Password}" Placeholder="Password" IsPassword="True" />
-        <Button Text="Login" Command="{Binding SubmitCommand}" />
-        <Button Text="Create new account" Command="{Binding GoToCreateUserCommand}" />
+        <Entry Text="{Binding Email}" 
+               Placeholder="{x:Static strings:AppTexts.LoginPage_Form_EmailPlaceholder}" />
+        <Entry Text="{Binding Password}" 
+               Placeholder="{x:Static strings:AppTexts.LoginPage_Form_PasswordPlaceholder}" 
+               IsPassword="True" />
+        <Button Text="{x:Static strings:AppTexts.LoginPage_Form_LoginText}" 
+                Command="{Binding SubmitCommand}" />
+        <Button Text="{x:Static strings:AppTexts.LoginPage_Form_NewAccountText}" 
+                Command="{Binding GoToCreateUserCommand}" />
       </VerticalStackLayout>
     </Grid>
   </ContentPage.Content>

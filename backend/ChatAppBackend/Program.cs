@@ -6,12 +6,17 @@ using ChatAppBackend.Entities;
 using ChatAppBackend.Facades;
 using ChatAppBackend.Hubs;
 using ChatAppBackend.Services;
+using ChatAppBackend.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+AppSettings settings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>()!;
 
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
@@ -40,7 +45,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = "your_issuer",
         ValidAudience = "your_audience",
-        IssuerSigningKey = new SymmetricSecurityKey("M5\\,3c>\u00a3vAz<XIVhfihJYY![*&r4xKL4b\"4Y>4)F"u8.ToArray())
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(settings.JwtSettings.SigningKey))
     };
 });
 builder.Services.AddAuthorizationBuilder()
@@ -60,5 +65,11 @@ if (app.Environment.IsDevelopment())
 
 app.MapControllers();
 app.MapHub<ChatAppHub>("/chatAppHub");
+
+using var scope = app.Services.CreateScope();
+{
+    var db = scope.ServiceProvider.GetRequiredService<ChatAppDbContext>();
+    await db.Database.MigrateAsync();
+}
 
 app.Run();

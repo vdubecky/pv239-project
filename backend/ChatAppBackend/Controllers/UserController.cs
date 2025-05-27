@@ -38,6 +38,13 @@ namespace ChatAppBackend.Controllers
         {
             return await userFacade.UploadUserPicture(id, uploadDto.File.OpenReadStream(), uploadDto.FileName);
         }
+        
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<bool> DeleteUser(int id)
+        {
+            return await userFacade.DeleteUser(id);
+        }
 
         [HttpGet]
         [Authorize]

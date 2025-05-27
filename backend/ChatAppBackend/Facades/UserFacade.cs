@@ -48,6 +48,11 @@ namespace ChatAppBackend.Facades
         {
             return await userService.UploadUserPicture(id, imageData, fileName);
         }
+        
+        public async Task<bool> DeleteUser(int id)
+        {
+            return await userService.DeleteUser(id);
+        }
 
         /// <summary>
         /// Returns all users.

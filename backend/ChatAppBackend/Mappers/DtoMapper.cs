@@ -35,7 +35,7 @@ namespace ChatAppBackend.Mappers
                 Firstname = registerDto.Firstname,
                 Surname = registerDto.Surname,
                 Email = registerDto.Email,
-                Password = registerDto.Password,
+                PasswordHash = registerDto.Password,
                 ProfilePicture = registerDto.ProfilePicture
             };
         }

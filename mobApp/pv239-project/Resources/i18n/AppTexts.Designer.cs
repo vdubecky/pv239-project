@@ -159,6 +159,12 @@ namespace pv239_project.Resources.i18n {
             }
         }
         
+        internal static string SettingsPage_DeleteAccountButtonText {
+            get {
+                return ResourceManager.GetString("SettingsPage.DeleteAccountButtonText", resourceCulture);
+            }
+        }
+        
         internal static string UserListPage_PageLabel {
             get {
                 return ResourceManager.GetString("UserListPage.PageLabel", resourceCulture);

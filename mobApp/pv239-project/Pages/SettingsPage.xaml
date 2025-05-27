@@ -15,7 +15,7 @@
   </ContentPage.Resources>
   
   <ContentPage.Content>
-    <Grid RowDefinitions="Auto, * , Auto">
+    <Grid RowDefinitions="Auto, * , Auto, Auto">
       <Label Text="{x:Static strings:AppTexts.SettingsPage_PageLabel}"
              FontSize="24"
              HorizontalOptions="Center" Grid.Row="0" />
@@ -51,6 +51,14 @@
               Grid.Row="2" 
               IsEnabled="{Binding UpdateUserSettingsCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"
               />
+      <Button Text="{x:Static strings:AppTexts.SettingsPage_DeleteAccountButtonText}"
+              Command="{Binding DeleteUserCommand}"
+              FontSize="16"
+              Padding="10,5"
+              Margin="8"
+              Grid.Row="3" 
+              IsEnabled="{Binding DeleteUserCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"
+      />
     </Grid>
   </ContentPage.Content>
 </ContentPage>

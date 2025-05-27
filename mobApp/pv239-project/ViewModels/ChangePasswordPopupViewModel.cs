@@ -10,6 +10,7 @@ public partial class ChangePasswordPopupViewModel : ObservableObject
 {
     private readonly IUserClient _userClient;
     private readonly IPopupService _popupService;
+    public int Id { get; set; }
 
     public ChangePasswordPopupViewModel(IPopupService popupService, IUserClient userClient)
     {
@@ -56,7 +57,7 @@ public partial class ChangePasswordPopupViewModel : ObservableObject
                 NewPassword = NewPassword,
                 NewPasswordConfirm = ConfirmPassword,
             };
-            await _userClient.User_ChangeUserPasswordAsync(1, changePasswordDto);
+            await _userClient.User_ChangeUserPasswordAsync(Id, changePasswordDto);
             await Toast.Make("Successfully updated password.").Show();
         }
         catch (Exception e)

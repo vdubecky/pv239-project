@@ -10,7 +10,8 @@ public partial class UploadProfilePicturePopupViewModel : ObservableObject
 {
     private readonly IUserClient _userClient;
     private readonly IPopupService _popupService;
-
+    public int Id { get; set; }
+    
     [ObservableProperty] public partial byte[]? ImageBytes { get; set; }
 
     [ObservableProperty] public partial string? ImageType { get; set; }
@@ -56,7 +57,7 @@ public partial class UploadProfilePicturePopupViewModel : ObservableObject
             using var stream = new MemoryStream(ImageBytes);
             var file = new FileParameter(stream, fileName, ImageType);
             await _userClient.User_UploadUserPictureAsync(
-                1,
+                Id,
                 file,
                 $"{fileName}.{MapContentTypeToExtension(ImageType)}"
             );

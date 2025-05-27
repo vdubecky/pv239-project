@@ -75,6 +75,9 @@
     <data name="SettingsPage.SubmitButtonText" xml:space="preserve">
         <value>Submit</value>
     </data>
+    <data name="SettingsPage.DeleteAccountButtonText" xml:space="preserve">
+        <value>Delete account</value>
+    </data>
     <data name="UserListPage.PageLabel" xml:space="preserve">
         <value>Users</value>
     </data>

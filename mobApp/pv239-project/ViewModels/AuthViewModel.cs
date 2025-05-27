@@ -17,11 +17,11 @@ public partial class AuthViewModel : ObservableObject, IRecipient<AuthChangedMes
         {
             return;
         }
-        
+
         var jwt = new JsonWebToken(token);
-        if (jwt.ValidTo > DateTime.Now)
+        if (jwt.ValidTo > DateTime.UtcNow)
         {
-            IsAuthenticated = true;    
+            IsAuthenticated = true;
         }
         else
         {

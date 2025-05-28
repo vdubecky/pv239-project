@@ -2,12 +2,12 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:models="clr-namespace:pv239_project.Models"
              xmlns:selectors="clr-namespace:pv239_project.Resources.Selectors"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:DataType="vm:ConversationDetailViewModel"
              Title="{Binding Conversation.Name, FallbackValue=''}"
+             Shell.TabBarIsVisible="False"
              x:Class="pv239_project.Pages.ConversationDetailPage">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -42,7 +42,6 @@
                           OutMessage="{StaticResource OutMessage}"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
     
   <ContentPage.Content>
         <Grid RowDefinitions="Auto, * , Auto">

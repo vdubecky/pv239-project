@@ -8,7 +8,7 @@ namespace pv239_project.ViewModels;
 [QueryProperty(nameof(Id), nameof(Id))]
 public partial class ConversationDetailViewModel : ObservableObject
 {
-    public Guid Id { get; init; } = Guid.Empty;
+    public int Id { get; init; } = -1;
 
     [ObservableProperty]
     public partial ConversationDetail? Conversation { get; set; }
@@ -23,29 +23,31 @@ public partial class ConversationDetailViewModel : ObservableObject
             Id = Guid.NewGuid(),
             Name = "User 1",
             Participants = new ObservableCollection<Guid>(),
-            Messages = [],
+            Messages = new ObservableCollection<Message>(),
+        };
+
+        Conversation.Messages = new ObservableCollection<Message>()
+        {
+            new Message 
+            {
+                Id = 1,
+                Content = "Hello, how are you?",
+                ConversationId = 1,
+                SenderId = 1
+            },
+            new Message
+            {
+                Id = 1,
+                Content = "I'm fine, thanks! And you?",
+                ConversationId = 1,
+                SenderId = 2
+            }
         };
     }
 
     [RelayCommand]
     private Task SendMessage()
     {
-        if (string.IsNullOrWhiteSpace(MessageInput) || Conversation is null)
-        {
-            return Task.FromResult(Task.CompletedTask);
-        }
-
-        var newMessage = new Message()
-        {
-            Id = Guid.NewGuid(),
-            Text = MessageInput,
-            SentTime = DateTime.Now,
-            UserId = Guid.NewGuid(),
-            ConversationId = Guid.NewGuid(),
-        };
-
-        Conversation?.Messages.Add(newMessage);
-        MessageInput = string.Empty;
         return Task.FromResult(Task.CompletedTask);
     }
 }

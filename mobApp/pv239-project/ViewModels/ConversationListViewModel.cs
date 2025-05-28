@@ -15,16 +15,16 @@ public partial class ConversationListViewModel : ObservableObject
     {
         Items = new ObservableCollection<ConversationList>
         {
-            new() { Title = "Bob", LastMessage = "Hey, how's it going?"},
-            new() { Title = "David", LastMessage = "See you tomorrow!"},
-            new() { Title = "Frank", LastMessage = "Thanks for the update."},
-            new() { Title = "Heidi", LastMessage = "I'll send you the details."},
-            new() { Title = "Judy", LastMessage = "Sounds good!"}
+            new() { ConversationId = 1, Title = "Bob", LastMessage = "Hey, how's it going?"},
+            new() { ConversationId = 2, Title = "David", LastMessage = "See you tomorrow!"},
+            new() { ConversationId = 3, Title = "Frank", LastMessage = "Thanks for the update."},
+            new() { ConversationId = 4, Title = "Heidi", LastMessage = "I'll send you the details."},
+            new() { ConversationId = 5, Title = "Judy", LastMessage = "Sounds good!"}
         };
     }
     
     [RelayCommand]
-    private async Task GoToDetailAsync(Guid id)
+    private async Task GoToDetailAsync(int id)
     {
         await Shell.Current.GoToAsync(RoutingService.ConversationDetailPage,
             new Dictionary<string, object>

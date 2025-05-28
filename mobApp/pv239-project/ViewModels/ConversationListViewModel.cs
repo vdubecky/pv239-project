@@ -15,11 +15,11 @@ public partial class ConversationListViewModel : ObservableObject
     {
         Items = new ObservableCollection<ConversationList>
         {
-            new() { Id = Guid.NewGuid(), Title = "Bob", LastMessage = "Hey, how's it going?", LastActivity = DateTime.Now.AddMinutes(-10) },
-            new() { Id = Guid.NewGuid(), Title = "David", LastMessage = "See you tomorrow!", LastActivity = DateTime.Now.AddHours(-1) },
-            new() { Id = Guid.NewGuid(), Title = "Frank", LastMessage = "Thanks for the update.", LastActivity = DateTime.Now.AddMinutes(-30) },
-            new() { Id = Guid.NewGuid(), Title = "Heidi", LastMessage = "I'll send you the details.", LastActivity = DateTime.Now.AddDays(-1) },
-            new() { Id = Guid.NewGuid(), Title = "Judy", LastMessage = "Sounds good!", LastActivity = DateTime.Now.AddMinutes(-5) }
+            new() { Title = "Bob", LastMessage = "Hey, how's it going?"},
+            new() { Title = "David", LastMessage = "See you tomorrow!"},
+            new() { Title = "Frank", LastMessage = "Thanks for the update."},
+            new() { Title = "Heidi", LastMessage = "I'll send you the details."},
+            new() { Title = "Judy", LastMessage = "Sounds good!"}
         };
     }
     

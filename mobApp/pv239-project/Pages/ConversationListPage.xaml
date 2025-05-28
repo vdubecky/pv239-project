@@ -7,52 +7,52 @@
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:Name="Root"
              x:DataType="vm:ConversationListViewModel"
+             Title="{x:Static strings:AppTexts.ConversationListPage_PageLabel}"
              x:Class="pv239_project.Pages.ConversationListPage">
   <ContentPage.Content>
-    <VerticalStackLayout Padding="20" Spacing="10">
-      <Label Text="{x:Static strings:AppTexts.ConversationListPage_PageLabel}"
-             FontSize="24"
-             HorizontalOptions="Center" />
-
+    <VerticalStackLayout Padding="10" Spacing="15">
       <CollectionView ItemsSource="{Binding Items}">
         <CollectionView.ItemTemplate>
           <DataTemplate x:DataType="{x:Type models:ConversationList}">
-            <Border StrokeShape="RoundRectangle 10" Margin="0, 0, 0, 10">
+            <Border StrokeThickness="0" 
+                    StrokeShape="RoundRectangle 12" 
+                    Margin="0, 0, 0, 10">
               <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, Path=BindingContext.GoToDetailCommand}"
-                                      CommandParameter="{Binding Id}" />
+                <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, 
+                    Path=BindingContext.GoToDetailCommand}"
+                                      CommandParameter="{Binding ConversationId}" />
               </Border.GestureRecognizers>
 
-              <Grid Padding="5" BackgroundColor="Gray">
-                <Grid.RowDefinitions>
-                  <RowDefinition Height="Auto" />
-                  <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                  <ColumnDefinition Width="*" />
-                  <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+              <Grid ColumnDefinitions="Auto, Auto"
+                    RowDefinitions="Auto, Auto"
+                    Padding="10" 
+                    BackgroundColor="BlueViolet">
+  
+                <Border Grid.Column="0"
+                        Grid.RowSpan="2"
+                        HeightRequest="45"
+                        WidthRequest="45"
+                        StrokeShape="Ellipse"
+                        Margin="0, 0, 8, 0">
+                  <Image />
+                </Border>
 
                 <Label Text="{Binding Title}"
-                       FontSize="18"
+                       FontSize="17"
+                       TextColor="White"
                        FontAttributes="Bold"
                        Grid.Row="0"
-                       Grid.Column="0"
-                       VerticalOptions="Start"
-                       HorizontalOptions="Start" />
-
+                       Grid.Column="1"/>
+                  
                 <Label Text="{Binding LastMessage}"
                        FontSize="14"
-                       TextColor="DarkGray"
+                       TextColor="Black"
                        Grid.Row="1"
-                       Grid.Column="0"
-                       VerticalOptions="End"
-                       HorizontalOptions="Start" />
+                       Grid.Column="1"/>
 
                 <Label Text="{Binding LastActivity, StringFormat='{0:MM/dd/yyyy HH:mm}'}"
                        FontSize="12"
-                       TextColor="Gray"
+                       TextColor="Black"
                        Grid.Row="1"
                        Grid.Column="1"
                        VerticalOptions="End"

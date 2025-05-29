@@ -1,7 +1,9 @@
-﻿namespace ChatAppBackend.Dtos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ChatAppBackend.Dtos;
+
+public class AddMemberDto
 {
-    public class AddMemberDto
-    {
-        public int UserId { get; set; }       
-    }
+    [Range(1, int.MaxValue)]
+    public required int UserId { get; set; }       
 }

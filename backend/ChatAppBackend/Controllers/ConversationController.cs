@@ -2,52 +2,45 @@
 using ChatAppBackend.Facades;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ChatAppBackend.Controllers
+namespace ChatAppBackend.Controllers;
+
+[Route("api/v1/conversations")]
+public class ConversationController(ConversationFacade conversationFacade) : ControllerBase
 {
-    [ApiController]
-    [Route("api/v1/conversations")]
-    public class ConversationController(ConversationFacade conversationFacade) : ControllerBase
+    [HttpPost]
+    public async Task<ActionResult<ConversationDto>> CreateConversation([FromBody] ConversationCreateDto conversationDto)
     {
-        [HttpPost]
-        public async Task<ConversationDto> CreateConversation(ConversationCreateDto conversationDto)
-        {
-            return await conversationFacade.CreateConversation(conversationDto);
-        }
+        var conversation = await conversationFacade.CreateConversation(conversationDto);
+        return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversation.Id }, conversation);
+    }
 
-        [HttpGet("by-members")]
-        public async Task<ConversationDto> GetConversationByMembers(int senderId, int receiverId)
-        {
-            return await conversationFacade.GetConversation(senderId, receiverId);
-        }
+    [HttpGet("by-members")]
+    public async Task<ActionResult<ConversationDto>> GetConversationByMembers(int senderId, int receiverId)
+    {
+        return await conversationFacade.GetConversation(senderId, receiverId);
+    }
 
-        [HttpGet("{conversationId}")]
-        public async Task<ConversationDto> GetConversationById(int conversationId)
-        {
-            return await conversationFacade.GetConversation(conversationId);
-        }
+    [HttpGet("{conversationId}")]
+    public async Task<ActionResult<ConversationDto>> GetConversationById(int conversationId)
+    {
+        return await conversationFacade.GetConversation(conversationId);
+    }
 
-        [HttpGet("/all")]
-        public IEnumerable<ConversationPreviewDto> GetConversationsPreviews()
-        {
-            return conversationFacade.GetALlConversations();
-        }
+    [HttpGet("/all/{currentUserId}")]
+    public IEnumerable<ConversationPreviewDto> GetConversationsWithCurrentUser(int currentUserId)
+    {
+        return conversationFacade.GetConversationsWithCurrentUser(currentUserId);
+    }
 
-        [HttpGet("/all/{memberId}")]
-        public IEnumerable<ConversationPreviewDto> GetConversationsPreviewsByMemberId(int memberId)
-        {
-            return conversationFacade.GetConversationsByMemberId(memberId);
-        }
+    [HttpPost("{id}/messages")]
+    public async Task<ActionResult<bool>> SendMessage(int id, [FromBody] CreateMessageDto sendMessageDto)
+    {
+        return await conversationFacade.SendMessage(id, sendMessageDto);
+    }
 
-        [HttpPost("{id}/messages")]
-        public async Task<bool> SendMessage(int id, CreateMessageDto sendMessageDto)
-        {
-            return await conversationFacade.SendMessage(id, sendMessageDto);
-        }
-
-        [HttpPost("{id}/memebers")]
-        public async Task<bool> AddMember(int id, AddMemberDto member)
-        {
-            return await conversationFacade.AddMember(id, member);
-        }
+    [HttpPost("{id}/memebers")]
+    public async Task<ActionResult<bool>> AddMember(int id, [FromBody] AddMemberDto member)
+    {
+        return await conversationFacade.AddMember(id, member);
     }
 }

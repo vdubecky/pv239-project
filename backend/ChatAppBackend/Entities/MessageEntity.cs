@@ -1,20 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ChatAppBackend.Entities
+namespace ChatAppBackend.Entities;
+
+[Table("Messages")]
+public class MessageEntity
 {
-    [Table("Messages")]
-    public class MessageEntity
-    {
-        public int Id { get; set; }
-       
-        public string Content { get; set; }
-
-        public int SenderId { get; set; }
-        public UserEntity SenderEntity { get; set; }
-
-        public int ConversationId { get; set; }
-        public ConversationEntity ConversationEntity { get; set; }
-
-        public DateTime SentAt { get; set; }
-    }
+    public int Id { get; init; }
+    
+    [Required, Range(1, int.MaxValue)]
+    public required int SenderId { get; init; }
+    
+    [Required, Range(1, int.MaxValue)]
+    public required int ConversationId { get; init; }
+    
+    [Required, MaxLength(255)]
+    public required string Content { get; init; }
+    
+    public required DateTime SentAt { get; init; }
+    
+    public UserEntity? SenderEntity { get; init; }
+    public ConversationEntity? ConversationEntity { get; init; }
 }

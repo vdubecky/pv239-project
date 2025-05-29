@@ -1,9 +1,8 @@
-﻿namespace ChatAppBackend.Dtos
+﻿namespace ChatAppBackend.Dtos;
+
+public class ConversationPreviewDto
 {
-    public class ConversationPreviewDto
-    {
-        public int ConversationId { get; set; }
-        public string Name { get; set; }
-        public string LastMessage { get; set; }
-    }
+    public int ConversationId { get; set; }
+    public required string Name { get; set; }
+    public required string LastMessage { get; set; }
 }

@@ -1,9 +1,8 @@
-﻿namespace ChatAppBackend.Dtos
+﻿namespace ChatAppBackend.Dtos;
+
+public class MemberDto
 {
-    public class MemberDto
-    {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string Surname { get; set; }
-    }
+    public int Id { get; set; }
+    public string FirstName { get; set; }
+    public string Surname { get; set; }
 }

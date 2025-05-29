@@ -2,17 +2,21 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace ChatAppBackend.Entities
+namespace ChatAppBackend.Entities;
+
+[Table("Conversations")]
+public class ConversationEntity
 {
-    [Table("Conversations")]
-    public class ConversationEntity
-    {
-        public int Id { get; set; }
+    public int Id { get; init; }
 
-        [Required, MaxLength(100)]
-        public string Name { get; set; }
+    [Required, MaxLength(100)]
+    public required string Name { get; init; }
+        
+    public int? LastMessageId { get; set; }
+        
+    [ForeignKey("LastMessageId")]
+    public MessageEntity? LastMessage { get; set; }
 
-        public ICollection<MessageEntity> Messages { get; set; }
-        public ICollection<ConversationMember> Members { get; set; }
-    }
+    public ICollection<MessageEntity>? Messages { get; set; }
+    public ICollection<ConversationMember>? Members { get; set; }
 }

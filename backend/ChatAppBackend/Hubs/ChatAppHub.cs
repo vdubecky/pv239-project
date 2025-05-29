@@ -1,30 +1,23 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System.Runtime.InteropServices;
 
-namespace ChatAppBackend.Hubs
-{
-    public class ChatAppHub : Hub
-    {       
-        public static Dictionary<string, string> Users = new();
+namespace ChatAppBackend.Hubs;
 
-        public override Task OnConnectedAsync()
+public class ChatAppHub : Hub
+{       
+    public static readonly Dictionary<string, string> Users = new();
+
+    public override Task OnConnectedAsync()
+    {
+        var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString();
+
+        if (userId == null)
         {
-            string userId = Context.GetHttpContext()?.Request.Query["userId"].ToString();
-            string clientId = Context.ConnectionId;
-
-            if(Users.ContainsKey(userId))
-            {
-                Users.Remove(userId);
-            }
-
-            Users.Add(userId, clientId);
-            return base.OnConnectedAsync();
+            return base.OnConnectedAsync();    
         }
-
-
-        public override Task OnDisconnectedAsync(Exception? exception)
-        {                       
-            return base.OnDisconnectedAsync(exception);
-        }
+            
+        Users.Remove(userId);
+        Users.Add(userId, Context.ConnectionId);
+        return base.OnConnectedAsync();
     }
 }

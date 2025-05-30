@@ -16,6 +16,8 @@ namespace pv239_project;
 
 public static class MauiProgram
 {
+    public static string BASE_URL = "http://10.0.1.11:5115/";
+    
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
@@ -73,6 +75,8 @@ public static class MauiProgram
     {
         // Services
         services.AddSingleton<IRoutingService, RoutingService>();
+        services.AddSingleton<IHubService, HubService>();
+        services.AddSingleton<IConversationsService, ConversationsService>();
 
         // View models
         services.AddTransient<UserListViewModel>();
@@ -80,6 +84,8 @@ public static class MauiProgram
         services.AddTransient<LoginPageViewModel>();
         services.AddTransient<CreateNewUserViewModel>();
         services.AddTransient<AuthViewModel>();
+        services.AddTransient<ConversationDetailViewModel>();
+        services.AddTransient<ConversationListViewModel>();
 
         // Add popups
         services.AddTransientPopup<ChangePasswordPopup, ChangePasswordPopupViewModel>();
@@ -88,7 +94,10 @@ public static class MauiProgram
         // Http Client
         services.AddTransient<AuthHandler>();
 
-
+        services.AddHttpClient<IConversationClient, ConversationClient>(client => {
+            client.BaseAddress = new Uri(BASE_URL);
+        });
+        
         services.AddHttpClient<IUserClient, UserClient>((serviceProvider, client) =>
         {
             var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();

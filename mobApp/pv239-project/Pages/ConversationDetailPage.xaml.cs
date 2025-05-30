@@ -4,24 +4,24 @@ namespace pv239_project.Pages;
 
 public partial class ConversationDetailPage : ContentPage
 {
-    protected ConversationDetailViewModel ViewModel { get; }
+    private readonly ConversationDetailViewModel _viewModel;
 
     public ConversationDetailPage(ConversationDetailViewModel conversationDetailViewModel)
     {
         InitializeComponent();
-        BindingContext = ViewModel = conversationDetailViewModel;
+        BindingContext = _viewModel = conversationDetailViewModel;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await ViewModel.OnStart();
+        await _viewModel.OnAppearing();
     }
 
-    protected override async void OnDisappearing()
+    protected override void OnDisappearing()
     {
         base.OnDisappearing();        
-        await ViewModel.OnDestroy();
+        _viewModel.OnDisappearing();
     }
 }
 

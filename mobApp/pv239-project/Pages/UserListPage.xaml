@@ -27,7 +27,7 @@
                 <Border.GestureRecognizers>
                    <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, 
                                          Path=BindingContext.OpenConversationCommand}" 
-                                         CommandParameter="{Binding Id}" />
+                                         CommandParameter="{Binding .}" />
                 </Border.GestureRecognizers>
                 
                 <HorizontalStackLayout>

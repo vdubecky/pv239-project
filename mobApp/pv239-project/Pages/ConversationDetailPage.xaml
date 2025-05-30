@@ -6,7 +6,7 @@
              xmlns:selectors="clr-namespace:pv239_project.Resources.Selectors"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:DataType="vm:ConversationDetailViewModel"
-             Title="{Binding Conversation.Name, FallbackValue=''}"
+             Title="{Binding ConversationName, FallbackValue=''}"
              Shell.TabBarIsVisible="False"
              x:Class="pv239_project.Pages.ConversationDetailPage">
     <ContentPage.Resources>

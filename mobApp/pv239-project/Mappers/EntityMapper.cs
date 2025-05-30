@@ -34,9 +34,28 @@ public static class EntityMapper
         return new ConversationDetail()
         {
             Id = conversationDto.Id,
-            Name = conversationDto.Name,
             Members = conversationDto.Members.MemberDtosToMembers().ToObservableCollection(),
             Messages = conversationDto.Messages.MessageDtosToMessages().ToObservableCollection(),
+        };
+    }
+
+    public static ConversationPreview PreviewDtoToPreview(this ConversationPreviewDto conversationPreviewDto)
+    {
+        return new ConversationPreview()
+        {
+            ConversationId = conversationPreviewDto.ConversationId,
+            Title = conversationPreviewDto.Name,
+            LastMessage = conversationPreviewDto.LastMessage
+        };
+    }
+    
+    public static ConversationPreview ConversationDetailToPreview(this ConversationDetail conversationDetail, string title, string lastMessage)
+    {
+        return new ConversationPreview()
+        {
+            ConversationId = conversationDetail.Id,
+            Title = title,
+            LastMessage = lastMessage
         };
     }
 
@@ -62,21 +81,11 @@ public static class EntityMapper
 
     public static IEnumerable<Member> MemberDtosToMembers(this ICollection<MemberDto> members)
     {
-        return members.Select(m => new Member()
-        {
-            Id = m.Id,
-            FirstName = m.FirstName,
-            Surname = m.Surname,
-        });
+        return members.Select(m => m.MemberDtoToMember());
     }
 
     public static IEnumerable<Message> MessageDtosToMessages(this ICollection<MessageDto> messages)
     {
-        return messages.Select(m => new Message()
-        {
-            Id = m.Id,
-            SenderId = m.SenderId,
-            Content = m.Content,
-        });
+        return messages.Select(m => m.MessageDtoToMessage());
     }
 }

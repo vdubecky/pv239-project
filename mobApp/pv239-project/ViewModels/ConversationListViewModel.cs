@@ -3,33 +3,23 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using pv239_project.Models;
 using pv239_project.Services;
+using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
 
-public partial class ConversationListViewModel : ObservableObject
+public partial class ConversationListViewModel(IConversationsService conversationService) : ObservableObject
 {
     [ObservableProperty]
-    public partial ObservableCollection<ConversationList>? Items { get; set; }
-
-    public ConversationListViewModel()
-    {
-        Items = new ObservableCollection<ConversationList>
-        {
-            new() { ConversationId = 1, Title = "Bob", LastMessage = "Hey, how's it going?"},
-            new() { ConversationId = 2, Title = "David", LastMessage = "See you tomorrow!"},
-            new() { ConversationId = 3, Title = "Frank", LastMessage = "Thanks for the update."},
-            new() { ConversationId = 4, Title = "Heidi", LastMessage = "I'll send you the details."},
-            new() { ConversationId = 5, Title = "Judy", LastMessage = "Sounds good!"}
-        };
-    }
+    public partial ObservableCollection<ConversationPreview>? Items { get; set; } = conversationService.Conversations;
+    
     
     [RelayCommand]
-    private async Task GoToDetailAsync(int id)
+    private async Task GoToDetailAsync(int conversationId)
     {
         await Shell.Current.GoToAsync(RoutingService.ConversationDetailPage,
             new Dictionary<string, object>
             {
-                [nameof(ConversationDetailViewModel.Id)] = id
+                [nameof(ConversationDetailViewModel.ConversationId)] = conversationId
             });
     }
 }

@@ -10,8 +10,7 @@ public class ConversationController(ConversationFacade conversationFacade) : Con
     [HttpPost]
     public async Task<ActionResult<ConversationDto>> CreateConversation([FromBody] ConversationCreateDto conversationDto)
     {
-        var conversation = await conversationFacade.CreateConversation(conversationDto);
-        return CreatedAtAction(nameof(GetConversationById), new { conversationId = conversation.Id }, conversation);
+        return await conversationFacade.CreateConversation(conversationDto);
     }
 
     [HttpGet("by-members")]

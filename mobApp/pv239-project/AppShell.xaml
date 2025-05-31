@@ -20,13 +20,13 @@
     ContentTemplate="{DataTemplate pages:LoginPage}"
     IsVisible="{Binding IsAuthenticated, Converter={StaticResource InvertedBoolConverter}}" />
   <TabBar IsVisible="{Binding IsAuthenticated}">
-    <Tab Title="Conversations">
+    <Tab Title="Chats" Icon="message.png">
       <ShellContent ContentTemplate="{DataTemplate pages:ConversationListPage}" />
     </Tab>
-    <Tab Title="Users">
+    <Tab Title="Users" Icon="users.png">
       <ShellContent ContentTemplate="{DataTemplate pages:UserListPage}" />
     </Tab>
-    <Tab Title="Settings">
+    <Tab Title="Settings" Icon="user.png">
       <ShellContent ContentTemplate="{DataTemplate pages:SettingsPage}" />
     </Tab>
   </TabBar>

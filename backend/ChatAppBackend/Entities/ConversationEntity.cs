@@ -15,7 +15,7 @@ public class ConversationEntity
     public int? LastMessageId { get; set; }
         
     [ForeignKey("LastMessageId")]
-    public MessageEntity? LastMessage { get; set; }
+    public MessageEntity LastMessage { get; set; }
 
     public ICollection<MessageEntity>? Messages { get; set; }
     public ICollection<ConversationMember>? Members { get; set; }

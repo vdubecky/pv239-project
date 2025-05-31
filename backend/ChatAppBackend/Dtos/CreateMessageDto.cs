@@ -9,4 +9,6 @@ public class CreateMessageDto
         
     [Required, MaxLength(255)]
     public required string Content { get; set; }
+    
+    public DateTime? LastMessageDate { get; set; }
 }

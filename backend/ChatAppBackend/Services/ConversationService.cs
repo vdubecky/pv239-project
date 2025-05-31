@@ -82,7 +82,8 @@ public class ConversationService(ChatAppDbContext dbContext)
     {
         return dbContext.Conversations
             .Include(c => c.Members).ThenInclude(m => m.UserEntity)
-            .Where(c => c.Members.Any(m => m.UserId == currentUserId));
+            .Where(c => c.Members.Any(m => m.UserId == currentUserId))
+            .OrderByDescending(c => c.LastMessage.SentAt);
     }
 
     public IQueryable<ConversationMember> GetMembersByConversationId(int conversationId)

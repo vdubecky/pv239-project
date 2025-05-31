@@ -9,6 +9,9 @@ namespace ChatAppBackend.Facades;
 
 public class ConversationFacade(ConversationService conversationService, MessageService messageService, IHubContext<ChatAppHub> hub)
 {
+    public const string SendConversationKey = "SendConversation";
+    public const string SendMessageKey = "SendMessage";
+    
     public async Task<ConversationDto> CreateConversation(ConversationCreateDto conversationDto)
     {
         var conversationEntityId = await conversationService.CreateConversation(conversationDto.ReceiverId, conversationDto.SenderId);
@@ -19,11 +22,12 @@ public class ConversationFacade(ConversationService conversationService, Message
 
         if (clientId != null)
         {
-            hub.Clients.Client(clientId).SendAsync("SendConversation", new ConversationPreviewDto
+            hub.Clients.Client(clientId).SendAsync(SendConversationKey, new ConversationPreviewDto
             {
                 ConversationId = conversationEntityId,
                 Name = EntityMapper.GetConversationName(conversation.Members, conversationDto.ReceiverId),
                 LastMessage = conversationDto.FirstMessage,
+                LastMessageDate = DateTime.Now
             });
         }
 
@@ -58,7 +62,8 @@ public class ConversationFacade(ConversationService conversationService, Message
 
             if(clientId != null)
             {
-                hub.Clients.Client(clientId).SendAsync("SendMessage", conversationId, dto);
+                dto.LastMessageDate = DateTime.Now;
+                hub.Clients.Client(clientId).SendAsync(SendMessageKey, conversationId, dto);
             }
         }
                         

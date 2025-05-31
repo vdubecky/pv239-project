@@ -50,7 +50,8 @@ public static class EntityMapper
                 ConversationId = c.Id,
                 Name = GetConversationName(c.Members, currentUserId),
                 LastMessage = c.LastMessage != null ? c.LastMessage.Content : string.Empty,
-                ProfilePicture = GetProfilePictureBase64(c.Members.FirstOrDefault(m => m.UserId != currentUserId).UserEntity.ProfilePicture)
+                ProfilePicture = GetProfilePictureBase64(c.Members.FirstOrDefault(m => m.UserId != currentUserId).UserEntity.ProfilePicture),
+                LastMessageDate = c.LastMessage.SentAt
             });
     }
 

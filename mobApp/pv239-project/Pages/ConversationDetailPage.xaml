@@ -78,6 +78,7 @@
   <ContentPage.Content>
         <Grid RowDefinitions="Auto, *, Auto">
             <CollectionView ItemsUpdatingScrollMode="KeepLastItemInView"
+                            x:Name="MessagesCollectionView"
                         ItemTemplate="{StaticResource MessageSelector}"
                         ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
                         Grid.Row="1"

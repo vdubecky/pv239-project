@@ -16,6 +16,12 @@ public partial class ConversationDetailPage : ContentPage
     {
         base.OnAppearing();
         await _viewModel.OnAppearing();
+        
+        if (_viewModel.Conversation != null)
+        {
+            MessagesCollectionView.ScrollTo(_viewModel.Conversation.Messages.Count - 1, 
+                position: ScrollToPosition.End, animate: false);  
+        }
     }
 
     protected override void OnDisappearing()

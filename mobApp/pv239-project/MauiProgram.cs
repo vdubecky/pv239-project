@@ -95,6 +95,8 @@ public static class MauiProgram
         
 #if ANDROID
         services.AddTransient<INotificationManagerService, NotificationManagerService>();
+#elif IOS
+        services.AddTransient<INotificationManagerService, NotificationManagerService>();
 #endif
 
         // View models

@@ -2365,6 +2365,9 @@ namespace pv239_project.Client
         [System.ComponentModel.DataAnnotations.StringLength(255, MinimumLength = 1)]
         public string Content { get; set; }
 
+        [Newtonsoft.Json.JsonProperty("lastMessageDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset? LastMessageDate { get; set; }
+
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.4.0.0 (NJsonSchema v11.3.2.0 (Newtonsoft.Json v13.0.0.0))")]
@@ -2410,6 +2413,9 @@ namespace pv239_project.Client
 
         [Newtonsoft.Json.JsonProperty("lastMessage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string LastMessage { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("lastMessageDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.DateTimeOffset LastMessageDate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("profilePicture", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProfilePicture { get; set; }

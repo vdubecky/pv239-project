@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using pv239_project.Client;
@@ -99,10 +100,17 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
             IsOutgoing = true,
         };
 
-        await conversationClient.Conversation_SendMessageAsync(Conversation.Id, message.MessageToDto());
-
-        UpdateLastMessageInPreview();
-        Conversation.Messages.Add(message);
+        try
+        {
+            await conversationClient.Conversation_SendMessageAsync(Conversation.Id, message.MessageToDto());
+            
+            UpdateLastMessageInPreview();
+            Conversation.Messages.Add(message);
+        }
+        catch (Exception ex)
+        {
+            Toast.Make("Failed to send message. Please check your connection and try again.").Show();
+        }
     }
 
     private async Task CreateNewConversation()

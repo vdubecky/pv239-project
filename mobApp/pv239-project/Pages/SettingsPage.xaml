@@ -15,7 +15,7 @@
   </ContentPage.Resources>
   
   <ContentPage.Content>
-    <Grid RowDefinitions="Auto, * , Auto, Auto">
+    <Grid RowDefinitions="Auto, * , Auto, Auto, Auto">
       <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
       
         <Entry Text="{Binding User.Firstname, FallbackValue='', Mode=TwoWay}"
@@ -61,7 +61,7 @@
               FontSize="16"
               Padding="10,5"
               Margin="8"
-              Grid.Row="3" />
+              Grid.Row="4" />
     </Grid>
   </ContentPage.Content>
 </ContentPage>

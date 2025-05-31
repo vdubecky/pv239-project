@@ -17,12 +17,12 @@
     </ResourceDictionary>
   </ContentPage.Resources>
   <ContentPage.Content>
-    <VerticalStackLayout Padding="20" Spacing="10">
+    <VerticalStackLayout Padding="10" Spacing="15">
       <CollectionView ItemsSource="{Binding Items}">
         <CollectionView.ItemTemplate>
           <DataTemplate x:DataType="{x:Type models:User}">
-            <Border StrokeShape="RoundRectangle 10"
-                    Padding="12, 8"
+            <Border StrokeShape="RoundRectangle 12"
+                    Padding="10, 8"
                     Margin="0, 0, 0, 10">
                 <Border.GestureRecognizers>
                    <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, 
@@ -31,26 +31,23 @@
                 </Border.GestureRecognizers>
                 
                 <HorizontalStackLayout>
-                <Border HeightRequest="40"
-                        WidthRequest="40"
-                        StrokeShape="RoundRectangle 20"
-                        Margin="0, 0, 8, 0"
-                        BackgroundColor="#EADDFF"
-                        IsVisible="{Binding Path=ProfilePicture, Converter={StaticResource IsNullConverter}}">
-                  <Label FontSize="16"
-                         LineHeight="24"
-                         Text="{Binding Path=Initials}"
-                         TextColor="Black"
-                         HorizontalTextAlignment="Center"
-                         VerticalTextAlignment="Center" />
-                </Border>
-                <Border HeightRequest="40"
-                        WidthRequest="40"
-                        StrokeShape="RoundRectangle 20"
-                        Margin="0, 0, 8, 0"
-                        IsVisible="{Binding Path=ProfilePicture, Converter={StaticResource IsNotNullConverter}}">
-                  <Image Source="{Binding Path=ProfilePicture}" />
-                </Border>
+                  <Border HeightRequest="45"
+                          WidthRequest="45"
+                          StrokeShape="Ellipse"
+                          Margin="0, 0, 8, 0"
+                          BackgroundColor="#EADDFF">
+                    <Grid>
+                      <Image Source="{Binding Path=ProfilePicture}"
+                             IsVisible="{Binding Path=ProfilePicture, Converter={StaticResource IsNotNullConverter}}" />
+                      <Label FontSize="16"
+                             LineHeight="24"
+                             Text="{Binding Path=Initials}"
+                             TextColor="Black"
+                             HorizontalTextAlignment="Center"
+                             VerticalTextAlignment="Center"
+                             IsVisible="{Binding Path=ProfilePicture, Converter={StaticResource IsNullConverter}}" />
+                    </Grid>
+                  </Border>
                 <Label Text="{Binding Path=Fullname}"
                        FontSize="18"
                        FontAttributes="Bold"

@@ -55,6 +55,8 @@ public class HubService(IConversationsService conversations, IUserService userSe
 
     private void OnNewConversation(ConversationPreviewDto previewDto)
     {
-        conversations.Conversations.Add(previewDto.PreviewDtoToPreview());
+        var preview = previewDto.PreviewDtoToPreview();
+        conversations.Conversations.Add(preview);
+        conversations.SortConversationsByLastMessage(preview);
     }
 }

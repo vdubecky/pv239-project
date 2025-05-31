@@ -76,13 +76,13 @@
     </ContentPage.Resources>
     
   <ContentPage.Content>
-        <Grid RowDefinitions="Auto, * , Auto">
+        <Grid RowDefinitions="Auto, *, Auto">
             <CollectionView ItemsUpdatingScrollMode="KeepLastItemInView"
                         ItemTemplate="{StaticResource MessageSelector}"
                         ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
                         Grid.Row="1"
                         Margin="10"
-                        VerticalOptions="FillAndExpand"/>
+                        VerticalOptions="EndAndExpand"/>
             
             <Grid Grid.Row="2" 
                   Padding="5" 

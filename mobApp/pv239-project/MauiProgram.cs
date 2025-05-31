@@ -18,7 +18,8 @@ namespace pv239_project;
 
 public static class MauiProgram
 {
-    public const string DatabaseFilename = "TodoSQLite.db3";
+    public const int SocketTimeoutSeconds = 10;
+    public const string DatabaseFilename = "SQLite.db3";
 
     public const SQLite.SQLiteOpenFlags Flags =
         SQLite.SQLiteOpenFlags.ReadWrite |
@@ -118,12 +119,14 @@ public static class MauiProgram
         {
             var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();
             client.BaseAddress = new Uri(apiOptions.Value.ApiUrl);
+            client.Timeout = TimeSpan.FromSeconds(SocketTimeoutSeconds);
         }).AddHttpMessageHandler<AuthHandler>();
         
         services.AddHttpClient<IUserClient, UserClient>((serviceProvider, client) =>
         {
             var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();
             client.BaseAddress = new Uri(apiOptions.Value.ApiUrl);
+            client.Timeout = TimeSpan.FromSeconds(SocketTimeoutSeconds);
         }).AddHttpMessageHandler<AuthHandler>();
         
         services.AddHttpClient<IAuthenticationClient, AuthenticationClient>((serviceProvider, client) =>

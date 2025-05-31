@@ -91,6 +91,11 @@ public static class MauiProgram
         services.AddSingleton<IConversationsService, ConversationsService>();
         services.AddSingleton<IUserService, UserService>();
         services.AddSingleton<IUserDatabase, UserDatabase>();
+        
+        
+#if ANDROID
+        services.AddTransient<INotificationManagerService, NotificationManagerService>();
+#endif
 
         // View models
         services.AddTransient<UserListViewModel>();

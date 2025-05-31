@@ -6,7 +6,7 @@ using pv239_project.Services.Interfaces;
 
 namespace pv239_project.Services;
 
-public class HubService(IConversationsService conversations, IUserService userService) : IHubService
+public class HubService(IConversationsService conversations, IUserService userService, INotificationManagerService notificationManager) : IHubService
 {
     public const string URL = $"{MauiProgram.BaseUrl}chatAppHub?userId=@";
     public const string SIGNALR_NEW_MESSAGE = "SendMessage";
@@ -16,7 +16,7 @@ public class HubService(IConversationsService conversations, IUserService userSe
 
     private HubConnection? _connection;
     
-
+    
     public async Task Start()
     {
         _connection = new HubConnectionBuilder()
@@ -41,7 +41,12 @@ public class HubService(IConversationsService conversations, IUserService userSe
             conversation.LastMessageTime = messageDto.LastMessageDate ?? DateTime.Now;
             conversations.SortConversationsByLastMessage(conversation);
         }
-             
+
+        if (!App.IsInForeground)
+        {
+            notificationManager.SendNotification(conversation.Title, conversation.LastMessage);    
+        }
+        
         MessageHandler.TryGetValue(conversationId.ToString(), out Action<CreateMessageDto>? handler);
         handler?.Invoke(messageDto);
     }

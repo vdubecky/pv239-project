@@ -16,6 +16,6 @@ public class MessageSelector : DataTemplateSelector
             return EmptyTemplate;    
         }
 
-        return message.SenderId == 1 ? OutMessage : InMessage;
+        return message.IsOutgoing ? OutMessage : InMessage;
     }
 }

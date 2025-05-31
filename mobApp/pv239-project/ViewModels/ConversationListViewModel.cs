@@ -14,12 +14,9 @@ public partial class ConversationListViewModel(IConversationsService conversatio
     
     
     [RelayCommand]
-    private async Task GoToDetailAsync(int conversationId)
+    private async Task GoToDetailAsync(ConversationPreview preview)
     {
-        await Shell.Current.GoToAsync(RoutingService.ConversationDetailPage,
-            new Dictionary<string, object>
-            {
-                [nameof(ConversationDetailViewModel.ConversationId)] = conversationId
-            });
+        conversationService.SelectedConversation = preview;
+        await Shell.Current.GoToAsync(RoutingService.ConversationDetailPage);
     }
 }

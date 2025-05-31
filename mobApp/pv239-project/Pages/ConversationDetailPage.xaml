@@ -3,14 +3,19 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:models="clr-namespace:pv239_project.Models"
+             x:Name="DetailPage"
              xmlns:selectors="clr-namespace:pv239_project.Resources.Selectors"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
+             xmlns:converters="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="vm:ConversationDetailViewModel"
-             Title="{Binding ConversationName, FallbackValue=''}"
+             Title="{Binding Preview.Title, FallbackValue=''}"
              Shell.TabBarIsVisible="False"
              x:Class="pv239_project.Pages.ConversationDetailPage">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:IsNullConverter x:Key="IsNullConverter" />
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+            
             <DataTemplate x:Key="OutMessage" 
                           x:DataType="models:Message">
                 <Border BackgroundColor="DodgerBlue" 
@@ -25,16 +30,43 @@
             </DataTemplate>
 
             <DataTemplate x:Key="InMessage" 
-                          x:DataType="models:Message">
-                <Border BackgroundColor="Black" 
-                        StrokeThickness="0" 
-                        StrokeShape="RoundRectangle 12" 
-                        Padding="10" 
-                        Margin="3" 
-                        HorizontalOptions="Start">
-                    <Label Text="{Binding Content}" 
-                           FontSize="16" TextColor="White" />
-                </Border>
+                          x:DataType="vm:ConversationDetailViewModel">
+                
+                <Grid ColumnDefinitions="Auto, *"
+                      HorizontalOptions="Start"
+                      VerticalOptions="Start">
+                    
+                    <Border Grid.Column="0"
+                            HeightRequest="40"
+                            WidthRequest="40"
+                            StrokeShape="Ellipse"
+                            Margin="0, 0, 8, 0"
+                            BackgroundColor="#EADDFF">
+                        <Grid>
+                            <Image Source="{Binding BindingContext.Preview.ProfilePicture, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                   IsVisible="{Binding BindingContext.Preview.ProfilePicture, Source={RelativeSource AncestorType={x:Type ContentPage}}, Converter={StaticResource IsNotNullConverter}}" />
+                            <Label FontSize="16"
+                                   LineHeight="24"
+                                   Text="{Binding BindingContext.Preview.Initials, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                   TextColor="Black"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   IsVisible="{Binding BindingContext.Preview.ProfilePicture, Source={RelativeSource AncestorType={x:Type ContentPage}}, Converter={StaticResource IsNullConverter}}" />
+                        </Grid>
+                    </Border>
+                    
+                    <Border Grid.Column="1"
+                            x:DataType="models:Message"
+                            BackgroundColor="Black" 
+                            StrokeThickness="0" 
+                            StrokeShape="RoundRectangle 12" 
+                            Padding="10" 
+                            Margin="3" 
+                            HorizontalOptions="Start">
+                        <Label Text="{Binding Content}" 
+                               FontSize="16" TextColor="White" />
+                    </Border>
+                </Grid>
             </DataTemplate>
 
             <selectors:MessageSelector x:Key="MessageSelector"

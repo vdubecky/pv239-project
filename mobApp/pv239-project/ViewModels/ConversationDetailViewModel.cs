@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using pv239_project.Client;
@@ -8,39 +7,31 @@ using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
 
-[QueryProperty(nameof(ConversationName), nameof(ConversationName))]
-[QueryProperty(nameof(ConversationId), nameof(ConversationId))]
 [QueryProperty(nameof(ReceiverId), nameof(ReceiverId))]
-public partial class ConversationDetailViewModel(IConversationClient conversationClient, IHubService hubService, IConversationsService conversationsService) : ObservableObject
+public partial class ConversationDetailViewModel(IConversationClient conversationClient, IHubService hubService, IConversationsService conversationsService, IUserService userService) : ObservableObject
 {
     [ObservableProperty]
     public partial ConversationDetail? Conversation { get; set; }
 
     [ObservableProperty]
     public partial string MessageInput { get; set; } = string.Empty;
-    
-    [ObservableProperty]
-    private string conversationName = "New Conversation";
-    
-    public int ConversationId { get; init; } = -1;
-    public int ReceiverId { get; init; } = -1;
 
-    private ConversationPreview? _preview;
+    [ObservableProperty]
+    public partial ConversationPreview Preview { get; set; } = conversationsService.SelectedConversation;
+    
+    public int ReceiverId { get; init; } = -1;
 
 
     public async Task OnAppearing()
     {
         try
         {
-            Conversation = (await DownloadConversation()).ConversationDtoToDetail();
+            Conversation = (await DownloadConversation()).ConversationDtoToDetail(userService.CurrentUserId);
             RegisterMessageHandler();
-            
-            _preview = conversationsService.Conversations
-                .FirstOrDefault(c => c.ConversationId == Conversation.Id);
         }
         catch (Exception ex)
         {
-            Console.WriteLine($@"Error initializing conversation: {ex.Message}");
+            Console.WriteLine($"Error initializing conversation: {ex.Message}");
         }
     }
     
@@ -54,12 +45,12 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
 
     private async Task<ConversationDto> DownloadConversation()
     {
-        if (ConversationId != -1)
+        if (Preview.ConversationId != -1)
         {
-            return await conversationClient.Conversation_GetConversationByIdAsync(ConversationId);
+            return await conversationClient.Conversation_GetConversationByIdAsync(Preview.ConversationId);
         }
         
-        return await conversationClient.Conversation_GetConversationByMembersAsync(1, ReceiverId);
+        return await conversationClient.Conversation_GetConversationByMembersAsync(userService.CurrentUserId, ReceiverId);
     }
     
     private void RegisterMessageHandler()
@@ -69,7 +60,8 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
             Conversation.Messages.Add(new Message
             {
                 Content = message.Content,
-                SenderId = message.SenderId
+                SenderId = message.SenderId,
+                IsOutgoing = message.SenderId == userService.CurrentUserId,
             });
         });
     }
@@ -98,8 +90,9 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
     {
         Message message = new()
         {
-            SenderId = 1,
-            Content = MessageInput
+            SenderId = userService.CurrentUserId,
+            Content = MessageInput,
+            IsOutgoing = true
         };
 
         await conversationClient.Conversation_SendMessageAsync(Conversation.Id, message.MessageToDto());
@@ -112,16 +105,16 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
     {
         var conversationDto = new ConversationCreateDto
         {
-            SenderId = 1,
+            SenderId = userService.CurrentUserId,
             ReceiverId = ReceiverId,
             FirstMessage = MessageInput
         };
         
         var newConversationDto = await conversationClient.Conversation_CreateConversationAsync(conversationDto);
-        Conversation = newConversationDto.ConversationDtoToDetail();
-        
-        _preview = Conversation.ConversationDetailToPreview(ConversationName, MessageInput);
-        conversationsService.Conversations.Add(_preview);
+        Conversation = newConversationDto.ConversationDtoToDetail(userService.CurrentUserId);
+
+        conversationsService.SelectedConversation.ConversationId = Conversation.Id;
+        conversationsService.Conversations.Add(conversationsService.SelectedConversation);
         
         UpdateLastMessageInPreview();
         RegisterMessageHandler();
@@ -129,9 +122,6 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
 
     private void UpdateLastMessageInPreview()
     {
-        if (_preview != null)
-        {
-            _preview.LastMessage = MessageInput;
-        }
+        conversationsService.SelectedConversation.LastMessage = MessageInput;
     }
 }

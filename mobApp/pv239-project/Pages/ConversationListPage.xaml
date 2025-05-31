@@ -5,36 +5,52 @@
              xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:models="clr-namespace:pv239_project.Models"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Name="Root"
              x:DataType="vm:ConversationListViewModel"
              Title="{x:Static strings:AppTexts.ConversationListPage_PageLabel}"
              x:Class="pv239_project.Pages.ConversationListPage">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <toolkit:IsNullConverter x:Key="IsNullConverter" />
+      <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
   <ContentPage.Content>
     <VerticalStackLayout Padding="10" Spacing="15">
       <CollectionView ItemsSource="{Binding Items}">
         <CollectionView.ItemTemplate>
           <DataTemplate x:DataType="{x:Type models:ConversationPreview}">
-            <Border StrokeThickness="0" 
-                    StrokeShape="RoundRectangle 12" 
+            <Border StrokeShape="RoundRectangle 12" 
                     Margin="0, 0, 0, 10">
               <Border.GestureRecognizers>
                 <TapGestureRecognizer Command="{Binding Source={x:Reference Root}, 
                     Path=BindingContext.GoToDetailCommand}"
-                                      CommandParameter="{Binding ConversationId}" />
+                                      CommandParameter="{Binding .}" />
               </Border.GestureRecognizers>
 
               <Grid ColumnDefinitions="Auto, Auto"
                     RowDefinitions="Auto, Auto"
-                    Padding="10" 
-                    BackgroundColor="BlueViolet">
+                    Padding="10" >
   
-                <Border Grid.Column="0"
-                        Grid.RowSpan="2"
+                <Border Grid.RowSpan="2"
+                        Grid.Column="0"
                         HeightRequest="45"
                         WidthRequest="45"
                         StrokeShape="Ellipse"
-                        Margin="0, 0, 8, 0">
-                  <Image />
+                        Margin="0, 0, 8, 0"
+                        BackgroundColor="#EADDFF">
+                  <Grid>
+                    <Image Source="{Binding Path=ProfilePicture}"
+                           IsVisible="{Binding Path=ProfilePicture, Converter={StaticResource IsNotNullConverter}}" />
+                    <Label FontSize="16"
+                           LineHeight="24"
+                           Text="{Binding Path=Initials}"
+                           TextColor="Black"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           IsVisible="{Binding Path=ProfilePicture, Converter={StaticResource IsNullConverter}}" />
+                  </Grid>
                 </Border>
 
                 <Label Text="{Binding Title}"
@@ -46,7 +62,7 @@
                   
                 <Label Text="{Binding LastMessage}"
                        FontSize="14"
-                       TextColor="Black"
+                       TextColor="White"
                        Grid.Row="1"
                        Grid.Column="1"/>
 

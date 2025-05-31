@@ -81,40 +81,40 @@
                         ItemTemplate="{StaticResource MessageSelector}"
                         ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
                         Grid.Row="1"
-                        Margin="10"
+                        Margin="10, 0, 10, 0"
                         VerticalOptions="EndAndExpand"/>
             
             <Grid Grid.Row="2" 
-                  Padding="5" 
+                  Padding="8" 
                   VerticalOptions="End"
-                  BackgroundColor="Black"
+                  Style="{StaticResource ChatInputGrid}"
                   ColumnDefinitions="*, Auto">
                 
-                <Border Background="DodgerBlue" 
-                        StrokeThickness="0" 
+                <Border StrokeThickness="0" 
                         Margin="0, 0, 5, 0"
-                        HeightRequest="45"
+                        HeightRequest="42"
+                        BackgroundColor="DodgerBlue"
                         StrokeShape="RoundRectangle 24" >
                     
                     <Entry Text="{Binding MessageInput, Mode=TwoWay}"
-                           PlaceholderColor="Black"
                            Placeholder="Type a message..."
-                           TextColor="Black"
                            Margin="10"
                            MaxLength="255"
+                           PlaceholderColor="Black"
                            FontSize="16"
-                           HeightRequest="45"
+                           HeightRequest="42"
                            HorizontalOptions="FillAndExpand"/>
                 </Border>
 
-                <Button Text="Send"
+                <ImageButton 
+                    Source="send.png"
                     Command="{Binding SendMessageCommand}"
-                    FontSize="16"
                     Padding="10,5"
-                    Background="DodgerBlue"
-                    CornerRadius="20"
+                    CornerRadius="24"
+                    HeightRequest="42"
+                    WidthRequest="42"
+                    BackgroundColor="DodgerBlue"
                     Margin="8"
-                    HeightRequest="45"
                     Grid.Column="1" />
             </Grid>
         </Grid>

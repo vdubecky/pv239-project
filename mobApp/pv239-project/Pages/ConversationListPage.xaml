@@ -55,14 +55,12 @@
 
                 <Label Text="{Binding Title}"
                        FontSize="17"
-                       TextColor="White"
                        FontAttributes="Bold"
                        Grid.Row="0"
                        Grid.Column="1"/>
                   
                 <Label Text="{Binding LastMessage}"
                        FontSize="14"
-                       TextColor="White"
                        Grid.Row="1"
                        MaxLines="1"
                         LineBreakMode="TailTruncation"
@@ -70,7 +68,6 @@
 
                 <Label Text="{Binding LastMessageTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
                        FontSize="12"
-                       TextColor="White"
                        Grid.Row="1"
                        Grid.Column="2"
                        VerticalOptions="End"

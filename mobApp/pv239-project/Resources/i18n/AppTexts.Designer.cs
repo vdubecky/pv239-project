@@ -105,7 +105,7 @@ namespace pv239_project.Resources.i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Surname.
+        ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         internal static string CreateNewUserPage_ConfirmPasswordPlaceholder {
             get {

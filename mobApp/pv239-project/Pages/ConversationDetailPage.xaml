@@ -101,6 +101,7 @@
                            Placeholder="Type a message..."
                            TextColor="Black"
                            Margin="10"
+                           MaxLength="255"
                            FontSize="16"
                            HeightRequest="45"
                            HorizontalOptions="FillAndExpand"/>

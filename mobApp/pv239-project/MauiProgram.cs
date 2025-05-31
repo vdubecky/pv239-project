@@ -18,7 +18,6 @@ namespace pv239_project;
 
 public static class MauiProgram
 {
-    public const string BaseUrl = "http://10.0.1.11:5115/";
     public const string DatabaseFilename = "TodoSQLite.db3";
 
     public const SQLite.SQLiteOpenFlags Flags =
@@ -115,15 +114,18 @@ public static class MauiProgram
         // Http Client
         services.AddTransient<AuthHandler>();
 
-        services.AddHttpClient<IConversationClient, ConversationClient>(client => {
-            client.BaseAddress = new Uri(BaseUrl);
-        });
+        services.AddHttpClient<IConversationClient, ConversationClient>((serviceProvider, client) => 
+        {
+            var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();
+            client.BaseAddress = new Uri(apiOptions.Value.ApiUrl);
+        }).AddHttpMessageHandler<AuthHandler>();
         
         services.AddHttpClient<IUserClient, UserClient>((serviceProvider, client) =>
         {
             var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();
             client.BaseAddress = new Uri(apiOptions.Value.ApiUrl);
         }).AddHttpMessageHandler<AuthHandler>();
+        
         services.AddHttpClient<IAuthenticationClient, AuthenticationClient>((serviceProvider, client) =>
         {
             var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();

@@ -58,7 +58,7 @@
         <value>Password</value>
     </data>
     <data name="CreateNewUserPage.ConfirmPasswordPlaceholder" xml:space="preserve">
-        <value>Surname</value>
+        <value>Confirm Password</value>
     </data>
     <data name="CreateNewUserPage.SignUpButtonText" xml:space="preserve">
         <value>Sign Up</value>

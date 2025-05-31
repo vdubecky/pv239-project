@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Options;
 using pv239_project.Client;
+using pv239_project.Configuration;
 using pv239_project.Mappers;
 using pv239_project.Services.Interfaces;
 
 
 namespace pv239_project.Services;
 
-public class HubService(IConversationsService conversations, IUserService userService, INotificationManagerService notificationManager) : IHubService
+public class HubService(IConversationsService conversations, IUserService userService, INotificationManagerService notificationManager, IOptions<ApiOptions> options) : IHubService
 {
-    public const string URL = $"{MauiProgram.BaseUrl}chatAppHub?userId=@";
-    public const string SIGNALR_NEW_MESSAGE = "SendMessage";
-    public const string SIGNALR_NEW_CONVERSATION = "SendConversation";
+    public const string SignalRNewMessage = "SendMessage";
+    public const string SignalRNewConversation = "SendConversation";
     
     public required Dictionary<string, Action<CreateMessageDto>> MessageHandler { get; set; } = new();
 
@@ -19,15 +20,16 @@ public class HubService(IConversationsService conversations, IUserService userSe
     
     public async Task Start()
     {
+        string url = $"{options.Value.ApiUrl}chatAppHub?userId={userService.CurrentUserId.ToString()}";
         _connection = new HubConnectionBuilder()
-            .WithUrl(URL.Replace("@", userService.CurrentUserId.ToString()))
+            .WithUrl(url)
             .WithAutomaticReconnect()
             .Build();
         
         await _connection.StartAsync();
 
-        _connection.On<int, CreateMessageDto>(SIGNALR_NEW_MESSAGE, OnNewMessage);
-        _connection.On<ConversationPreviewDto>(SIGNALR_NEW_CONVERSATION, OnNewConversation);
+        _connection.On<int, CreateMessageDto>(SignalRNewMessage, OnNewMessage);
+        _connection.On<ConversationPreviewDto>(SignalRNewConversation, OnNewConversation);
     }
     
     private void OnNewMessage(int conversationId, CreateMessageDto messageDto)

@@ -10,15 +10,11 @@ namespace ChatAppBackend.Controllers;
 public class AuthenticationController(UserFacade userFacade, AuthTokenHandler tokenHandler)
 {
     [HttpPost("login")]
-    public async Task<string?> Login(UserLoginDto loginDto)
+    public async Task<AuthUserDto> Login(UserLoginDto loginDto)
     {
-        var userId = await userFacade.LoginUser(loginDto);
+        var user = await userFacade.LoginUser(loginDto);
+        user.Token = tokenHandler.CreateNewToken(user.Id);
 
-        if (userId is null)
-        {
-            return null;
-        }
-
-        return tokenHandler.CreateNewToken(userId.Value);
+        return user;
     }
 }

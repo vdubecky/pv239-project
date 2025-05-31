@@ -43,8 +43,8 @@ namespace ChatAppBackend.Controllers
             return await userFacade.DeleteUser(id);
         }
 
-       // [HttpGet]
-        [Authorize]
+        [HttpGet]
+        //[Authorize]
         public async Task<IEnumerable<UserDto>> GetAllUsers()
         {
             return userFacade.GetAllUsers();

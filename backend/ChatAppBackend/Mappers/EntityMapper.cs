@@ -17,6 +17,18 @@ public static class EntityMapper
             ProfilePicture = GetProfilePictureBase64(userEntity.ProfilePicture),
         };
     }
+    
+    public static AuthUserDto UserEntityToUserAuthDto(this UserEntity userEntity)
+    {
+        return new()
+        {
+            Id = userEntity.Id,
+            Firstname = userEntity.Firstname,
+            Surname = userEntity.Surname,
+            Email = userEntity.Email,
+            ProfilePicture = GetProfilePictureBase64(userEntity.ProfilePicture),
+        };
+    }
 
     public static IEnumerable<UserDto> UserEntitiesToUserDtos(this IEnumerable<UserEntity> userEntities)
     {
@@ -37,7 +49,8 @@ public static class EntityMapper
             {
                 ConversationId = c.Id,
                 Name = GetConversationName(c.Members, currentUserId),
-                LastMessage = c.LastMessage != null ? c.LastMessage.Content : string.Empty
+                LastMessage = c.LastMessage != null ? c.LastMessage.Content : string.Empty,
+                ProfilePicture = GetProfilePictureBase64(c.Members.FirstOrDefault(m => m.UserId != currentUserId).UserEntity.ProfilePicture)
             });
     }
 

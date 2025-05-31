@@ -22,4 +22,10 @@ public class ConversationsService(IConversationClient conversationClient, IUserS
             Conversations.Add(dto.PreviewDtoToPreview());
         }
     }
+
+    public void SortConversationsByLastMessage(ConversationPreview preview)
+    {
+        Conversations.Remove(preview);
+        Conversations.Insert(0, preview);
+    }
 }

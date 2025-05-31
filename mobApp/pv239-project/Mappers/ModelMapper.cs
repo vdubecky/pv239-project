@@ -54,28 +54,19 @@ public static class ModelMapper
 
     public static ConversationPreview PreviewDtoToPreview(this ConversationPreviewDto conversationPreviewDto)
     {
-        return new ConversationPreview()
+        return new ConversationPreview
         {
             ConversationId = conversationPreviewDto.ConversationId,
             Title = conversationPreviewDto.Name,
             LastMessage = conversationPreviewDto.LastMessage,
-            ProfilePicture = conversationPreviewDto.ProfilePicture
-        };
-    }
-    
-    public static ConversationPreview ConversationDetailToPreview(this ConversationDetail conversationDetail, string title, string lastMessage)
-    {
-        return new ConversationPreview()
-        {
-            ConversationId = conversationDetail.Id,
-            Title = title,
-            LastMessage = lastMessage
+            ProfilePicture = conversationPreviewDto.ProfilePicture,
+            LastMessageTime = conversationPreviewDto.LastMessageDate
         };
     }
 
     private static Member MemberDtoToMember(this MemberDto memberDto)
     {
-        return new Member()
+        return new Member
         {
             Id = memberDto.Id,
             FirstName = memberDto.FirstName,

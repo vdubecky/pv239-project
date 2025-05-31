@@ -8,5 +8,6 @@ public interface IConversationsService
     public ObservableCollection<ConversationPreview> Conversations { get; }
     public ConversationPreview SelectedConversation { get; set; }
 
+    void SortConversationsByLastMessage(ConversationPreview preview);
     Task Init();
 }

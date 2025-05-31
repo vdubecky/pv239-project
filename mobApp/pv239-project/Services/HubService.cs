@@ -34,10 +34,12 @@ public class HubService(IConversationsService conversations, IUserService userSe
     {
         var conversation = conversations.Conversations
             .FirstOrDefault(c => c.ConversationId == conversationId);
-            
+        
         if (conversation != null)
         {
             conversation.LastMessage = messageDto.Content;
+            conversation.LastMessageTime = messageDto.LastMessageDate ?? DateTime.Now;
+            conversations.SortConversationsByLastMessage(conversation);
         }
              
         MessageHandler.TryGetValue(conversationId.ToString(), out Action<CreateMessageDto>? handler);

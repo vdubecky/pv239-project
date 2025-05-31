@@ -9,7 +9,7 @@ using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
 
-public partial class UserListViewModel(IUserClient userClient, IConversationsService conversationsService) : ObservableObject
+public partial class UserListViewModel(IUserClient userClient, IConversationsService conversationsService, IUserService userService) : ObservableObject
 {
     [ObservableProperty] public partial ICollection<User>? Items { get; set; }
 
@@ -19,7 +19,9 @@ public partial class UserListViewModel(IUserClient userClient, IConversationsSer
         try
         {
             var items = await userClient.User_GetAllUsersAsync();
-            Items = items.Select(s => s.UserDtoToUser()).ToObservableCollection();
+            Items = items
+                .Where(s => s.Id != userService.CurrentUserId)
+                .Select(s => s.UserDtoToUser()).ToObservableCollection();
         }
         catch (Exception e)
         {

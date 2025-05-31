@@ -50,7 +50,11 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
             return await conversationClient.Conversation_GetConversationByIdAsync(Preview.ConversationId);
         }
         
-        return await conversationClient.Conversation_GetConversationByMembersAsync(userService.CurrentUserId, ReceiverId);
+        var conversation = await conversationClient.Conversation_GetConversationByMembersAsync(userService.CurrentUserId, ReceiverId);
+        conversationsService.SelectedConversation = conversationsService.Conversations
+            .First(c => c.ConversationId == conversation.Id);
+        
+        return conversation;
     }
     
     private void RegisterMessageHandler()
@@ -92,7 +96,7 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
         {
             SenderId = userService.CurrentUserId,
             Content = MessageInput,
-            IsOutgoing = true
+            IsOutgoing = true,
         };
 
         await conversationClient.Conversation_SendMessageAsync(Conversation.Id, message.MessageToDto());
@@ -123,5 +127,7 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
     private void UpdateLastMessageInPreview()
     {
         conversationsService.SelectedConversation.LastMessage = MessageInput;
+        conversationsService.SelectedConversation.LastMessageTime = DateTime.Now;
+        conversationsService.SortConversationsByLastMessage(conversationsService.SelectedConversation);
     }
 }

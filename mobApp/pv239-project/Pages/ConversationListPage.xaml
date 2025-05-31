@@ -29,7 +29,7 @@
                                       CommandParameter="{Binding .}" />
               </Border.GestureRecognizers>
 
-              <Grid ColumnDefinitions="Auto, Auto"
+              <Grid ColumnDefinitions="Auto, *, Auto"
                     RowDefinitions="Auto, Auto"
                     Padding="10" >
   
@@ -64,13 +64,15 @@
                        FontSize="14"
                        TextColor="White"
                        Grid.Row="1"
+                       MaxLines="1"
+                        LineBreakMode="TailTruncation"
                        Grid.Column="1"/>
 
-                <Label Text="{Binding LastActivity, StringFormat='{0:MM/dd/yyyy HH:mm}'}"
+                <Label Text="{Binding LastMessageTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
                        FontSize="12"
-                       TextColor="Black"
+                       TextColor="White"
                        Grid.Row="1"
-                       Grid.Column="1"
+                       Grid.Column="2"
                        VerticalOptions="End"
                        HorizontalOptions="End" />
               </Grid>

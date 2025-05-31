@@ -5,10 +5,11 @@ using pv239_project.Client;
 using pv239_project.Mappers;
 using pv239_project.Models;
 using pv239_project.Services;
+using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
 
-public partial class UserListViewModel(IUserClient userClient) : ObservableObject
+public partial class UserListViewModel(IUserClient userClient, IConversationsService conversationsService) : ObservableObject
 {
     [ObservableProperty] public partial ICollection<User>? Items { get; set; }
 
@@ -29,10 +30,16 @@ public partial class UserListViewModel(IUserClient userClient) : ObservableObjec
     [RelayCommand]
     private async Task OpenConversation(User user)
     {
+        conversationsService.SelectedConversation = new ConversationPreview
+        {
+            ConversationId = -1,
+            LastMessage = "",
+            Title = $"{user.Firstname} {user.Surname}",
+        };
+        
         await Shell.Current.GoToAsync(RoutingService.ConversationDetailPage,
             new Dictionary<string, object>
             {
-                [nameof(ConversationDetailViewModel.ConversationName)] = $"{user.Firstname} {user.Surname}",
                 [nameof(ConversationDetailViewModel.ReceiverId)] = user.Id,
             });
     }

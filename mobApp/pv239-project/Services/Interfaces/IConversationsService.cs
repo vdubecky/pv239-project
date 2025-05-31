@@ -6,6 +6,7 @@ namespace pv239_project.Services.Interfaces;
 public interface IConversationsService
 {
     public ObservableCollection<ConversationPreview> Conversations { get; }
+    public ConversationPreview SelectedConversation { get; set; }
 
     Task Init();
 }

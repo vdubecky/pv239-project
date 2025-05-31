@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using pv239_project.Client;
 using pv239_project.Configuration;
+using pv239_project.Database;
+using pv239_project.Database.Interfaces;
 using pv239_project.Middleware;
 using pv239_project.Popups;
 using pv239_project.Services;
@@ -16,7 +18,17 @@ namespace pv239_project;
 
 public static class MauiProgram
 {
-    public static string BASE_URL = "http://10.0.1.11:5115/";
+    public const string BaseUrl = "http://10.0.1.11:5115/";
+    public const string DatabaseFilename = "TodoSQLite.db3";
+
+    public const SQLite.SQLiteOpenFlags Flags =
+        SQLite.SQLiteOpenFlags.ReadWrite |
+        SQLite.SQLiteOpenFlags.Create |
+        SQLite.SQLiteOpenFlags.SharedCache;
+
+    public static string DatabasePath =>
+        Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
+    
     
     public static MauiApp CreateMauiApp()
     {
@@ -77,6 +89,8 @@ public static class MauiProgram
         services.AddSingleton<IRoutingService, RoutingService>();
         services.AddSingleton<IHubService, HubService>();
         services.AddSingleton<IConversationsService, ConversationsService>();
+        services.AddSingleton<IUserService, UserService>();
+        services.AddSingleton<IUserDatabase, UserDatabase>();
 
         // View models
         services.AddTransient<UserListViewModel>();
@@ -95,7 +109,7 @@ public static class MauiProgram
         services.AddTransient<AuthHandler>();
 
         services.AddHttpClient<IConversationClient, ConversationClient>(client => {
-            client.BaseAddress = new Uri(BASE_URL);
+            client.BaseAddress = new Uri(BaseUrl);
         });
         
         services.AddHttpClient<IUserClient, UserClient>((serviceProvider, client) =>

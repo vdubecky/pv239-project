@@ -78,6 +78,9 @@
     <data name="SettingsPage.DeleteAccountButtonText" xml:space="preserve">
         <value>Delete account</value>
     </data>
+    <data name="SettingsPage.LogOutButtonText" xml:space="preserve">
+        <value>Log out</value>
+    </data>
     <data name="UserListPage.PageLabel" xml:space="preserve">
         <value>Users</value>
     </data>

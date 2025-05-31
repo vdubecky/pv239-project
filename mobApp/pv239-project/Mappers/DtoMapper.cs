@@ -1,22 +1,28 @@
 ﻿using pv239_project.Client;
 using pv239_project.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace pv239_project.Mappers
+
+namespace pv239_project.Mappers;
+
+public static class DtoMapper
 {
-    public static class DtoMapper
+    public static CreateMessageDto MessageToDto(this Message message)
     {
-        public static CreateMessageDto MessageToDto(this Message message)
+        return new CreateMessageDto
         {
-            return new()
-            {
-                SenderId = message.SenderId,
-                Content = message.Content
-            };
-        }
+            SenderId = message.SenderId,
+            Content = message.Content
+        };
+    }
+
+    public static UserUpdateDto UserToUserUpdateDto(this User user)
+    {
+        return new UserUpdateDto
+        {
+            Email = user.Email,
+            Firstname = user.Firstname,
+            Surname = user.Surname,
+            ProfilePicture = user.ProfilePicture
+        };
     }
 }

@@ -46,16 +46,22 @@
               Padding="10,5"
               Margin="8"
               Grid.Row="2" 
-              IsEnabled="{Binding UpdateUserSettingsCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"
-              />
+              IsEnabled="{Binding UpdateUserSettingsCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"/>
+      
       <Button Text="{x:Static strings:AppTexts.SettingsPage_DeleteAccountButtonText}"
               Command="{Binding DeleteUserCommand}"
               FontSize="16"
               Padding="10,5"
               Margin="8"
               Grid.Row="3" 
-              IsEnabled="{Binding DeleteUserCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"
-      />
+              IsEnabled="{Binding DeleteUserCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"/>
+      
+      <Button Text="{x:Static strings:AppTexts.SettingsPage_LogOutButtonText}"
+              Command="{Binding LogOutCommand}"
+              FontSize="16"
+              Padding="10,5"
+              Margin="8"
+              Grid.Row="3" />
     </Grid>
   </ContentPage.Content>
 </ContentPage>

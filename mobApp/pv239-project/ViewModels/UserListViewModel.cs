@@ -37,6 +37,7 @@ public partial class UserListViewModel(IUserClient userClient, IConversationsSer
             ConversationId = -1,
             LastMessage = "",
             Title = $"{user.Firstname} {user.Surname}",
+            ProfilePicture = user.ProfilePicture
         };
         
         await Shell.Current.GoToAsync(RoutingService.ConversationDetailPage,

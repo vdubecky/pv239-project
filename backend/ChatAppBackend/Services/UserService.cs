@@ -125,19 +125,41 @@ namespace ChatAppBackend.Services
 
         public async Task<bool> DeleteUser(int id)
         {
+            await using var transaction = await dbContext.Database.BeginTransactionAsync();
+            List<ConversationEntity> conversations = await dbContext.Conversations
+                .Where(c => c.Members.Any(m => m.UserId == id))
+                .ToListAsync();
+            IEnumerable<int> conversationIds = conversations.Select(c => c.Id);
+            var conversationMembers = await dbContext.ConversationMembers
+                .Where(c => conversationIds.Contains(c.ConversationId))
+                .ToListAsync();
+            List<MessageEntity> messages = await dbContext.Messages
+                .Where(m => conversationIds.Contains(m.ConversationId))
+                .ToListAsync();
+
             UserEntity? toUpdate = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
             if (toUpdate is null)
             {
                 return false;
             }
-            
+
             if (toUpdate.ProfilePicture is not null)
             {
                 File.Delete(toUpdate.ProfilePicture);
             }
 
+            dbContext.Messages.RemoveRange(messages);
+            await dbContext.SaveChangesAsync();
+            
+            dbContext.ConversationMembers.RemoveRange(conversationMembers);
+            dbContext.Conversations.RemoveRange(conversations);
+            await dbContext.SaveChangesAsync();
+            
             dbContext.Users.Remove(toUpdate);
-            return await dbContext.SaveChangesAsync() > 0;
+            var deleted = await dbContext.SaveChangesAsync() > 0;
+
+            await transaction.CommitAsync();
+            return deleted;
         }
 
         /// <summary>

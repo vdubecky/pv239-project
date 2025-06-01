@@ -63,14 +63,15 @@
                        FontSize="14"
                        Grid.Row="1"
                        MaxLines="1"
-                        LineBreakMode="TailTruncation"
+                       LineBreakMode="TailTruncation"
+                       Margin="0, 0, 2, 0"
                        Grid.Column="1"/>
 
                 <Label Text="{Binding LastMessageTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
                        FontSize="12"
                        Grid.Row="1"
                        Grid.Column="2"
-                       VerticalOptions="End"
+                       VerticalOptions="Center"
                        HorizontalOptions="End" />
               </Grid>
             </Border>

@@ -42,13 +42,13 @@ public static class ModelMapper
         };
     }
 
-    public static ConversationDetail ConversationDtoToDetail(this ConversationDto conversationDto, int actualId)
+    public static ConversationDetail ConversationDtoToDetail(this ConversationDto conversationDto, int actualId, ConversationPreview preview)
     {
         return new ConversationDetail()
         {
             Id = conversationDto.Id,
             Members = conversationDto.Members.MemberDtosToMembers().ToObservableCollection(),
-            Messages = conversationDto.Messages.MessageDtosToMessages(actualId).ToObservableCollection(),
+            Messages = conversationDto.Messages.MessageDtosToMessages(actualId, preview).ToObservableCollection(),
         };
     }
 
@@ -74,14 +74,16 @@ public static class ModelMapper
         };
     }
 
-    private static Message MessageDtoToMessage(this MessageDto messageDto, int actualId)
+    private static Message MessageDtoToMessage(this MessageDto messageDto, int actualId, ConversationPreview preview)
     {
-        return new Message()
+        return new Message
         {
             Id = messageDto.Id,
             SenderId = messageDto.SenderId,
             Content = messageDto.Content,
-            IsOutgoing = messageDto.SenderId == actualId
+            IsOutgoing = messageDto.SenderId == actualId,
+            ProfileImage = actualId != messageDto.SenderId ? preview.ProfilePicture : null,
+            Initials = preview.Initials
         };
     }
 
@@ -90,8 +92,8 @@ public static class ModelMapper
         return members.Select(m => m.MemberDtoToMember());
     }
 
-    private static IEnumerable<Message> MessageDtosToMessages(this ICollection<MessageDto> messages, int actualId)
+    private static IEnumerable<Message> MessageDtosToMessages(this ICollection<MessageDto> messages, int actualId, ConversationPreview preview)
     {
-        return messages.Select(m => m.MessageDtoToMessage(actualId));
+        return messages.Select(m => m.MessageDtoToMessage(actualId, preview));
     }
 }

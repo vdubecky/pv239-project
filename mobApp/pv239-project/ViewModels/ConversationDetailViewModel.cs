@@ -27,7 +27,7 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
     {
         try
         {
-            Conversation = (await DownloadConversation()).ConversationDtoToDetail(userService.CurrentUserId);
+            Conversation = (await DownloadConversation()).ConversationDtoToDetail(userService.CurrentUserId, Preview);
             RegisterMessageHandler();
         }
         catch (Exception ex)
@@ -67,6 +67,8 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
                 Content = message.Content,
                 SenderId = message.SenderId,
                 IsOutgoing = message.SenderId == userService.CurrentUserId,
+                Initials = Preview.Initials,
+                ProfileImage = message.SenderId != userService.CurrentUserId ? Preview.ProfilePicture : null,
             });
         });
     }
@@ -123,7 +125,7 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
         };
         
         var newConversationDto = await conversationClient.Conversation_CreateConversationAsync(conversationDto);
-        Conversation = newConversationDto.ConversationDtoToDetail(userService.CurrentUserId);
+        Conversation = newConversationDto.ConversationDtoToDetail(userService.CurrentUserId, Preview);
 
         conversationsService.SelectedConversation.ConversationId = Conversation.Id;
         conversationsService.Conversations.Add(conversationsService.SelectedConversation);

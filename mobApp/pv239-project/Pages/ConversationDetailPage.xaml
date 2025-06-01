@@ -12,59 +12,47 @@
              Shell.TabBarIsVisible="False"
              x:Class="pv239_project.Pages.ConversationDetailPage">
     <ContentPage.Resources>
-        <ResourceDictionary>
+        <ResourceDictionary x:DataType="models:Message">
             <converters:IsNullConverter x:Key="IsNullConverter" />
             <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
             
-            <DataTemplate x:Key="OutMessage" 
-                          x:DataType="models:Message">
-                <Border BackgroundColor="DodgerBlue" 
-                        StrokeThickness="0" 
-                        StrokeShape="RoundRectangle 12" 
-                        Padding="10" 
-                        Margin="3" 
-                        HorizontalOptions="End">
+            <DataTemplate x:Key="OutMessage">
+                <Border Style="{StaticResource MessageBorderStyle}" 
+                        BackgroundColor="DodgerBlue" HorizontalOptions="End">
                     <Label Text="{Binding Content}" 
-                           FontSize="16" TextColor="White" />
+                           Style="{StaticResource MessageLabelStyle}" />
                 </Border>
             </DataTemplate>
 
-            <DataTemplate x:Key="InMessage" 
-                          x:DataType="vm:ConversationDetailViewModel">
-                
+            <DataTemplate x:Key="InMessage">
                 <Grid ColumnDefinitions="Auto, *"
-                      HorizontalOptions="Start"
-                      VerticalOptions="Start">
+                      Padding="0"
+                      HorizontalOptions="Fill">
                     
                     <Border Grid.Column="0"
                             HeightRequest="40"
                             WidthRequest="40"
                             StrokeShape="Ellipse"
-                            Margin="0, 0, 8, 0"
                             BackgroundColor="#EADDFF">
+                        
                         <Grid>
-                            <Image Source="{Binding BindingContext.Preview.ProfilePicture, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                   IsVisible="{Binding BindingContext.Preview.ProfilePicture, Source={RelativeSource AncestorType={x:Type ContentPage}}, Converter={StaticResource IsNotNullConverter}}" />
+                            <Image Source="{Binding ProfileImage, FallbackValue=null}"
+                                   IsVisible="{Binding ProfileImage, Converter={StaticResource IsNotNullConverter}}" />
                             <Label FontSize="16"
                                    LineHeight="24"
-                                   Text="{Binding BindingContext.Preview.Initials, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                   Text="{Binding Initials, FallbackValue='C'}"
                                    TextColor="Black"
                                    HorizontalTextAlignment="Center"
                                    VerticalTextAlignment="Center"
-                                   IsVisible="{Binding BindingContext.Preview.ProfilePicture, Source={RelativeSource AncestorType={x:Type ContentPage}}, Converter={StaticResource IsNullConverter}}" />
+                                   IsVisible="{Binding ProfileImage, Converter={StaticResource IsNullConverter}}" />
                         </Grid>
                     </Border>
                     
                     <Border Grid.Column="1"
-                            x:DataType="models:Message"
-                            BackgroundColor="Black" 
-                            StrokeThickness="0" 
-                            StrokeShape="RoundRectangle 12" 
-                            Padding="10" 
-                            Margin="3" 
-                            HorizontalOptions="Start">
+                            Style="{StaticResource MessageBorderStyle}" 
+                            BackgroundColor="Black" >
                         <Label Text="{Binding Content}" 
-                               FontSize="16" TextColor="White" />
+                               Style="{StaticResource MessageLabelStyle}" />
                     </Border>
                 </Grid>
             </DataTemplate>
@@ -76,23 +64,23 @@
     </ContentPage.Resources>
     
   <ContentPage.Content>
-        <Grid RowDefinitions="Auto, *, Auto">
+        <Grid RowDefinitions="Auto,*,Auto">
             <CollectionView ItemsUpdatingScrollMode="KeepLastItemInView"
                             x:Name="MessagesCollectionView"
-                        ItemTemplate="{StaticResource MessageSelector}"
-                        ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
-                        Grid.Row="1"
-                        Margin="10, 0, 10, 0"
-                        VerticalOptions="EndAndExpand"/>
+                            ItemTemplate="{StaticResource MessageSelector}"
+                            ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
+                            ItemsLayout="VerticalList"
+                            Grid.Row="1"
+                            Margin="5,0"
+                            VerticalOptions="EndAndExpand"/>
             
             <Grid Grid.Row="2" 
                   Padding="8" 
                   VerticalOptions="End"
-                  Style="{StaticResource ChatInputGrid}"
-                  ColumnDefinitions="*, Auto">
+                  ColumnDefinitions="*,Auto">
                 
                 <Border StrokeThickness="0" 
-                        Margin="0, 0, 5, 0"
+                        Margin="0,0,5,0"
                         HeightRequest="42"
                         BackgroundColor="DodgerBlue"
                         StrokeShape="RoundRectangle 24" >

@@ -5,6 +5,7 @@
              xmlns:models="clr-namespace:pv239_project.Models"
              x:Name="DetailPage"
              xmlns:selectors="clr-namespace:pv239_project.Resources.Selectors"
+             xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              xmlns:converters="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="vm:ConversationDetailViewModel"
@@ -84,6 +85,7 @@
                             ItemsLayout="VerticalList"
                             Grid.Row="1"
                             Margin="5,0"
+                            EmptyView="{x:Static strings:AppTexts.ConversationDetailPage_Empty}"
                             VerticalOptions="EndAndExpand"/>
             
             <Grid Grid.Row="2" 
@@ -99,7 +101,7 @@
                         StrokeShape="RoundRectangle 24" >
                     
                     <Entry Text="{Binding MessageInput, Mode=TwoWay}"
-                           Placeholder="Type a message..."
+                           Placeholder="{x:Static strings:AppTexts.ConversationDetailPage_TypeAMessage}"
                            Margin="10"
                            MaxLength="255"
                            PlaceholderColor="Black"

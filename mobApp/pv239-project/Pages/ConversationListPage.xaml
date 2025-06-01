@@ -18,7 +18,10 @@
   </ContentPage.Resources>
   <ContentPage.Content>
     <VerticalStackLayout Padding="10" Spacing="15">
-      <CollectionView ItemsSource="{Binding Items}">
+      <CollectionView ItemsSource="{Binding Items}" 
+                      IsVisible="{Binding Items.Count, Converter={StaticResource IsNotNullConverter}}"
+                      EmptyView="{x:Static strings:AppTexts.ConversationListPage_Empty}">
+        
         <CollectionView.ItemTemplate>
           <DataTemplate x:DataType="{x:Type models:ConversationPreview}">
             <Border StrokeShape="RoundRectangle 12" 

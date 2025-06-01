@@ -51,6 +51,9 @@
     <data name="ConversationListPage.PageLabel" xml:space="preserve">
         <value>Conversations</value>
     </data>
+    <data name="ConversationListPage.Empty" xml:space="preserve">
+        <value>No conversations to display. Go to the Users page and start a new conversation.</value>
+    </data>
     <data name="CreateNewUserPage.InputError" xml:space="preserve">
         <value>Please fill in all input fields</value>
     </data>
@@ -108,6 +111,9 @@
     <data name="UserListPage.PageLabel" xml:space="preserve">
         <value>Users</value>
     </data>
+    <data name="UserListPage.Empty" xml:space="preserve">
+        <value>There are no users to display.</value>
+    </data>
     <data name="ChangePasswordPopup.CancelButtonText" xml:space="preserve">
         <value>Cancel</value>
     </data>
@@ -125,6 +131,12 @@
     </data>
     <data name="ConversationDetailPage.FailedToSendMessageError" xml:space="preserve">
         <value>Failed to send message. Please check your internet connection and try again.</value>
+    </data>
+    <data name="ConversationDetailPage.Empty" xml:space="preserve">
+        <value>Send first message to start the conversation.</value>
+    </data>
+    <data name="ConversationDetailPage.TypeAMessage" xml:space="preserve">
+        <value>Type a message...</value>
     </data>
     <data name="ConversationDetailPage.LoadingError" xml:space="preserve">
         <value>Failed to load conversation. Please check your internet connection and try again.</value>

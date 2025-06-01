@@ -1,30 +1,19 @@
-using pv239_project.Client;
+﻿using pv239_project.Entities;
 using pv239_project.Models;
-using UserDto = pv239_project.Client.UserDto;
 
 namespace pv239_project.Mappers;
 
 public static class EntityMapper
 {
-    public static UserUpdateDto ToUpdateUserDto(this UserDto userEntity)
+    public static UserEntity ToEntity(this User user)
     {
-        return new UserUpdateDto
+        return new UserEntity
         {
-            Firstname = userEntity.Firstname,
-            Surname = userEntity.Surname,
-            Email = userEntity.Email,
-        };
-    }
-
-    public static User UserDtoToUser(this UserDto userDto)
-    {
-        return new User()
-        {
-            Id = userDto.Id,
-            Firstname = userDto.Firstname,
-            Surname = userDto.Surname,
-            Email = userDto.Email,
-            ProfilePicture = userDto.ProfilePicture,
+            UserId = user.Id,
+            Email = user.Email,
+            Firstname = user.Firstname,
+            Surname = user.Surname,
+            ProfilePicture = user.ProfilePicture
         };
     }
 }

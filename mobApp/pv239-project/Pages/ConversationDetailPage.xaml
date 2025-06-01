@@ -2,43 +2,123 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:models="clr-namespace:pv239_project.Models"
+             x:Name="DetailPage"
+             xmlns:selectors="clr-namespace:pv239_project.Resources.Selectors"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
+             xmlns:converters="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:DataType="vm:ConversationDetailViewModel"
+             Title="{Binding Preview.Title, FallbackValue=''}"
+             Shell.TabBarIsVisible="False"
              x:Class="pv239_project.Pages.ConversationDetailPage">
+    <ContentPage.Resources>
+        <ResourceDictionary x:DataType="models:Message">
+            <converters:IsNullConverter x:Key="IsNullConverter" />
+            <converters:IsNotNullConverter x:Key="IsNotNullConverter" />
+            
+            <DataTemplate x:Key="OutMessage">
+                <Border Style="{StaticResource MessageBorderStyle}" 
+                        BackgroundColor="DodgerBlue" HorizontalOptions="End">
+                    <StackLayout Spacing="2">
+                        <Label Text="{Binding MessageTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                               FontSize="11"
+                               TextColor="Black"
+                               HorizontalOptions="End"/>
+                        <Label Text="{Binding Content}" 
+                               Style="{StaticResource MessageLabelStyle}" />
+                    </StackLayout>
+                </Border>
+            </DataTemplate>
+
+            <DataTemplate x:Key="InMessage">
+                <Grid ColumnDefinitions="Auto, *"
+                      Padding="0"
+                      HorizontalOptions="Fill">
+                    
+                    <Border Grid.Column="0"
+                            HeightRequest="40"
+                            WidthRequest="40"
+                            StrokeShape="Ellipse"
+                            BackgroundColor="#EADDFF">
+                        
+                        <Grid>
+                            <Image Source="{Binding ProfileImage, FallbackValue=null}"
+                                   IsVisible="{Binding ProfileImage, Converter={StaticResource IsNotNullConverter}}" />
+                            <Label FontSize="16"
+                                   LineHeight="24"
+                                   Text="{Binding Initials, FallbackValue='C'}"
+                                   TextColor="Black"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalTextAlignment="Center"
+                                   IsVisible="{Binding ProfileImage, Converter={StaticResource IsNullConverter}}" />
+                        </Grid>
+                    </Border>
+                    
+                    <Border Grid.Column="1"
+                            Style="{StaticResource MessageBorderStyle}" 
+                            BackgroundColor="Black" >
+                        <StackLayout Spacing="2">
+                            <Label Text="{Binding MessageTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                                   FontSize="11"
+                                   TextColor="Gray"
+                                   HorizontalOptions="Start"/>
+                            <Label Text="{Binding Content}"
+                                   Style="{StaticResource MessageLabelStyle}" />
+                        </StackLayout>
+                    </Border>
+                </Grid>
+            </DataTemplate>
+
+            <selectors:MessageSelector x:Key="MessageSelector"
+                          InMessage="{StaticResource InMessage}"
+                          OutMessage="{StaticResource OutMessage}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
   <ContentPage.Content>
-    <Grid RowDefinitions="Auto, * , Auto">
+        <Grid RowDefinitions="Auto,*,Auto">
+            <CollectionView ItemsUpdatingScrollMode="KeepLastItemInView"
+                            x:Name="MessagesCollectionView"
+                            ItemTemplate="{StaticResource MessageSelector}"
+                            ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
+                            ItemsLayout="VerticalList"
+                            Grid.Row="1"
+                            Margin="5,0"
+                            VerticalOptions="EndAndExpand"/>
+            
+            <Grid Grid.Row="2" 
+                  Padding="8" 
+                  VerticalOptions="End"
+                  Style="{StaticResource ChatInputGrid}"
+                  ColumnDefinitions="*,Auto">
+                
+                <Border StrokeThickness="0" 
+                        Margin="0,0,5,0"
+                        HeightRequest="42"
+                        BackgroundColor="DodgerBlue"
+                        StrokeShape="RoundRectangle 24" >
+                    
+                    <Entry Text="{Binding MessageInput, Mode=TwoWay}"
+                           Placeholder="Type a message..."
+                           Margin="10"
+                           MaxLength="255"
+                           PlaceholderColor="Black"
+                           FontSize="16"
+                           HeightRequest="42"
+                           HorizontalOptions="FillAndExpand"/>
+                </Border>
 
-      <Label Text="{Binding Conversation.Name, FallbackValue=''}"
-             FontSize="24"
-             HorizontalOptions="Center" />
-
-      <CollectionView ItemsSource="{Binding Conversation.Messages, FallbackValue=[]}"
-                      Grid.Row="1"
-                      VerticalOptions="FillAndExpand">
-        <CollectionView.ItemTemplate>
-          <DataTemplate x:DataType="{x:Type models:Message}">
-            <Border StrokeShape="RoundRectangle 10" BackgroundColor="Gray" Padding="10" Margin="5">
-              <Label Text="{Binding Text}" FontSize="16" TextColor="White" />
-            </Border>
-          </DataTemplate>
-        </CollectionView.ItemTemplate>
-      </CollectionView>
-
-      <Grid Grid.Row="2" Padding="5" ColumnDefinitions="*, Auto">
-        <Entry Text="{Binding MessageInput, Mode=TwoWay}"
-               Placeholder="{x:Static strings:AppTexts.ConversationDetailPage_MessagePlaceholder}"
-               FontSize="16"
-               HorizontalOptions="FillAndExpand" />
-
-        <Button Text="{x:Static strings:AppTexts.ConversationDetailPage_SendButtonText}"
-                Command="{Binding SendMessageCommand}"
-                FontSize="16"
-                Padding="10,5"
-                Margin="8"
-                Grid.Column="1" />
-      </Grid>
-    </Grid>
-  </ContentPage.Content>
+                <ImageButton 
+                    Source="send.png"
+                    Command="{Binding SendMessageCommand}"
+                    Padding="10,5"
+                    CornerRadius="24"
+                    HeightRequest="42"
+                    WidthRequest="42"
+                    BackgroundColor="DodgerBlue"
+                    Margin="8"
+                    Grid.Column="1" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ChatAppBackend.Dtos
+namespace ChatAppBackend.Dtos;
+
+public class UserRegisterDto : UserUpdateDto
 {
-    public class UserRegisterDto : UserUpdateDto
-    {
-        [Required, MinLength(6)]
-        public string Password { get; set; }
-    }
+    [Required, MinLength(6)]
+    public string Password { get; set; }
 }

@@ -4,59 +4,38 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using pv239_project.Client;
-using pv239_project.Helpers;
 using pv239_project.Mappers;
 using pv239_project.Messages;
+using pv239_project.Models;
+using pv239_project.Services;
+using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
 
-[QueryProperty(nameof(Id), nameof(Id))]
-public partial class UserSettingsViewModel : ObservableObject
+
+public partial class UserSettingsViewModel(IPopupService popupService, IMessenger messenger, IUserService userService) : ObservableObject
 {
-    private readonly IPopupService _popupService;
-    private readonly IUserClient _userClient;
-    private readonly IMessenger _messenger;
-    public int Id { get; init; }
+    [ObservableProperty] public partial User User { get; set; }
 
-    [ObservableProperty] public partial UserDto? User { get; set; }
 
-    public UserSettingsViewModel(IPopupService popupService, IUserClient userClient, IMessenger messenger)
+    public void OnAppearing()
     {
-        _popupService = popupService;
-        _userClient = userClient;
-        _messenger = messenger;
-
-        Id = JwtHelpers.GetUserId();
+        User = (User)userService.CurrentUser.Clone();
     }
-
-    public async Task LoadDataAsync()
-    {
-        try
-        {
-            User = await _userClient.User_GetUserAsync(Id);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            // TODO: Handle
-            // throw;
-        }
-    }
-
+    
     [RelayCommand]
     private async Task UpdateUserSettings()
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(User?.Firstname) ||
-                string.IsNullOrWhiteSpace(User?.Surname) ||
-                string.IsNullOrWhiteSpace(User?.Email))
+            if (string.IsNullOrWhiteSpace(User.Firstname) ||
+                string.IsNullOrWhiteSpace(User.Surname) ||
+                string.IsNullOrWhiteSpace(User.Email))
             {
                 return;
             }
 
-            var updateUserDto = User!.ToUpdateUserDto();
-            await _userClient.User_UpdateUserProfileAsync(Id, updateUserDto);
+            await userService.UpdateUserSettings(User);
 
             var toast = Toast.Make("Successfully updated profile settings.");
             await toast.Show();
@@ -73,10 +52,8 @@ public partial class UserSettingsViewModel : ObservableObject
     {
         try
         {
-            await _userClient.User_DeleteUserAsync(Id);
-
-            SecureStorage.Remove("jwt_token");
-            _messenger.Send(new AuthChangedMessage { IsAuthenticated = false });
+            await userService.DeleteUser();
+            messenger.Send(new AuthChangedMessage { IsAuthenticated = false });
         }
         catch (Exception e)
         {
@@ -88,16 +65,23 @@ public partial class UserSettingsViewModel : ObservableObject
     [RelayCommand]
     private async Task OpenChangePasswordPopup()
     {
-        await _popupService.ShowPopupAsync<ChangePasswordPopupViewModel>(
-            onPresenting: viewModel => viewModel.Id = Id
+        await popupService.ShowPopupAsync<ChangePasswordPopupViewModel>(
+            onPresenting: viewModel => viewModel.Id = User.Id
         );
     }
 
     [RelayCommand]
     private async Task OpenUploadProfilePicturePopup()
     {
-        await _popupService.ShowPopupAsync<UploadProfilePicturePopupViewModel>(onPresenting: viewModel =>
-            viewModel.Id = Id
+        await popupService.ShowPopupAsync<UploadProfilePicturePopupViewModel>(onPresenting: viewModel =>
+            viewModel.Id = User.Id
         );
+    }
+
+    [RelayCommand]
+    private async Task LogOut()
+    {
+        await userService.LogOut();
+        messenger.Send(new AuthChangedMessage { IsAuthenticated = false });
     }
 }

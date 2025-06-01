@@ -20,11 +20,25 @@ public static class FileExtensions
     
     public static byte[] ReadByteArrayFromFile(this string fileName)
     {
-        return File.ReadAllBytes(fileName);
+        try
+        {
+            return File.ReadAllBytes(fileName);
+        } catch(Exception ex)
+        {
+            return new byte[] { 0 }; 
+        }
+       
     }
 
     public static async Task<byte[]> ReadByteArrayFromFileAsync(this string fileName)
     {
-        return await File.ReadAllBytesAsync(fileName);
+        try
+        {
+            return await File.ReadAllBytesAsync(fileName);
+        } catch(Exception ex)
+        {
+            return new byte[] { 0 };
+        }
+       
     }
 }

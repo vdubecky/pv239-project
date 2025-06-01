@@ -9,6 +9,7 @@ using ChatAppBackend.Services;
 using ChatAppBackend.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -23,8 +24,16 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApiDocument(document => document.DocumentName = "v1");
 
+builder.Services.AddScoped<ChatAppHub>();
+
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserFacade>();
+
+builder.Services.AddScoped<ConversationService>();
+builder.Services.AddScoped<ConversationFacade>();
+
+builder.Services.AddScoped<MessageService>();
+
 builder.Services.AddTransient<AuthTokenHandler>();
 builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 

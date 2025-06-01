@@ -4,10 +4,11 @@ namespace pv239_project.Pages;
 
 public partial class ConversationListPage : ContentPage
 {
-    public ConversationListPage()
+    private readonly ConversationListViewModel _viewModel;
+
+    public ConversationListPage(ConversationListViewModel conversationListViewModel)
     {
         InitializeComponent();
-        BindingContext = new ConversationListViewModel();
+        BindingContext = _viewModel = conversationListViewModel;
     }
 }
-

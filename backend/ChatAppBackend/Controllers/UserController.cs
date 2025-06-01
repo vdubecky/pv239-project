@@ -14,16 +14,14 @@ namespace ChatAppBackend.Controllers
         {
             return await userFacade.RegisterUser(userDto);
         }
-
-        // TODO: Remove and user endpoint in user own controller
+        
         [Authorize]
         [HttpPut("{id}")]
         public async Task<bool> UpdateUserProfile(int id, UserUpdateDto userDto)
         {
             return await userFacade.UpdateUserProfile(id, userDto);
         }
-
-        // TODO: Remove and user endpoint in user own controller
+        
         [Authorize]
         [HttpPut("{id}/changePassword")]
         public async Task<bool> ChangeUserPassword(int id, ChangeUserPasswordDto changeUserPasswordDto)
@@ -31,7 +29,6 @@ namespace ChatAppBackend.Controllers
             return await userFacade.ChangeUserPassword(id, changeUserPasswordDto);
         }
         
-        // TODO: Remove and user endpoint in user own controller
         [Authorize]
         [HttpPut("{id}/picture")]
         public async Task<bool> UploadUserPicture(int id, [FromForm] UploadUserPictureDto uploadDto)

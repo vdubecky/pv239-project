@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using pv239_project.Client;
 using pv239_project.Configuration;
+using pv239_project.Database;
+using pv239_project.Database.Interfaces;
 using pv239_project.Middleware;
 using pv239_project.Popups;
 using pv239_project.Services;
@@ -16,6 +18,18 @@ namespace pv239_project;
 
 public static class MauiProgram
 {
+    public const int SocketTimeoutSeconds = 10;
+    public const string DatabaseFilename = "SQLite.db3";
+
+    public const SQLite.SQLiteOpenFlags Flags =
+        SQLite.SQLiteOpenFlags.ReadWrite |
+        SQLite.SQLiteOpenFlags.Create |
+        SQLite.SQLiteOpenFlags.SharedCache;
+
+    public static string DatabasePath =>
+        Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
+    
+    
     public static MauiApp CreateMauiApp()
     {
         var builder = MauiApp.CreateBuilder();
@@ -73,6 +87,17 @@ public static class MauiProgram
     {
         // Services
         services.AddSingleton<IRoutingService, RoutingService>();
+        services.AddSingleton<IHubService, HubService>();
+        services.AddSingleton<IConversationsService, ConversationsService>();
+        services.AddSingleton<IUserService, UserService>();
+        services.AddSingleton<IUserDatabase, UserDatabase>();
+        
+        
+#if ANDROID
+        services.AddTransient<INotificationManagerService, NotificationManagerService>();
+#elif IOS
+        services.AddTransient<INotificationManagerService, NotificationManagerService>();
+#endif
 
         // View models
         services.AddTransient<UserListViewModel>();
@@ -80,6 +105,8 @@ public static class MauiProgram
         services.AddTransient<LoginPageViewModel>();
         services.AddTransient<CreateNewUserViewModel>();
         services.AddTransient<AuthViewModel>();
+        services.AddTransient<ConversationDetailViewModel>();
+        services.AddTransient<ConversationListViewModel>();
 
         // Add popups
         services.AddTransientPopup<ChangePasswordPopup, ChangePasswordPopupViewModel>();
@@ -88,12 +115,20 @@ public static class MauiProgram
         // Http Client
         services.AddTransient<AuthHandler>();
 
-
+        services.AddHttpClient<IConversationClient, ConversationClient>((serviceProvider, client) => 
+        {
+            var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();
+            client.BaseAddress = new Uri(apiOptions.Value.ApiUrl);
+            client.Timeout = TimeSpan.FromSeconds(SocketTimeoutSeconds);
+        }).AddHttpMessageHandler<AuthHandler>();
+        
         services.AddHttpClient<IUserClient, UserClient>((serviceProvider, client) =>
         {
             var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();
             client.BaseAddress = new Uri(apiOptions.Value.ApiUrl);
+            client.Timeout = TimeSpan.FromSeconds(SocketTimeoutSeconds);
         }).AddHttpMessageHandler<AuthHandler>();
+        
         services.AddHttpClient<IAuthenticationClient, AuthenticationClient>((serviceProvider, client) =>
         {
             var apiOptions = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();

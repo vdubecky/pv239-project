@@ -1,4 +1,5 @@
-﻿using ChatAppBackend.Dtos;
+﻿using System.Security;
+using ChatAppBackend.Dtos;
 using ChatAppBackend.Entities;
 using ChatAppBackend.Extensions;
 using Microsoft.AspNetCore.Identity;
@@ -24,19 +25,25 @@ namespace ChatAppBackend.Services
         /// <summary>
         /// </summary>
         /// <param name="loginDto"></param>
-        /// <returns> True if the user was logged successfully, false otherwise.</returns>
-        public async Task<int?> LoginUser(UserLoginDto loginDto)
+        /// <returns> UserEntity if the user was logged successfully</returns>
+        public async Task<UserEntity> LoginUser(UserLoginDto loginDto)
         {
-            UserEntity? user = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+            var userEntity = await dbContext.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
 
-            if (user is null)
+            if (userEntity is null)
             {
-                return null;
+                throw new Exception("User not found");
             }
 
             PasswordVerificationResult verificationResult =
-                passwordHasher.VerifyHashedPassword(user, user.PasswordHash, loginDto.Password);
-            return verificationResult == PasswordVerificationResult.Success ? user.Id : null;
+                passwordHasher.VerifyHashedPassword(userEntity, userEntity.PasswordHash, loginDto.Password);
+
+            if (verificationResult == PasswordVerificationResult.Failed)
+            {
+                throw new SecurityException("Credentials do not match");
+            }
+
+            return userEntity;
         }
 
         /// <summary>

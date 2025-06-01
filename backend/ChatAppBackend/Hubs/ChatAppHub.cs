@@ -1,12 +1,23 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using System.Runtime.InteropServices;
 
-namespace ChatAppBackend.Hubs
-{
-    public class ChatAppHub : Hub
+namespace ChatAppBackend.Hubs;
+
+public class ChatAppHub : Hub
+{       
+    public static readonly Dictionary<string, string> Users = new();
+
+    public override Task OnConnectedAsync()
     {
-        public async Task SendMessage(string conversationId, string message)
+        var userId = Context.GetHttpContext()?.Request.Query["userId"].ToString();
+
+        if (userId == null)
         {
-            Clients.Client(conversationId).SendAsync("ReceiveMessage", message);
+            return base.OnConnectedAsync();    
         }
+            
+        Users.Remove(userId);
+        Users.Add(userId, Context.ConnectionId);
+        return base.OnConnectedAsync();
     }
 }

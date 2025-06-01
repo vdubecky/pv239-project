@@ -2,24 +2,14 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using pv239_project.Client;
 using pv239_project.Messages;
+using pv239_project.Resources.i18n;
+using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
 
-public partial class CreateNewUserViewModel : ObservableObject
+public partial class CreateNewUserViewModel(IUserService userService, IMessenger messenger) : ObservableObject
 {
-    private readonly IUserClient _userClient;
-    private readonly IAuthenticationClient _authenticationClient;
-    private readonly IMessenger _messenger;
-
-    public CreateNewUserViewModel(IUserClient userClient, IAuthenticationClient authenticationClient, IMessenger messenger)
-    {
-        _userClient = userClient;
-        _authenticationClient = authenticationClient;
-        _messenger = messenger;
-    }
-
     [ObservableProperty] public partial string Firstname { get; set; } = string.Empty;
     [ObservableProperty] public partial string Surname { get; set; } = string.Empty;
     [ObservableProperty] public partial string Email { get; set; } = string.Empty;
@@ -37,47 +27,32 @@ public partial class CreateNewUserViewModel : ObservableObject
                 string.IsNullOrWhiteSpace(Password) ||
                 string.IsNullOrWhiteSpace(ConfirmPassword))
             {
+                await Toast.Make(AppTexts.CreateNewUserPage_InputError).Show();
                 return;
             }
             
             if (Password.Length < 6)
             {
+                await Toast.Make(AppTexts.CreateNewUserPage_PasswordLengthError).Show();
                 return;
             }
             if (ConfirmPassword.Length < 6)
             {
+                await Toast.Make(AppTexts.CreateNewUserPage_ConfirmPasswordLengthError).Show();
                 return;
             }
             if (Password != ConfirmPassword)
             {
-                await Shell.Current.DisplayAlert("Error", "Passwords do not match", "OK");
+                await Toast.Make(AppTexts.CreateNewUserPage_PasswordsNotSame).Show();
                 return;
             }
-            
-            var updateUserDto = new UserRegisterDto()
-            {
-                Firstname = Firstname,
-                Surname = Surname,
-                Email = Email,
-                Password = Password,
-            };
-            await _userClient.User_CreateAccountAsync(updateUserDto);
 
-            UserLoginDto userLoginDto = new UserLoginDto()
-            {
-                Email = Email,
-                Password = Password,
-            };
-            var token = await _authenticationClient.Authentication_LoginAsync(userLoginDto);
-
-            await SecureStorage.SetAsync("jwt_token", token);
-            
-            _messenger.Send(new AuthChangedMessage { IsAuthenticated = true });
+            await userService.Register(Firstname, Surname, Email, Password);
+            messenger.Send(new AuthChangedMessage { IsAuthenticated = true });
         }
         catch (Exception e)
         {
-            var toast = Toast.Make(e.Message);
-            await toast.Show();
+            await Toast.Make(AppTexts.CreateNewUserPage_GeneralError).Show();
         }
     }
 }

@@ -22,7 +22,7 @@
         <LangVersion>preview</LangVersion>
 
         <!-- Display name -->
-        <ApplicationTitle>pv239-project</ApplicationTitle>
+        <ApplicationTitle>ChatApp</ApplicationTitle>
 
         <!-- App Identifier -->
         <ApplicationId>com.companyname.pv239project</ApplicationId>

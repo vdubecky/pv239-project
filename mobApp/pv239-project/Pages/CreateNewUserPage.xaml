@@ -5,6 +5,7 @@
              xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:DataType="vm:CreateNewUserViewModel"
+             Title="{x:Static strings:AppTexts.CreateNewUserPage_Title}"
              x:Class="pv239_project.Pages.CreateNewUserPage">
   <ContentPage.Content>
     <Grid RowDefinitions="*, Auto, Auto" Padding="20">

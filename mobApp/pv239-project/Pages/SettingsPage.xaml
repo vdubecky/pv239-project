@@ -4,9 +4,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:strings="clr-namespace:pv239_project.Resources.i18n"
-             xmlns:models="clr-namespace:pv239_project.Models"
              xmlns:vm="clr-namespace:pv239_project.ViewModels"
              x:DataType="vm:UserSettingsViewModel"
+             Title="{x:Static strings:AppTexts.SettingsPage_PageLabel}"
              x:Class="pv239_project.Pages.SettingsPage">
   <ContentPage.Resources>
     <ResourceDictionary>
@@ -15,10 +15,7 @@
   </ContentPage.Resources>
   
   <ContentPage.Content>
-    <Grid RowDefinitions="Auto, * , Auto, Auto">
-      <Label Text="{x:Static strings:AppTexts.SettingsPage_PageLabel}"
-             FontSize="24"
-             HorizontalOptions="Center" Grid.Row="0" />
+    <Grid RowDefinitions="Auto, * , Auto, Auto, Auto">
       <VerticalStackLayout Padding="20" Spacing="10" Grid.Row="1">
       
         <Entry Text="{Binding User.Firstname, FallbackValue='', Mode=TwoWay}"
@@ -49,16 +46,22 @@
               Padding="10,5"
               Margin="8"
               Grid.Row="2" 
-              IsEnabled="{Binding UpdateUserSettingsCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"
-              />
+              IsEnabled="{Binding UpdateUserSettingsCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"/>
+      
       <Button Text="{x:Static strings:AppTexts.SettingsPage_DeleteAccountButtonText}"
               Command="{Binding DeleteUserCommand}"
               FontSize="16"
               Padding="10,5"
               Margin="8"
               Grid.Row="3" 
-              IsEnabled="{Binding DeleteUserCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"
-      />
+              IsEnabled="{Binding DeleteUserCommand.IsRunning, Converter={StaticResource InvertedBoolConverter}}"/>
+      
+      <Button Text="{x:Static strings:AppTexts.SettingsPage_LogOutButtonText}"
+              Command="{Binding LogOutCommand}"
+              FontSize="16"
+              Padding="10,5"
+              Margin="8"
+              Grid.Row="4" />
     </Grid>
   </ContentPage.Content>
 </ContentPage>

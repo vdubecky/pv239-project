@@ -21,6 +21,12 @@
     <data name="LoginPage.WelcomeText" xml:space="preserve">
         <value>Welcome</value>
     </data>
+    <data name="LoginPage.EmptyFields" xml:space="preserve">
+        <value>Please fill in all input fields</value>
+    </data>
+    <data name="LoginPage.GeneralError" xml:space="preserve">
+        <value>An error occurred while logging in. Please check your credentials and try again.</value>
+    </data>
     <data name="LoginPage.LoginText" xml:space="preserve">
         <value>Please login or create a new account</value>
     </data>
@@ -45,6 +51,24 @@
     <data name="ConversationListPage.PageLabel" xml:space="preserve">
         <value>Conversations</value>
     </data>
+    <data name="CreateNewUserPage.InputError" xml:space="preserve">
+        <value>Please fill in all input fields</value>
+    </data>
+    <data name="CreateNewUserPage.PasswordLengthError" xml:space="preserve">
+        <value>Password must be at least 6 characters long</value>
+    </data>
+    <data name="CreateNewUserPage.ConfirmPasswordLengthError" xml:space="preserve">
+        <value>Confirm password must be at least 6 characters long</value>
+    </data>
+    <data name="CreateNewUserPage.PasswordsNotSame" xml:space="preserve">
+        <value>Passwords do not match</value>
+    </data>
+    <data name="CreateNewUserPage.GeneralError" xml:space="preserve">
+        <value>An error occurred while creating the user. Please check internet connection and try again.</value>
+    </data>
+    <data name="CreateNewUserPage.Title" xml:space="preserve">
+        <value>Registration</value>
+    </data>
     <data name="CreateNewUserPage.FirstNamePlaceholder" xml:space="preserve">
         <value>Firstname</value>
     </data>
@@ -58,7 +82,7 @@
         <value>Password</value>
     </data>
     <data name="CreateNewUserPage.ConfirmPasswordPlaceholder" xml:space="preserve">
-        <value>Surname</value>
+        <value>Confirm Password</value>
     </data>
     <data name="CreateNewUserPage.SignUpButtonText" xml:space="preserve">
         <value>Sign Up</value>
@@ -78,6 +102,9 @@
     <data name="SettingsPage.DeleteAccountButtonText" xml:space="preserve">
         <value>Delete account</value>
     </data>
+    <data name="SettingsPage.LogOutButtonText" xml:space="preserve">
+        <value>Log out</value>
+    </data>
     <data name="UserListPage.PageLabel" xml:space="preserve">
         <value>Users</value>
     </data>
@@ -95,5 +122,11 @@
     </data>
     <data name="UploadProfilePicturePopup.SubmitButtonText" xml:space="preserve">
         <value>Submit</value>
+    </data>
+    <data name="ConversationDetailPage.FailedToSendMessageError" xml:space="preserve">
+        <value>Failed to send message. Please check your internet connection and try again.</value>
+    </data>
+    <data name="ConversationDetailPage.LoadingError" xml:space="preserve">
+        <value>Failed to load conversation. Please check your internet connection and try again.</value>
     </data>
 </root>

@@ -1,7 +1,6 @@
-﻿namespace ChatAppBackend.Dtos
+﻿namespace ChatAppBackend.Dtos;
+
+public class UserDto : UserUpdateDto
 {
-    public class UserDto : UserUpdateDto
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

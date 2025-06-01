@@ -12,9 +12,10 @@ namespace ChatAppBackend.Facades
             return await userService.RegisterUser(userDto.UserRegisterDtoToUserEntity());
         }
 
-        public async Task<int?> LoginUser(UserLoginDto loginDto)
+        public async Task<AuthUserDto> LoginUser(UserLoginDto loginDto)
         {
-            return await userService.LoginUser(loginDto);
+            var userEntity = await userService.LoginUser(loginDto);
+            return userEntity.UserEntityToUserAuthDto();
         }
 
         /// <summary>

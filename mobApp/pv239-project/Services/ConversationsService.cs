@@ -28,4 +28,11 @@ public class ConversationsService(IConversationClient conversationClient, IUserS
         Conversations.Remove(preview);
         Conversations.Insert(0, preview);
     }
+
+    public void Clear()
+    {
+        Conversations.Clear();
+        SelectedConversation = null;
+    }
 }
+

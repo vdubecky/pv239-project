@@ -7,4 +7,5 @@ public interface IHubService
 {
     Dictionary<string, Action<CreateMessageDto>> MessageHandler { get; set; }
     Task Start();
+    Task Clear();
 }

@@ -40,14 +40,28 @@ public partial class AuthViewModel : ObservableObject, IRecipient<AuthChangedMes
         }
     }
 
-    public void Receive(AuthChangedMessage message)
+    public async void Receive(AuthChangedMessage message)
     {
         if(!IsAuthenticated && message.IsAuthenticated)
         {
-            InitAppServices();
+            await InitAppServices();
+            IsAuthenticated = message.IsAuthenticated;
+            await Shell.Current.GoToAsync("//ConversationListPage");
         }
         
         IsAuthenticated = message.IsAuthenticated;
+        
+        if (!message.IsAuthenticated)
+        {
+            await ClearAppServices();
+            await Shell.Current.GoToAsync("//LoginPage");
+        }
+    }
+
+    private async Task ClearAppServices()
+    {
+        await _hubService.Clear();
+        _conversationsService.Clear();
     }
     
     private async Task InitAppServices()

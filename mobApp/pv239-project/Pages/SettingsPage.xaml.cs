@@ -11,5 +11,11 @@ public partial class SettingsPage : ContentPage
         InitializeComponent();
         BindingContext = _viewModel = viewModel;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _viewModel.OnAppearing();
+    }
 }
 

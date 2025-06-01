@@ -10,4 +10,5 @@ public interface IConversationsService
 
     void SortConversationsByLastMessage(ConversationPreview preview);
     Task Init();
+    void Clear();
 }

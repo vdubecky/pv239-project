@@ -32,7 +32,13 @@ public class HubService(IConversationsService conversations, IUserService userSe
         _connection.On<int, CreateMessageDto>(SignalRNewMessage, OnNewMessage);
         _connection.On<ConversationPreviewDto>(SignalRNewConversation, OnNewConversation);
     }
-    
+
+    public async Task Clear()
+    {
+        await _connection?.StopAsync();
+        MessageHandler.Clear();
+    }
+
     private void OnNewMessage(int conversationId, CreateMessageDto messageDto)
     {
         var conversation = conversations.Conversations

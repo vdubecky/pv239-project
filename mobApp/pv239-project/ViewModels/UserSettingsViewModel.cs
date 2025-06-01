@@ -15,8 +15,13 @@ namespace pv239_project.ViewModels;
 
 public partial class UserSettingsViewModel(IPopupService popupService, IMessenger messenger, IUserService userService) : ObservableObject
 {
-    [ObservableProperty] public partial User User { get; set; } = (User)userService.CurrentUser.Clone();
+    [ObservableProperty] public partial User User { get; set; }
 
+
+    public void OnAppearing()
+    {
+        User = (User)userService.CurrentUser.Clone();
+    }
     
     [RelayCommand]
     private async Task UpdateUserSettings()

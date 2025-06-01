@@ -17,11 +17,13 @@
   </Shell.Resources>
 
   <ShellContent
+    Route="LoginPage"
     ContentTemplate="{DataTemplate pages:LoginPage}"
     IsVisible="{Binding IsAuthenticated, Converter={StaticResource InvertedBoolConverter}}" />
+  
   <TabBar IsVisible="{Binding IsAuthenticated}">
     <Tab Title="Chats" Icon="message.png">
-      <ShellContent ContentTemplate="{DataTemplate pages:ConversationListPage}" />
+      <ShellContent Route="ConversationListPage" ContentTemplate="{DataTemplate pages:ConversationListPage}" />
     </Tab>
     <Tab Title="Users" Icon="users.png">
       <ShellContent ContentTemplate="{DataTemplate pages:UserListPage}" />

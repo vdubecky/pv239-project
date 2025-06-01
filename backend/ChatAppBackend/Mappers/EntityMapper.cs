@@ -70,6 +70,7 @@ public static class EntityMapper
             Name = conversationEntity.Name,
             Messages = conversationEntity.Messages.MessageEntitiesToMessageDtos(),
             Members = conversationEntity.Members.MemberEntitiesToMemberDtos(),
+            
         };
     }
 
@@ -83,6 +84,7 @@ public static class EntityMapper
                 Id = message.Id,
                 SenderId = message.SenderId,
                 Content = message.Content,
+                LastMessageDate = message.SentAt
             });
         }
         return messageDtos;

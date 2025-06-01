@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using pv239_project.Client;
 using pv239_project.Configuration;
+using pv239_project.Helpers;
 using pv239_project.Mappers;
 using pv239_project.Services.Interfaces;
 
@@ -40,7 +41,7 @@ public class HubService(IConversationsService conversations, IUserService userSe
         if (conversation != null)
         {
             conversation.LastMessage = messageDto.Content;
-            conversation.LastMessageTime = messageDto.LastMessageDate ?? DateTime.Now;
+            conversation.LastMessageTime = messageDto.LastMessageDate.ParseTime();
             conversations.SortConversationsByLastMessage(conversation);
         }
 

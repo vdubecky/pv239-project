@@ -17,7 +17,7 @@ public class MessageEntity
     [Required, MaxLength(255)]
     public required string Content { get; init; }
     
-    public required DateTime SentAt { get; init; }
+    public required string SentAt { get; init; }
     
     public UserEntity? SenderEntity { get; init; }
     public ConversationEntity? ConversationEntity { get; init; }

@@ -11,7 +11,7 @@ public class MessageService(ChatAppDbContext dbContext)
             SenderId = senderId,
             ConversationId = conversationId,
             Content = message,
-            SentAt = DateTime.UtcNow
+            SentAt = DateTimeOffset.UtcNow.UtcDateTime.ToString("O")
         };
 
         dbContext.Messages.Add(messageEntity);

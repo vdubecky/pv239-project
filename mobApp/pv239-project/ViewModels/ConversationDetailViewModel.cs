@@ -2,6 +2,7 @@ using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using pv239_project.Client;
+using pv239_project.Helpers;
 using pv239_project.Mappers;
 using pv239_project.Models;
 using pv239_project.Services.Interfaces;
@@ -61,7 +62,7 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
     private void RegisterMessageHandler()
     {
         hubService.MessageHandler.Add(Conversation.Id.ToString(), message =>
-        {                
+        {    
             Conversation.Messages.Add(new Message
             {
                 Content = message.Content,
@@ -69,6 +70,7 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
                 IsOutgoing = message.SenderId == userService.CurrentUserId,
                 Initials = Preview.Initials,
                 ProfileImage = message.SenderId != userService.CurrentUserId ? Preview.ProfilePicture : null,
+                MessageTime = message.LastMessageDate.ParseTime()
             });
         });
     }
@@ -100,6 +102,7 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
             SenderId = userService.CurrentUserId,
             Content = MessageInput,
             IsOutgoing = true,
+            MessageTime = DateTimeOffset.Now
         };
 
         try
@@ -121,13 +124,14 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
         {
             SenderId = userService.CurrentUserId,
             ReceiverId = ReceiverId,
-            FirstMessage = MessageInput
+            FirstMessage = MessageInput,
         };
         
         var newConversationDto = await conversationClient.Conversation_CreateConversationAsync(conversationDto);
         Conversation = newConversationDto.ConversationDtoToDetail(userService.CurrentUserId, Preview);
 
         conversationsService.SelectedConversation.ConversationId = Conversation.Id;
+        conversationsService.SelectedConversation.LastMessageTime = DateTimeOffset.Now;
         conversationsService.Conversations.Add(conversationsService.SelectedConversation);
         
         UpdateLastMessageInPreview();

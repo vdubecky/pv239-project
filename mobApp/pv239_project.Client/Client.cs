@@ -2366,7 +2366,7 @@ namespace pv239_project.Client
         public string Content { get; set; }
 
         [Newtonsoft.Json.JsonProperty("lastMessageDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? LastMessageDate { get; set; }
+        public string LastMessageDate { get; set; }
 
     }
 
@@ -2415,7 +2415,7 @@ namespace pv239_project.Client
         public string LastMessage { get; set; }
 
         [Newtonsoft.Json.JsonProperty("lastMessageDate", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset LastMessageDate { get; set; }
+        public string LastMessageDate { get; set; }
 
         [Newtonsoft.Json.JsonProperty("profilePicture", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string ProfilePicture { get; set; }

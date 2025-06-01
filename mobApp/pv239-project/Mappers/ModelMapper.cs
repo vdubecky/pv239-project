@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui.Core.Extensions;
 using pv239_project.Client;
 using pv239_project.Entities;
+using pv239_project.Helpers;
 using pv239_project.Models;
 using UserDto = pv239_project.Client.UserDto;
 
@@ -60,7 +61,7 @@ public static class ModelMapper
             Title = conversationPreviewDto.Name,
             LastMessage = conversationPreviewDto.LastMessage,
             ProfilePicture = conversationPreviewDto.ProfilePicture,
-            LastMessageTime = conversationPreviewDto.LastMessageDate
+            LastMessageTime = conversationPreviewDto.LastMessageDate.ParseTime()
         };
     }
 
@@ -83,7 +84,8 @@ public static class ModelMapper
             Content = messageDto.Content,
             IsOutgoing = messageDto.SenderId == actualId,
             ProfileImage = actualId != messageDto.SenderId ? preview.ProfilePicture : null,
-            Initials = preview.Initials
+            Initials = preview.Initials,
+            MessageTime = messageDto.LastMessageDate.ParseTime()
         };
     }
 

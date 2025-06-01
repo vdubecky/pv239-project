@@ -27,7 +27,7 @@ public class ConversationFacade(ConversationService conversationService, Message
                 ConversationId = conversationEntityId,
                 Name = EntityMapper.GetConversationName(conversation.Members, conversationDto.ReceiverId),
                 LastMessage = conversationDto.FirstMessage,
-                LastMessageDate = DateTime.Now
+                LastMessageDate = DateTimeOffset.UtcNow.ToString()
             });
         }
 
@@ -62,7 +62,7 @@ public class ConversationFacade(ConversationService conversationService, Message
 
             if(clientId != null)
             {
-                dto.LastMessageDate = DateTime.Now;
+                dto.LastMessageDate = DateTimeOffset.UtcNow.UtcDateTime.ToString("O");
                 hub.Clients.Client(clientId).SendAsync(SendMessageKey, conversationId, dto);
             }
         }

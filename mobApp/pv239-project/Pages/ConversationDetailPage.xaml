@@ -19,8 +19,14 @@
             <DataTemplate x:Key="OutMessage">
                 <Border Style="{StaticResource MessageBorderStyle}" 
                         BackgroundColor="DodgerBlue" HorizontalOptions="End">
-                    <Label Text="{Binding Content}" 
-                           Style="{StaticResource MessageLabelStyle}" />
+                    <StackLayout Spacing="2">
+                        <Label Text="{Binding MessageTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                               FontSize="11"
+                               TextColor="Black"
+                               HorizontalOptions="End"/>
+                        <Label Text="{Binding Content}" 
+                               Style="{StaticResource MessageLabelStyle}" />
+                    </StackLayout>
                 </Border>
             </DataTemplate>
 
@@ -51,8 +57,14 @@
                     <Border Grid.Column="1"
                             Style="{StaticResource MessageBorderStyle}" 
                             BackgroundColor="Black" >
-                        <Label Text="{Binding Content}" 
-                               Style="{StaticResource MessageLabelStyle}" />
+                        <StackLayout Spacing="2">
+                            <Label Text="{Binding MessageTime, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                                   FontSize="11"
+                                   TextColor="Gray"
+                                   HorizontalOptions="Start"/>
+                            <Label Text="{Binding Content}"
+                                   Style="{StaticResource MessageLabelStyle}" />
+                        </StackLayout>
                     </Border>
                 </Grid>
             </DataTemplate>
@@ -77,6 +89,7 @@
             <Grid Grid.Row="2" 
                   Padding="8" 
                   VerticalOptions="End"
+                  Style="{StaticResource ChatInputGrid}"
                   ColumnDefinitions="*,Auto">
                 
                 <Border StrokeThickness="0" 

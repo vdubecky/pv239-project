@@ -34,8 +34,7 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
         }
         catch (Exception ex)
         {
-            await Toast.Make(AppTexts.ConversationDetailPage_LoadingError).Show();
-            await Shell.Current.GoToAsync("..");
+            Console.WriteLine(ex.ToString());
         }
     }
     
@@ -87,15 +86,22 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
             return;
         }
 
-        if (Conversation == null)
+        try
         {
-            await CreateNewConversation(input);
+            if (Conversation == null)
+            {
+                await CreateNewConversation(input);
+            }
+            else
+            {
+                await SendNewMessage(input);
+            }
         }
-        else
+        catch (Exception ex)
         {
-            await SendNewMessage(input);
+            await Toast.Make(AppTexts.ConversationDetailPage_FailedToSendMessageError).Show();
         }
-
+        
         MessageInput = string.Empty;
     }
 
@@ -108,18 +114,11 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
             IsOutgoing = true,
             MessageTime = DateTimeOffset.Now
         };
-
-        try
-        {
-            await conversationClient.Conversation_SendMessageAsync(Conversation.Id, message.MessageToDto());
+        
+        await conversationClient.Conversation_SendMessageAsync(Conversation.Id, message.MessageToDto());
             
-            UpdateLastMessageInPreview(content);
-            Conversation.Messages.Add(message);
-        }
-        catch (Exception ex)
-        {
-            await Toast.Make(AppTexts.ConversationDetailPage_FailedToSendMessageError).Show();
-        }
+        UpdateLastMessageInPreview(content);
+        Conversation.Messages.Add(message);
     }
 
     private async Task CreateNewConversation(string content)

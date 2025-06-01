@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using pv239_project.Messages;
+using pv239_project.Resources.i18n;
 using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
@@ -26,20 +27,23 @@ public partial class CreateNewUserViewModel(IUserService userService, IMessenger
                 string.IsNullOrWhiteSpace(Password) ||
                 string.IsNullOrWhiteSpace(ConfirmPassword))
             {
+                await Toast.Make(AppTexts.CreateNewUserPage_InputError).Show();
                 return;
             }
             
             if (Password.Length < 6)
             {
+                await Toast.Make(AppTexts.CreateNewUserPage_PasswordLengthError).Show();
                 return;
             }
             if (ConfirmPassword.Length < 6)
             {
+                await Toast.Make(AppTexts.CreateNewUserPage_ConfirmPasswordLengthError).Show();
                 return;
             }
             if (Password != ConfirmPassword)
             {
-                await Shell.Current.DisplayAlert("Error", "Passwords do not match", "OK");
+                await Toast.Make(AppTexts.CreateNewUserPage_PasswordsNotSame).Show();
                 return;
             }
 
@@ -48,8 +52,7 @@ public partial class CreateNewUserViewModel(IUserService userService, IMessenger
         }
         catch (Exception e)
         {
-            var toast = Toast.Make(e.Message);
-            await toast.Show();
+            await Toast.Make(AppTexts.CreateNewUserPage_GeneralError).Show();
         }
     }
 }

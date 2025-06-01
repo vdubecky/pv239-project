@@ -5,6 +5,7 @@ using pv239_project.Client;
 using pv239_project.Helpers;
 using pv239_project.Mappers;
 using pv239_project.Models;
+using pv239_project.Resources.i18n;
 using pv239_project.Services.Interfaces;
 
 namespace pv239_project.ViewModels;
@@ -33,7 +34,8 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error initializing conversation: {ex.Message}");
+            await Toast.Make(AppTexts.ConversationDetailPage_LoadingError).Show();
+            await Shell.Current.GoToAsync("..");
         }
     }
     
@@ -78,29 +80,31 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
     [RelayCommand]
     private async Task SendMessage()
     {
-        if (string.IsNullOrEmpty(MessageInput))
+        string input = MessageInput.Trim();
+        
+        if (string.IsNullOrEmpty(input))
         {
             return;
         }
 
         if (Conversation == null)
         {
-            await CreateNewConversation();
+            await CreateNewConversation(input);
         }
         else
         {
-            await SendNewMessage();
+            await SendNewMessage(input);
         }
 
         MessageInput = string.Empty;
     }
 
-    private async Task SendNewMessage()
+    private async Task SendNewMessage(string content)
     {
         Message message = new()
         {
             SenderId = userService.CurrentUserId,
-            Content = MessageInput,
+            Content = content,
             IsOutgoing = true,
             MessageTime = DateTimeOffset.Now
         };
@@ -109,22 +113,22 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
         {
             await conversationClient.Conversation_SendMessageAsync(Conversation.Id, message.MessageToDto());
             
-            UpdateLastMessageInPreview();
+            UpdateLastMessageInPreview(content);
             Conversation.Messages.Add(message);
         }
         catch (Exception ex)
         {
-            Toast.Make("Failed to send message. Please check your connection and try again.").Show();
+            await Toast.Make(AppTexts.ConversationDetailPage_FailedToSendMessageError).Show();
         }
     }
 
-    private async Task CreateNewConversation()
+    private async Task CreateNewConversation(string content)
     {
         var conversationDto = new ConversationCreateDto
         {
             SenderId = userService.CurrentUserId,
             ReceiverId = ReceiverId,
-            FirstMessage = MessageInput,
+            FirstMessage = content,
         };
         
         var newConversationDto = await conversationClient.Conversation_CreateConversationAsync(conversationDto);
@@ -134,13 +138,13 @@ public partial class ConversationDetailViewModel(IConversationClient conversatio
         conversationsService.SelectedConversation.LastMessageTime = DateTimeOffset.Now;
         conversationsService.Conversations.Add(conversationsService.SelectedConversation);
         
-        UpdateLastMessageInPreview();
+        UpdateLastMessageInPreview(content);
         RegisterMessageHandler();
     }
 
-    private void UpdateLastMessageInPreview()
+    private void UpdateLastMessageInPreview(string content)
     {
-        conversationsService.SelectedConversation.LastMessage = MessageInput;
+        conversationsService.SelectedConversation.LastMessage = content;
         conversationsService.SelectedConversation.LastMessageTime = DateTime.Now;
         conversationsService.SortConversationsByLastMessage(conversationsService.SelectedConversation);
     }

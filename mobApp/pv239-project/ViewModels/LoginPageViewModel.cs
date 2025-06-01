@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using pv239_project.Messages;
+using pv239_project.Resources.i18n;
 using pv239_project.Services;
 using pv239_project.Services.Interfaces;
 
@@ -17,6 +18,12 @@ public partial class LoginPageViewModel(IUserService userService, IMessenger mes
     [RelayCommand]
     private async Task SubmitAsync()
     {
+        if(string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
+        {
+            await Toast.Make(AppTexts.LoginPage_EmptyFields).Show();
+            return;
+        }
+        
         try
         {
             await userService.Login(Email, Password);
@@ -24,7 +31,7 @@ public partial class LoginPageViewModel(IUserService userService, IMessenger mes
         }
         catch (Exception e)
         {
-            await Toast.Make(e.Message).Show();
+            await Toast.Make(AppTexts.LoginPage_GeneralError).Show();
         }
     }
     

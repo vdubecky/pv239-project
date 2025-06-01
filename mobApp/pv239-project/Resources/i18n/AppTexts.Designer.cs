@@ -78,6 +78,24 @@ namespace pv239_project.Resources.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to send message. Please check your internet connection and try again..
+        /// </summary>
+        internal static string ConversationDetailPage_FailedToSendMessageError {
+            get {
+                return ResourceManager.GetString("ConversationDetailPage.FailedToSendMessageError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to load conversation. Please check your internet connection and try again..
+        /// </summary>
+        internal static string ConversationDetailPage_LoadingError {
+            get {
+                return ResourceManager.GetString("ConversationDetailPage.LoadingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type a message....
         /// </summary>
         internal static string ConversationDetailPage_MessagePlaceholder {
@@ -101,6 +119,15 @@ namespace pv239_project.Resources.i18n {
         internal static string ConversationListPage_PageLabel {
             get {
                 return ResourceManager.GetString("ConversationListPage.PageLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm password must be at least 6 characters long.
+        /// </summary>
+        internal static string CreateNewUserPage_ConfirmPasswordLengthError {
+            get {
+                return ResourceManager.GetString("CreateNewUserPage.ConfirmPasswordLengthError", resourceCulture);
             }
         }
         
@@ -132,11 +159,47 @@ namespace pv239_project.Resources.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while creating the user. Please check internet connection and try again..
+        /// </summary>
+        internal static string CreateNewUserPage_GeneralError {
+            get {
+                return ResourceManager.GetString("CreateNewUserPage.GeneralError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please fill in all input fields.
+        /// </summary>
+        internal static string CreateNewUserPage_InputError {
+            get {
+                return ResourceManager.GetString("CreateNewUserPage.InputError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password must be at least 6 characters long.
+        /// </summary>
+        internal static string CreateNewUserPage_PasswordLengthError {
+            get {
+                return ResourceManager.GetString("CreateNewUserPage.PasswordLengthError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         internal static string CreateNewUserPage_PasswordPlaceholder {
             get {
                 return ResourceManager.GetString("CreateNewUserPage.PasswordPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwords do not match.
+        /// </summary>
+        internal static string CreateNewUserPage_PasswordsNotSame {
+            get {
+                return ResourceManager.GetString("CreateNewUserPage.PasswordsNotSame", resourceCulture);
             }
         }
         
@@ -155,6 +218,24 @@ namespace pv239_project.Resources.i18n {
         internal static string CreateNewUserPage_SurnamePlaceholder {
             get {
                 return ResourceManager.GetString("CreateNewUserPage.SurnamePlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration.
+        /// </summary>
+        internal static string CreateNewUserPage_Title {
+            get {
+                return ResourceManager.GetString("CreateNewUserPage.Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please fill in all input fields.
+        /// </summary>
+        internal static string LoginPage_EmptyFields {
+            get {
+                return ResourceManager.GetString("LoginPage.EmptyFields", resourceCulture);
             }
         }
         
@@ -191,6 +272,15 @@ namespace pv239_project.Resources.i18n {
         internal static string LoginPage_Form_PasswordPlaceholder {
             get {
                 return ResourceManager.GetString("LoginPage.Form.PasswordPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An error occurred while logging in. Please check your credentials and try again..
+        /// </summary>
+        internal static string LoginPage_GeneralError {
+            get {
+                return ResourceManager.GetString("LoginPage.GeneralError", resourceCulture);
             }
         }
         

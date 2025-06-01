@@ -10,7 +10,7 @@ namespace ChatAppBackend.Controllers;
 [Route("api/v1/users/own")]
 public class UserOwnController(UserFacade userFacade) : ControllerBase
 {
-    //[Authorize]
+    [Authorize]
     [HttpPut]
     public async Task<bool> UpdateUserProfile(UserUpdateDto userDto)
     {
@@ -18,7 +18,7 @@ public class UserOwnController(UserFacade userFacade) : ControllerBase
         return await userFacade.UpdateUserProfile(id!.Value, userDto);
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpPut("changePassword")]
     public async Task<bool> ChangeUserPassword(ChangeUserPasswordDto changeUserPasswordDto)
     {
@@ -26,7 +26,7 @@ public class UserOwnController(UserFacade userFacade) : ControllerBase
         return await userFacade.ChangeUserPassword(id!.Value, changeUserPasswordDto);
     }
     
-    //[Authorize]
+    [Authorize]
     [HttpPut("{id}/picture")]
     public async Task<bool> UploadUserPicture([FromForm] UploadUserPictureDto uploadDto)
     {

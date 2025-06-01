@@ -78,6 +78,15 @@ namespace pv239_project.Resources.i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send first message to start the conversation..
+        /// </summary>
+        internal static string ConversationDetailPage_Empty {
+            get {
+                return ResourceManager.GetString("ConversationDetailPage.Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to send message. Please check your internet connection and try again..
         /// </summary>
         internal static string ConversationDetailPage_FailedToSendMessageError {
@@ -110,6 +119,24 @@ namespace pv239_project.Resources.i18n {
         internal static string ConversationDetailPage_SendButtonText {
             get {
                 return ResourceManager.GetString("ConversationDetailPage.SendButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type a message....
+        /// </summary>
+        internal static string ConversationDetailPage_TypeAMessage {
+            get {
+                return ResourceManager.GetString("ConversationDetailPage.TypeAMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No conversations to display. Go to the Users page and start a new conversation..
+        /// </summary>
+        internal static string ConversationListPage_Empty {
+            get {
+                return ResourceManager.GetString("ConversationListPage.Empty", resourceCulture);
             }
         }
         
@@ -380,6 +407,15 @@ namespace pv239_project.Resources.i18n {
         internal static string UploadProfilePicturePopup_SubmitButtonText {
             get {
                 return ResourceManager.GetString("UploadProfilePicturePopup.SubmitButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no users to display..
+        /// </summary>
+        internal static string UserListPage_Empty {
+            get {
+                return ResourceManager.GetString("UserListPage.Empty", resourceCulture);
             }
         }
         

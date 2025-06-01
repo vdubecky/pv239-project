@@ -18,7 +18,8 @@
   </ContentPage.Resources>
   <ContentPage.Content>
     <VerticalStackLayout Padding="10" Spacing="15">
-      <CollectionView ItemsSource="{Binding Items}">
+      <CollectionView ItemsSource="{Binding Items}"
+                      EmptyView="{x:Static strings:AppTexts.UserListPage_Empty}">
         <CollectionView.ItemTemplate>
           <DataTemplate x:DataType="{x:Type models:User}">
             <Border StrokeShape="RoundRectangle 12"

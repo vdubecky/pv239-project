@@ -22,6 +22,7 @@ public class ConversationFacade(ConversationService conversationService, Message
 
         if (clientId != null)
         {
+            // You are not awaiting asynchronous methods
             hub.Clients.Client(clientId).SendAsync(SendConversationKey, new ConversationPreviewDto
             {
                 ConversationId = conversationEntityId,

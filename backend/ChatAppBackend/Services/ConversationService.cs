@@ -47,6 +47,7 @@ public class ConversationService(ChatAppDbContext dbContext)
         return await dbContext.SaveChangesAsync() > 0;
     }
 
+    // There's no need for this method to be an async Task, as it does not perform any asynchronous operations.
     public async Task<ConversationEntity> GetConversation(int senderId, int receiverId)
     {
         var conversations = dbContext.Conversations
@@ -57,12 +58,14 @@ public class ConversationService(ChatAppDbContext dbContext)
 
         if (!conversations.Any())
         {
+            // Exceptions are expensive resource-wise and a missing conversation is a common and expected case, so you might want to return null instead of throwing an exception.
+            // It also results into errors in the logs and makes it harder to notice real issues.
             throw new EntityNotFoundException($"Conversation between {senderId} and {receiverId} not found");
         }
 
         return conversations.First();
     }
-
+    
     public async Task<ConversationEntity> GetConversation(int conversationId)
     {
         var conversations = dbContext.Conversations

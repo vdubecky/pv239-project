@@ -13,6 +13,7 @@ public class ChatAppDbContext(DbContextOptions options) : DbContext(options)
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // I suggest explicitly defining on-delete behavior for relationships
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<UserEntity>()

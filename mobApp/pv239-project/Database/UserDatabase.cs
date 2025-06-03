@@ -22,7 +22,7 @@ public class UserDatabase : IUserDatabase
     public async Task<UserEntity?> GetActualUser()
     {
         await Init();
-        return await _database!.Table<UserEntity>().FirstOrDefaultAsync();
+        return await _database!.Table<UserEntity>().FirstOrDefaultAsync(); // Don't suppress nullability warnings, add explicit null checks instead
     }
 
     public async Task SaveUser(UserEntity user)

@@ -23,7 +23,7 @@ public class ConversationController(ConversationFacade conversationFacade) : Con
     }
 
     [Authorize]
-    [HttpGet("{conversationId}")]
+    [HttpGet("{conversationId}")] // I'd suggest adding constraints to the route to ensure it only accepts integers: {conversationId:int}. They can be used for some other types, such as guid, as well.
     public async Task<ActionResult<ConversationDto>> GetConversationById(int conversationId)
     {
         return await conversationFacade.GetConversation(conversationId);

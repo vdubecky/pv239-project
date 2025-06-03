@@ -76,7 +76,7 @@ app.MapControllers();
 app.MapHub<ChatAppHub>("/chatAppHub");
 
 using var scope = app.Services.CreateScope();
-{
+{ // The braces here are not doing anything at all
     var db = scope.ServiceProvider.GetRequiredService<ChatAppDbContext>();
     await db.Database.MigrateAsync();
 }
